@@ -14,16 +14,16 @@ public class DeliveryAddress {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "City should not be empty !")
+    @NotEmpty(message = "Поле 'город' обязательно для заполнения !")
     @Column(name = "city")
     private String city;
 
-    @NotEmpty(message = "Street should not be empty !")
+    @NotEmpty(message = "Поле 'улица' обязательно для заполнения !")
     @Column(name = "street")
     private String street;
 
-    @NotNull(message = "House number should not be empty !")
-    @Min(value = 1, message = "The house number cannot be less than 1 !")
+    @NotNull(message = "Поле 'номер дома' обязательно для заполнения !")
+    @Min(value = 1, message = "Номер дома не может быть меньше 1 !")
     @Column(name = "house_number")
     private int houseNumber;
 

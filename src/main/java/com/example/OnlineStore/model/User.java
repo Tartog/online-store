@@ -22,29 +22,29 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 0, max = 30, message = "Firstname must be less than 30 characters !")
+    @Size(min = 0, max = 30, message = "Имя должно состоять не более чем из 30 символов !")
     //@NotEmpty(message = "Firstname should not be empty !")
     @Column(name = "first_name")
     private String firstName;
 
-    @Size(min = 0, max = 30, message = "Lastname must be less than 30 characters !")
+    @Size(min = 0, max = 30, message = "Фамилия должна состоять не более чем из 30 символов !")
     //@NotEmpty(message = "Lastname should not be empty !")
     @Column(name = "last_name")
     private String lastName;
 
     //@Size(min = 4, max = 30, message = "Password should be between 4 and 30 characters !")
-    @NotEmpty(message = "Password should not be empty !")
+    @NotEmpty(message = "Поле 'пароль' обязательно для заполнения !")
     @Column(name = "password_hash")
     private String passwordHash;
 
-    @Size(min = 4, max = 30, message = "Login should be between 4 and 30 characters !")
-    @NotEmpty(message = "Login should not be empty !")
+    @Size(min = 4, max = 30, message = "Логин должен состоять из 4-30 символов !")
+    @NotEmpty(message = "Поле 'логин' обязательно для заполнения !")
     @Column(unique = true, name = "login")
     private String login;
 
-    @NotEmpty(message = "Email should not be empty !")
+    @NotEmpty(message = "Поле 'почта' обязательно для заполнения !")
     @Column(unique = true, name = "email")
-    @Email(message = "Email should be valid !")
+    @Email(message = "Почта введена некорректно !")
     private String email;
 
     //@NotEmpty(message = "Phone number should not be empty !")

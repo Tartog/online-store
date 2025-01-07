@@ -6,14 +6,14 @@
 </head>
 <body>
 <form th:method="POST" th:action="@{/api/v1/store/productCategory/newCategory}" th:object="${productCategory}">
-  <label for="category">Enter category: </label>
+  <label for="category">Введите категорию товара: </label>
   <input type="text" th:field="*{category}" id="category"/>
   <div style="color:red" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">Category error</div>
   <br/>
 
   <input type="hidden" th:field="*{id}" id="id" />
 
-  <input type="submit" value="Create !"/>
+  <input type="submit" value="Создать !"/>
 </form>
 </body>
 </html>

@@ -5,8 +5,8 @@
     <title>Product category</title>
 </head>
 <body>
-<a th:href="@{/api/v1/store}">Return to the main page</a>
-<p><a th:href="@{/api/v1/store/productCategory/newCategory}">Add new product category</a></p>
+<a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
+<p><a th:href="@{/api/v1/store/productCategory/newCategory}">Добавить новую категорию товара</a></p>
 </br>
 </hr>
 </br>
@@ -14,7 +14,7 @@
     <a th:text="${productCategory.getCategory()}">category</a>
     <form th:method="DELETE"
           th:action="@{/api/v1/store/productCategory/deleteCategory/{category}(category=${productCategory.getCategory()})}">
-        <input type="submit" value="Delete">
+        <input type="submit" value="Удалить">
     </form>
     </hr>
     </br>

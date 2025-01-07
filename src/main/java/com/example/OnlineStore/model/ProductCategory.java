@@ -16,7 +16,7 @@ public class ProductCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Category should not be empty !")
+    @NotEmpty(message = "Поле 'категория' обязательно для заполнения !")
     @Column(unique = true, name = "category")
     private String category;
 

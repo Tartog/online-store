@@ -6,15 +6,15 @@
 </head>
 <body>
 <form th:method="POST" th:action="@{/api/v1/store/deliveryAddress/newAddress}" th:object="${deliveryAddress}">
-  <label for="city">Enter city: </label>
+  <label for="city">Введите город: </label>
   <input type="text" th:field="*{city}" id="city"/>
   <div style="color:red" th:if="${#fields.hasErrors('city')}" th:errors="*{city}">City error</div>
   <br/>
-  <label for="street">Enter street: </label>
+  <label for="street">Введите улицу: </label>
   <input type="text" th:field="*{street}" id="street"/>
   <div style="color:red" th:if="${#fields.hasErrors('street')}" th:errors="*{street}">Street error</div>
   <br/>
-  <label for="houseNumber">Enter houseNumber: </label>
+  <label for="houseNumber">Введите номер дома: </label>
   <input type="text" th:field="*{houseNumber}" id="houseNumber"/>
   <div style="color:red" th:if="${#fields.hasErrors('houseNumber')}" th:errors="*{houseNumber}">House number error</div>
   <br/>
@@ -26,7 +26,7 @@
 
   <input type="hidden" th:field="*{id}" id="id" />
 
-  <input type="submit" value="Create !"/>
+  <input type="submit" value="Создать !"/>
 </form>
 </body>
 </html>
