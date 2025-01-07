@@ -91,6 +91,10 @@ public class PostController {
             bindingResult.rejectValue("name", "error.product", "Такое название товара уже есть !");
 
         }
+        if(product.getProductCategories().size() == 0){
+            bindingResult.rejectValue("productCategories", "error.product",
+                    "Товар должен иметь хотя бы 1 категорию !");
+        }
         if (bindingResult.hasErrors()){
             product.setProductCategories(new HashSet<>());
             ModelAndView modelAndView = new ModelAndView("newProduct");

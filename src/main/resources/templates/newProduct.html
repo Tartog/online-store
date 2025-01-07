@@ -30,7 +30,7 @@
             <span th:text="${category.getCategory()}"></span>
         </label>
     </div>
-
+    <div style="color:red" th:if="${#fields.hasErrors('productCategories')}" th:errors="*{productCategories}">Category error</div>
 
     <input type="hidden" th:field="*{id}" id="id" />
 
