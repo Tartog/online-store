@@ -41,6 +41,7 @@ public class ProductCategory {
         return Objects.hash(id); // Генерируем hashCode на основе id
     }
 
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

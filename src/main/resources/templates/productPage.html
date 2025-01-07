@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product page</title>
+</head>
+<body>
+<a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
+</br>
+</hr>
+<p th:text="${'Товар: ' + product.getName()}">name</p>
+<p th:text="${'Количество на складе: ' + product.getNumberOfProducts()}">numberOfProducts</p>
+<p th:text="${'Цена: ' + product.getPrice()}">price</p>
+<p th:text="${'Категории продукта: ' + product.getProductCategoriesAsString()}">productCategories</p>
+<p th:text="${'Продавец: ' + product.getUser().getLogin()}">seller</p>
+</body>
+</html>

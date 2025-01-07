@@ -55,4 +55,9 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProductByName(String name) {
         repository.deleteProductByName(name);
     }
+
+    @Override
+    public List<Product> findAll() {
+        return repository.findAll();
+    }
 }

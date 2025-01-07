@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "product")
@@ -51,6 +52,12 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "seller_id")
     private User user;
+
+    public String getProductCategoriesAsString() {
+        return productCategories.stream()
+                .map(ProductCategory::getCategory) // или используйте другое поле/метод для получения строки
+                .collect(Collectors.joining(", "));
+    }
 
     @Override
     public String toString() {

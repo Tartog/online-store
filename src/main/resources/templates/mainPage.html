@@ -39,6 +39,17 @@
     <!-- Контент для незарегистрированных пользователей -->
 </div>
 
+<div th:each="product : ${listOfProduct}">
+    <a th:text="${product.getName() + ', Цена: ' + product.getPrice() + ', Количество на складе: '
+        + product.getNumberOfProducts()}">product</a>
+    <form th:method="GET"
+          th:action="@{/api/v1/store/product/{productId}(productId=${product.getId()})}">
+        <input type="submit" value="Страница товара">
+    </form>
+    </hr>
+    </br>
+</div>
+
 
 
 </body>

@@ -13,4 +13,5 @@ public interface ProductService {
     void deleteProduct(Long id);
     boolean existsProduct(Product product);
     void deleteProductByName(String name);
+    List<Product> findAll();
 }

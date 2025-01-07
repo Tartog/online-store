@@ -55,17 +55,6 @@ public class GetController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(!auth.getName().equals("anonymousUser")){
-            /*String roleCurrentUser = userService.findByLogin(auth.getName()).getRole().getUserRole();
-            boolean isAdmin = false;
-            boolean isSeller = false;
-            if(roleCurrentUser.equals("Admin")){
-                isAdmin = true;
-            }
-            else if (roleCurrentUser.equals("Seller")){
-                isSeller = true;
-            }
-            modelAndView.addObject("isSeller", isSeller);
-            modelAndView.addObject("isAdmin", isAdmin);*/
             modelAndView.addObject("currentUser", userService.findByLogin(auth.getName()));
             modelAndView.addObject("isAuthenticated", true);
         }
@@ -73,6 +62,7 @@ public class GetController {
             modelAndView.addObject("isAuthenticated", false);
         }
 
+        modelAndView.addObject("listOfProduct", productService.findAll());
         modelAndView.addObject("user", user);
         modelAndView.addObject("seller", seller);
         modelAndView.addObject("admin", admin);
@@ -180,6 +170,14 @@ public class GetController {
         modelAndView.addObject("listProductCategory", productCategoryService.findAllProductCategory());
         modelAndView.addObject("product", product);
 
+        return modelAndView;
+    }
+
+    @GetMapping("/product/{productId}")
+    public ModelAndView showProductPage(@PathVariable String productId){
+        ModelAndView modelAndView = new ModelAndView("productPage");
+        Product product = productService.findById(Long.parseLong(productId));
+        modelAndView.addObject("product", product);
         return modelAndView;
     }
 }
