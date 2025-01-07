@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New product</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/api/v1/store/product/newProduct}" th:object="${product}">
+    <label for="name">Enter name: </label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
+    <br/>
+    <label for="numberOfProducts">Enter number of products: </label>
+    <input type="text" th:field="*{numberOfProducts}" id="numberOfProducts"/>
+    <div style="color:red" th:if="${#fields.hasErrors('numberOfProducts')}" th:errors="*{numberOfProducts}">Number of products error</div>
+    <br/>
+    <label for="price">Enter price: </label>
+    <input type="text" th:field="*{price}" id="price"/>
+    <div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price error</div>
+    <br/>
+
+    <label>Категории:</label>
+    <div th:each="category : ${listProductCategory}">
+        <input type="checkbox" th:id="'category_' + ${category.getId()}"
+               th:value="${category.getId()}"
+               th:name="productCategories"
+               th:field="*{productCategories}" />
+        <label th:for="'category_' + ${category.getId()}">
+            <span th:text="${category.getCategory()}"></span>
+        </label>
+    </div>
+
+
+    <input type="hidden" th:field="*{id}" id="id" />
+
+    <input type="hidden" th:field="*{user}" id="${product.getUser()}}" />
+
+    <input type="submit" value="Create !"/>
+</form>
+
+</body>
+</html>

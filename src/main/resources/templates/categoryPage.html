@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product category</title>
+</head>
+<body>
+<a th:href="@{/api/v1/store}">Return to the main page</a>
+<p><a th:href="@{/api/v1/store/productCategory/newCategory}">Add new product category</a></p>
+</br>
+</hr>
+</br>
+<div th:each="productCategory : ${listProductCategory}">
+    <a th:text="${productCategory.getCategory()}">category</a>
+    <form th:method="DELETE"
+          th:action="@{/api/v1/store/productCategory/deleteCategory/{category}(category=${productCategory.getCategory()})}">
+        <input type="submit" value="Delete">
+    </form>
+    </hr>
+    </br>
+</div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Address page</title>
+</head>
+<body>
+<a th:href="@{/api/v1/store}">Return to the main page</a>
+<p><a th:href="@{/api/v1/store/deliveryAddress/newAddress}">Add new delivery address</a></p>
+</br>
+</hr>
+</br>
+<div th:each="deliveryAddress : ${listAddress}">
+    <a th:text="${deliveryAddress.getCity() + ', ' + deliveryAddress.getStreet() + ' №'
+        + deliveryAddress.getHouseNumber()}">address</a>
+    <form th:method="DELETE"
+          th:action="@{/api/v1/store/deliveryAddress/deleteAddress/{addressId}(addressId=${deliveryAddress.getId()})}">
+        <input type="submit" value="Delete">
+    </form>
+    </hr>
+    </br>
+</div>
+
+
+
+</body>
+</html>
