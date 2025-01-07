@@ -27,10 +27,10 @@ public class PatchController {
     public ModelAndView updateUser(@Valid User user, BindingResult bindingResult){
 
         if (userService.emailExists(user.getEmail(), user.getId())) {
-            bindingResult.rejectValue("email", "error.user", "Email must be unique.");
+            bindingResult.rejectValue("email", "error.user", "Такая почта уже зарегистрирована !");
         }
         if (userService.loginExists(user.getLogin(), user.getId())) {
-            bindingResult.rejectValue("login", "error.user", "Login must be unique.");
+            bindingResult.rejectValue("login", "error.user", "Такой логин уже зарегистрирован !");
         }
         if(bindingResult.hasErrors()){
             ModelAndView modelAndView = new ModelAndView("editUser");

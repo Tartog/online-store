@@ -37,10 +37,10 @@ public class PostController {
     @PostMapping
     public ModelAndView createUser(@Valid User user, BindingResult bindingResult){
         if (userService.findByEmail(user.getEmail()) != null) {
-            bindingResult.rejectValue("email", "error.user", "Email must be unique.");
+            bindingResult.rejectValue("email", "error.user", "Такая почта уже зарегистрирована !");
         }
         if (userService.findByLogin(user.getLogin()) != null) {
-            bindingResult.rejectValue("login", "error.user", "Login must be unique.");
+            bindingResult.rejectValue("login", "error.user", "Такой логин уже зарегистрирован !");
         }
         if (bindingResult.hasErrors()){
             ModelAndView modelAndView = new ModelAndView("newUser");
@@ -56,7 +56,7 @@ public class PostController {
     public ModelAndView createAddress(@Valid DeliveryAddress deliveryAddress, BindingResult bindingResult){
 
         if(deliveryAddressService.existsAddress(deliveryAddress)){
-            bindingResult.reject("error.address", "Address must be unique.");
+            bindingResult.reject("error.address", "Такой адрес уже есть !");
         }
 
         if (bindingResult.hasErrors()){
@@ -72,7 +72,7 @@ public class PostController {
     @PostMapping("/productCategory/newCategory")
     public ModelAndView createProductCategory(@Valid ProductCategory productCategory, BindingResult bindingResult){
         if(productCategoryService.existsCategory(productCategory)){
-            bindingResult.rejectValue("category", "error.category", "Product category must be unique.");
+            bindingResult.rejectValue("category", "error.category", "Такая категория уже есть !");
         }
 
         if (bindingResult.hasErrors()){
@@ -88,7 +88,7 @@ public class PostController {
     @PostMapping("/product/newProduct")
     public ModelAndView createProduct(@Valid Product product, BindingResult bindingResult){
         if(productService.existsProduct(product)){
-            bindingResult.rejectValue("name", "error.product", "Product name must be unique.");
+            bindingResult.rejectValue("name", "error.product", "Такое название товара уже есть !");
 
         }
         if (bindingResult.hasErrors()){
