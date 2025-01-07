@@ -12,16 +12,11 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/store")
@@ -43,7 +38,7 @@ public class PostController {
             bindingResult.rejectValue("login", "error.user", "Такой логин уже зарегистрирован !");
         }
         if (bindingResult.hasErrors()){
-            ModelAndView modelAndView = new ModelAndView("newUser");
+            ModelAndView modelAndView = new ModelAndView("User/newUser");
             modelAndView.addObject("user", user);
             return modelAndView;
         }
@@ -60,7 +55,7 @@ public class PostController {
         }
 
         if (bindingResult.hasErrors()){
-            ModelAndView modelAndView = new ModelAndView("newAddress");
+            ModelAndView modelAndView = new ModelAndView("Address/newAddress");
             modelAndView.addObject("deliveryAddress", deliveryAddress);
             return modelAndView;
         }
@@ -76,7 +71,7 @@ public class PostController {
         }
 
         if (bindingResult.hasErrors()){
-            ModelAndView modelAndView = new ModelAndView("newCategory");
+            ModelAndView modelAndView = new ModelAndView("Category/newCategory");
             modelAndView.addObject("productCategory", productCategory);
             return modelAndView;
         }
@@ -97,7 +92,7 @@ public class PostController {
         }
         if (bindingResult.hasErrors()){
             product.setProductCategories(new HashSet<>());
-            ModelAndView modelAndView = new ModelAndView("newProduct");
+            ModelAndView modelAndView = new ModelAndView("Product/newProduct");
             modelAndView.addObject("listProductCategory", productCategoryService.findAllProductCategory());
             modelAndView.addObject("product", product);
             return modelAndView;

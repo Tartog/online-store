@@ -33,7 +33,7 @@ public class PatchController {
             bindingResult.rejectValue("login", "error.user", "Такой логин уже зарегистрирован !");
         }
         if(bindingResult.hasErrors()){
-            ModelAndView modelAndView = new ModelAndView("editUser");
+            ModelAndView modelAndView = new ModelAndView("User/editUser");
             modelAndView.addObject("user", user);
             return modelAndView;
         }
