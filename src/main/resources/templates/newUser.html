@@ -6,31 +6,31 @@
 </head>
 <body>
   <form th:method="POST" th:action="@{/api/v1/store}" th:object="${user}">
-    <label for="firstName">Enter firstname: </label>
+    <label for="firstName">Введите имя: </label>
     <input type="text" th:field="*{firstName}" id="firstName"/>
     <br/>
-    <label for="lastName">Enter lastname: </label>
+    <label for="lastName">Введите фамилию: </label>
     <input type="text" th:field="*{lastName}" id="lastName"/>
     <br/>
-    <label for="email">Enter email: </label>
+    <label for="email">Введите почту: </label>
     <input type="text" th:field="*{email}" id="email"/>
     <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
     <br/>
-    <label for="passwordHash">Enter password: </label>
+    <label for="passwordHash">Введите пароль: </label>
     <input type="text" th:field="*{passwordHash}" id="passwordHash"/>
     <div style="color:red" th:if="${#fields.hasErrors('passwordHash')}" th:errors="*{passwordHash}">Password error</div>
     <br/>
-    <label for="login">Enter login: </label>
+    <label for="login">Введите логин: </label>
     <input type="text" th:field="*{login}" id="login"/>
     <div style="color:red" th:if="${#fields.hasErrors('login')}" th:errors="*{login}">Login error</div>
     <br/>
-    <label for="phoneNumber">Enter phone number: </label>
+    <label for="phoneNumber">Введите номер телефона: </label>
     <input type="text" th:field="*{phoneNumber}" id="phoneNumber"/>
     <br/>
 
     <input type="hidden" th:field="*{role}" id="role" />
 
-    <input type="submit" value="Create !"/>
+    <input type="submit" value="Создать !"/>
   </form>
 </body>
 </html>

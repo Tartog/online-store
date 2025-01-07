@@ -40,4 +40,15 @@ public class ProductCategory {
     public int hashCode() {
         return Objects.hash(id); // Генерируем hashCode на основе id
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("ProductCategory{")
+                .append("id=").append(id)
+                .append(", category='").append(category).append("'")
+                .append(", productsCount=").append(products != null ? products.size() : 0)
+                .append('}');
+        return sb.toString();
+    }
 }

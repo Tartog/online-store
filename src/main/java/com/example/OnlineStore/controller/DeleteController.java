@@ -1,11 +1,13 @@
 package com.example.OnlineStore.controller;
 
+import com.example.OnlineStore.model.Role;
 import com.example.OnlineStore.model.User;
-import com.example.OnlineStore.service.DeliveryAddressService;
-import com.example.OnlineStore.service.ProductCategoryService;
-import com.example.OnlineStore.service.ProductService;
+import com.example.OnlineStore.service.*;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,6 +20,8 @@ public class DeleteController {
     private ProductCategoryService productCategoryService;
     private DeliveryAddressService deliveryAddressService;
     private ProductService productService;
+    private UserService userService;
+    private RoleService roleService;
 
     @DeleteMapping("productCategory/deleteCategory/{category}")
     public ModelAndView deleteCategory(@PathVariable String category){
@@ -36,5 +40,18 @@ public class DeleteController {
         User seller = productService.findById(Long.parseLong(productId)).getUser();
         productService.deleteProductByName(productService.findById(Long.parseLong(productId)).getName());
         return new ModelAndView("redirect:/api/v1/store/products/" + seller.getLogin());
+    }
+
+    @PreAuthorize("hasAuthority('Admin') or authentication.name == #login")
+    //@PreAuthorize("authentication.name == #login")
+    @DeleteMapping("deleteUser/{login}")
+    public ModelAndView deleteUser(@PathVariable String login){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userService.findByLogin(auth.getName());
+        userService.deleteUserByLogin(login);
+        if(currentUser.getRole().getUserRole().equals("Admin")){
+            return new ModelAndView("redirect:/api/v1/store/listOfUsers");
+        }
+        return new ModelAndView("redirect:/logout");
     }
 }

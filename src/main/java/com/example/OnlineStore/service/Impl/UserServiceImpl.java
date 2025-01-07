@@ -1,6 +1,7 @@
 package com.example.OnlineStore.service.Impl;
 
 import com.example.OnlineStore.model.User;
+import com.example.OnlineStore.repository.ProductRepository;
 import com.example.OnlineStore.repository.RoleRepository;
 import com.example.OnlineStore.repository.UserRepository;
 import com.example.OnlineStore.service.UserService;
@@ -24,6 +25,7 @@ public class UserServiceImpl implements UserService, CommandLineRunner {
     private UserRepository repository;
     private RoleRepository repositoryRole;
     private PasswordEncoder passwordEncoder;
+    //private ProductRepository repositoryProduct;
 
     @Override
     public List<User> findAllUser() {
@@ -74,6 +76,7 @@ public class UserServiceImpl implements UserService, CommandLineRunner {
 
     @Override
     public void deleteUser(Long id) {
+        //repositoryProduct.deleteByUserId(id);
         repository.deleteById(id);
     }
 
@@ -101,6 +104,11 @@ public class UserServiceImpl implements UserService, CommandLineRunner {
 
     public boolean loginExists(String login, Long id) {
         return repository.existsByLoginAndIdNot(login, id);
+    }
+
+    @Override
+    public void deleteUserByLogin(String login) {
+        repository.deleteUserByLogin(login);
     }
 
     @Override

@@ -5,20 +5,24 @@
     <title>Profile page</title>
 </head>
 <body>
-    <p th:text="'First name: ' + ${user.getFirstName()}">firstName</p>
+    <p th:text="'Имя: ' + ${user.getFirstName()}">firstName</p>
     <hr/>
-    <p th:text="'Last name: ' + ${user.getLastName()}">lastName</p>
+    <p th:text="'Фамилия: ' + ${user.getLastName()}">lastName</p>
     <hr/>
-    <p th:text="'Login: ' + ${user.getLogin()}">login</p>
+    <p th:text="'Логин: ' + ${user.getLogin()}">login</p>
     <hr/>
-    <p th:text="'Email: ' + ${user.getEmail()}">email</p>
+    <p th:text="'Почта: ' + ${user.getEmail()}">email</p>
     <hr/>
-    <p th:text="'Phone number: ' + ${user.getPhoneNumber()}">phoneNumber</p>
+    <p th:text="'Номер телефона: ' + ${user.getPhoneNumber()}">phoneNumber</p>
     <hr/>
-    <p th:text="'Role: ' + ${user.getRole().getUserRole()}">role</p>
+    <p th:text="'Роль: ' + ${user.getRole().getUserRole()}">role</p>
     <hr/>
-    <p><a th:href="@{/api/v1/store/{login}/edit(login=${user.getLogin()})}">Edit profile</a></p>
-    <p><a th:href="@{/api/v1/store}">Return to the main page</a></p>
+    <p><a th:href="@{/api/v1/store/{login}/edit(login=${user.getLogin()})}">Редактировать профиль</a></p>
+    <p><a th:href="@{/api/v1/store}">Вернуться на главную страницу</a></p>
+    <form th:method="DELETE"
+          th:action="@{/api/v1/store/deleteUser/{login}(login=${user.getLogin()})}">
+        <input type="submit" value="Удалить аккаунт">
+    </form>
 <p>
 </body>
 </html>

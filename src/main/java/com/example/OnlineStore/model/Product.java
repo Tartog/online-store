@@ -51,4 +51,17 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "seller_id")
     private User user;
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Product{")
+                .append("id=").append(id)
+                .append(", name='").append(name).append("'")
+                .append(", numberOfProducts=").append(numberOfProducts)
+                .append(", price=").append(price)
+                .append(", categoriesCount=").append(productCategories != null ? productCategories.size() : 0)
+                .append('}');
+        return sb.toString();
+    }
 }

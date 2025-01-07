@@ -5,17 +5,17 @@
     <title>Products page</title>
 </head>
 <body>
-<a th:href="@{/api/v1/store}">Return to the main page</a>
-<p><a th:href="@{/api/v1/store/products/{login}/newProduct(login=${seller.getLogin()})}">Add new product</a></p>
+<a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
+<p><a th:href="@{/api/v1/store/products/{login}/newProduct(login=${seller.getLogin()})}">Добавить новый товар</a></p>
 </br>
 </hr>
 </br>
 <div th:each="product : ${listProduct}">
-    <a th:text="${product.getName() + ', Price: ' + product.getPrice() + ', '
+    <a th:text="${product.getName() + ', Цена: ' + product.getPrice() + ', Количество на складе: '
         + product.getNumberOfProducts()}">product</a>
     <form th:method="DELETE"
           th:action="@{/api/v1/store/products/deleteProduct/{productId}(productId=${product.getId()})}">
-        <input type="submit" value="Delete">
+        <input type="submit" value="Удалить">
     </form>
     </hr>
     </br>

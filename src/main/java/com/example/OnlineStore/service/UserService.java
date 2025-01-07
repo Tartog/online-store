@@ -13,6 +13,7 @@ public interface UserService {
     void deleteUser(Long id);
     boolean emailExists(String email, Long id);
     boolean loginExists(String login, Long id);
+    void deleteUserByLogin(String login);
     public boolean isEmailUnique(String email, Long id);
     public boolean isLoginUnique(String login, Long id);
 }

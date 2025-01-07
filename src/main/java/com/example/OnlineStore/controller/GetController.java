@@ -131,6 +131,14 @@ public class GetController {
     }
 
     @PreAuthorize("hasAuthority('Admin')")
+    @GetMapping("/listOfUsers")
+    public ModelAndView showListOfUsers(){
+        ModelAndView modelAndView = new ModelAndView("listOfUsersPage");
+        modelAndView.addObject("listOfUsers", userService.findAllUser());
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/deliveryAddress/newAddress")
     public ModelAndView newAddress(){
         ModelAndView modelAndView = new ModelAndView("newAddress");

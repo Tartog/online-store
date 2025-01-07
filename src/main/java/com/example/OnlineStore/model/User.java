@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -54,16 +55,29 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    /*@OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "seller_id")
-    private Set<Product> products = new HashSet<Product>();*/
+    private Set<Product> products = new HashSet<Product>();
 
     /*@OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "client_id")
     private Set<Review> reviews = new HashSet<Review>();*/
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany//(cascade = CascadeType.ALL)
     @JoinColumn(name = "client_id")
     private Set<Order> orders = new HashSet<Order>();
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
+        return Objects.equals(id, user.id) &&
+                Objects.equals(login, user.login) &&
+                Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, login, email);
+    }
 }

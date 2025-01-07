@@ -11,30 +11,31 @@
 
 <div th:if="${isAuthenticated}">
 <!--    <h1>Welcome, authenticated ${currentUser}!</h1>-->
-    <h1 th:text="'Welcome, ' + ${currentUser.getLogin()}  + '!'">user</h1>
+    <h1 th:text="'Добро пожаловать, ' + ${currentUser.getLogin()}  + '!'">user</h1>
     <br/>
-    <p><a href="/logout">Logout</a></p>
-    <p><a th:href="@{/api/v1/store/{login}/profile(login=${currentUser.getLogin()})}">Profile</a></p>
+    <p><a href="/logout">Выйти из аккаунта</a></p>
+    <p><a th:href="@{/api/v1/store/{login}/profile(login=${currentUser.getLogin()})}">Профиль</a></p>
     <!-- Дополнительный контент для зарегистрированных пользователей -->
     <div th:if="${currentUser.getRole().getUserRole() == 'Admin'}">
         <!--    <h1>Welcome, authenticated ${currentUser}!</h1>-->
-        <p><a th:href="@{/api/v1/store/newUser/{role}(role=${admin.getUserRole()})}">Register as a admin</a></p>
-        <p><a th:href="@{/api/v1/store/deliveryAddress}">Delivery addresses</a></p>
+        <p><a th:href="@{/api/v1/store/newUser/{role}(role=${admin.getUserRole()})}">Зарегистрировать нового администратора</a></p>
+        <p><a th:href="@{/api/v1/store/deliveryAddress}">Адреса пунктов выдачи</a></p>
+        <p><a th:href="@{/api/v1/store/listOfUsers}">Список пользователей</a></p>
         <!-- Дополнительный контент для зарегистрированных пользователей -->
     </div>
     <div th:if="${currentUser.getRole().getUserRole() == 'Seller' or currentUser.getRole().getUserRole() == 'Admin'}">
-        <p><a th:href="@{/api/v1/store/productCategory}">Product category</a></p>
+        <p><a th:href="@{/api/v1/store/productCategory}">Категории товаров</a></p>
     </div>
     <div th:if="${currentUser.getRole().getUserRole() == 'Seller'}">
-        <p><a th:href="@{/api/v1/store/products/{login}(login=${currentUser.getLogin()})}">Products</a></p>
+        <p><a th:href="@{/api/v1/store/products/{login}(login=${currentUser.getLogin()})}">Товары</a></p>
     </div>
 </div>
 <div th:unless="${isAuthenticated}">
-    <h1>Welcome, guest!</h1>
+    <h1>Добро пожаловать, гость!</h1>
     <br/>
-    <p><a href="/login">Login</a></p>
-    <p><a th:href="@{/api/v1/store/newUser/{role}(role=${user.getUserRole()})}">Register as a user</a></p>
-    <p><a th:href="@{/api/v1/store/newUser/{role}(role=${seller.getUserRole()})}">Register as a seller</a></p>
+    <p><a href="/login">Войти</a></p>
+    <p><a th:href="@{/api/v1/store/newUser/{role}(role=${user.getUserRole()})}">Зарегистрироваться как пользователь</a></p>
+    <p><a th:href="@{/api/v1/store/newUser/{role}(role=${seller.getUserRole()})}">Зарегистрироваться как продавец</a></p>
     <!-- Контент для незарегистрированных пользователей -->
 </div>
 
