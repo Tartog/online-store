@@ -12,7 +12,7 @@ public class OrderStatus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Status should not be empty !")
+    @NotEmpty(message = "Поле 'статус' обязательно для заполнения !")
     @Column(name = "status")
     private String status;
 

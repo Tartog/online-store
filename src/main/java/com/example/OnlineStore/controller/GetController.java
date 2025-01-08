@@ -203,4 +203,22 @@ public class GetController {
         modelAndView.addObject("user", user);
         return modelAndView;
     }
+
+    @PreAuthorize("hasAuthority('User') and authentication.name == #login")
+    @GetMapping("/order/{login}/newOrder")
+    public ModelAndView newOrder(@PathVariable String login){
+        ModelAndView modelAndView = new ModelAndView("Order/newOrder");
+        User user = userService.findByLogin(login);
+
+        Order order = new Order();
+        order.setUser(user);
+
+        Product product = new Product();
+        product.setUser(user);
+        //modelAndView.addObject("seller", seller);
+        modelAndView.addObject("listProductCategory", productCategoryService.findAllProductCategory());
+        modelAndView.addObject("product", product);
+
+        return modelAndView;
+    }
 }

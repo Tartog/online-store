@@ -63,9 +63,9 @@ public class User {
     @JoinColumn(name = "client_id")
     private Set<Review> reviews = new HashSet<Review>();*/
 
-    @OneToMany//(cascade = CascadeType.ALL)
+    /*@OneToMany//(cascade = CascadeType.ALL)
     @JoinColumn(name = "client_id")
-    private Set<Order> orders = new HashSet<Order>();
+    private Set<Order> orders = new HashSet<Order>();*/
 
     @Override
     public boolean equals(Object o) {
