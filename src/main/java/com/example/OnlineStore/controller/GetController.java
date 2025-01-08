@@ -55,6 +55,9 @@ public class GetController {
                 orElseThrow(() -> new RuntimeException("Отсутствует стандартная роль Seller"));//.get();
         Role admin = roleService.findByUserRole("Admin").
                 orElseThrow(() -> new RuntimeException("Отсутствует стандартная роль Admin"));//.get();
+        Role worker = roleService.findByUserRole("Worker").
+                orElseThrow(() -> new RuntimeException("Отсутствует стандартная роль Worker"));//.get();
+
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(!auth.getName().equals("anonymousUser")){
@@ -69,6 +72,7 @@ public class GetController {
         modelAndView.addObject("user", user);
         modelAndView.addObject("seller", seller);
         modelAndView.addObject("admin", admin);
+        modelAndView.addObject("worker", worker);
 
         return modelAndView;
     }

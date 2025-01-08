@@ -60,6 +60,8 @@ public class RoleServiceImpl implements RoleService, CommandLineRunner {
         seller.setUserRole("Seller");
         Role admin = new Role();
         admin.setUserRole("Admin");
+        Role worker = new Role();
+        worker.setUserRole("Worker");
         if (repository.findByUserRole(user.getUserRole()).isEmpty()){
             repository.save(user);
         }
@@ -68,6 +70,9 @@ public class RoleServiceImpl implements RoleService, CommandLineRunner {
         }
         if (repository.findByUserRole(admin.getUserRole()).isEmpty()){
             repository.save(admin);
+        }
+        if (repository.findByUserRole(worker.getUserRole()).isEmpty()){
+            repository.save(worker);
         }
     }
 }
