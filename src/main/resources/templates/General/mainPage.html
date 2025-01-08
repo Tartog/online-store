@@ -40,13 +40,17 @@
               th:action="@{/api/v1/store/product/{productId}(productId=${product.getId()})}">
             <input type="submit" value="Страница товара">
         </form>
-        <form th:method="POST"
-              th:action="@{/api/v1/store/cart/{login}/{productId}(login=${currentUser.getLogin()}, productId=${product.getId()})}">
-            <input type="submit" value="Добавить в корзину">
-        </form>
+        <div th:if="${currentUser.getRole().getUserRole() == 'User'}">
+            <form th:method="POST"
+                  th:action="@{/api/v1/store/cart/{login}/{productId}(login=${currentUser.getLogin()}, productId=${product.getId()})}">
+                <input type="submit" value="Добавить в корзину">
+            </form>
+        </div>
         </hr>
         </br>
     </div>
+
+
 </div>
 <div th:unless="${isAuthenticated}">
     <h1>Добро пожаловать, гость!</h1>
