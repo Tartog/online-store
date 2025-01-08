@@ -1,13 +1,7 @@
 package com.example.OnlineStore.controller;
 
-import com.example.OnlineStore.model.DeliveryAddress;
-import com.example.OnlineStore.model.Product;
-import com.example.OnlineStore.model.ProductCategory;
-import com.example.OnlineStore.model.User;
-import com.example.OnlineStore.service.DeliveryAddressService;
-import com.example.OnlineStore.service.ProductCategoryService;
-import com.example.OnlineStore.service.ProductService;
-import com.example.OnlineStore.service.UserService;
+import com.example.OnlineStore.model.*;
+import com.example.OnlineStore.service.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,6 +22,7 @@ public class PostController {
     private DeliveryAddressService deliveryAddressService;
     private ProductCategoryService productCategoryService;
     private ProductService productService;
+    private CartService cartService;
 
     @PostMapping
     public ModelAndView createUser(@Valid User user, BindingResult bindingResult){
@@ -99,6 +94,36 @@ public class PostController {
         }
         productService.saveProduct(product);
         return new ModelAndView("redirect:/api/v1/store/products/" + product.getUser().getLogin());
+    }
+
+    @PreAuthorize("hasAuthority('User')")
+    @PostMapping("/cart/{login}/{productId}")
+    public ModelAndView createProductInCart(@PathVariable String login, @PathVariable String productId){
+        /*if(productService.existsProduct(product)){
+            bindingResult.rejectValue("name", "error.product", "Такое название товара уже есть !");
+        }*/
+
+        Cart cart = new Cart();
+        cart.setProduct(productService.findById(Long.parseLong(productId)));
+        cart.setUser(userService.findByLogin(login));
+        cart.setNumberOfProduct(1);
+
+        /*if(product.getProductCategories().size() == 0){
+            bindingResult.rejectValue("productCategories", "error.product",
+                    "Товар должен иметь хотя бы 1 категорию !");
+        }*/
+        /*if (bindingResult.hasErrors()){
+            product.setProductCategories(new HashSet<>());
+            ModelAndView modelAndView = new ModelAndView("Product/newProduct");
+            modelAndView.addObject("listProductCategory", productCategoryService.findAllProductCategory());
+            modelAndView.addObject("product", product);
+            return modelAndView;
+        }*/
+        //productService.saveProduct(product);
+
+        cartService.saveCart(cart);
+
+        return new ModelAndView("redirect:/api/v1/store");
     }
 }
 

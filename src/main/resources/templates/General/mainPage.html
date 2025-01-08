@@ -29,6 +29,9 @@
     <div th:if="${currentUser.getRole().getUserRole() == 'Seller'}">
         <p><a th:href="@{/api/v1/store/products/{login}(login=${currentUser.getLogin()})}">Товары</a></p>
     </div>
+    <div th:if="${currentUser.getRole().getUserRole() == 'User'}">
+        <p><a th:href="@{/api/v1/store/cart/{login}(login=${currentUser.getLogin()})}">Корзина</a></p>
+    </div>
 </div>
 <div th:unless="${isAuthenticated}">
     <h1>Добро пожаловать, гость!</h1>
@@ -45,6 +48,10 @@
     <form th:method="GET"
           th:action="@{/api/v1/store/product/{productId}(productId=${product.getId()})}">
         <input type="submit" value="Страница товара">
+    </form>
+    <form th:method="POST"
+          th:action="@{/api/v1/store/cart/{login}/{productId}(login=${currentUser.getLogin()}, productId=${product.getId()})}">
+        <input type="submit" value="Добавить в корзину">
     </form>
     </hr>
     </br>
