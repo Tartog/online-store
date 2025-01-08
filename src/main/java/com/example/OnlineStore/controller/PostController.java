@@ -106,6 +106,7 @@ public class PostController {
         Cart cart = new Cart();
         cart.setProduct(productService.findById(Long.parseLong(productId)));
         cart.setUser(userService.findByLogin(login));
+
         cart.setNumberOfProduct(1);
 
         /*if(product.getProductCategories().size() == 0){

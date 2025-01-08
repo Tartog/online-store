@@ -1,6 +1,7 @@
 package com.example.OnlineStore.service.Impl;
 
 import com.example.OnlineStore.model.Cart;
+import com.example.OnlineStore.model.Product;
 import com.example.OnlineStore.model.User;
 import com.example.OnlineStore.repository.CartRepository;
 import com.example.OnlineStore.service.CartService;
@@ -47,5 +48,10 @@ public class CartServiceImpl implements CartService {
     @Override
     public List<Cart> findAllByUser(User user) {
         return repository.findAllByUser(user);
+    }
+
+    @Override
+    public boolean productExist(Product product, User user) {
+        return repository.findByProductAndUser(product, user).isEmpty();
     }
 }
