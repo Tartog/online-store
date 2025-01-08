@@ -14,4 +14,5 @@ public interface CartService {
     void deleteCart(Long id);
     List<Cart> findAllByUser(User user);
     boolean productExist(Product product, User user);
+    Cart findByUserAndProduct(Product product, User user);
 }

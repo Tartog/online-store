@@ -99,34 +99,22 @@ public class PostController {
     @PreAuthorize("hasAuthority('User')")
     @PostMapping("/cart/{login}/{productId}")
     public ModelAndView createProductInCart(@PathVariable String login, @PathVariable String productId){
-        /*if(productService.existsProduct(product)){
-            bindingResult.rejectValue("name", "error.product", "Такое название товара уже есть !");
-        }*/
+        Product product = productService.findById(Long.parseLong(productId));
+        User user = userService.findByLogin(login);
 
-        Cart cart = new Cart();
-        cart.setProduct(productService.findById(Long.parseLong(productId)));
-        cart.setUser(userService.findByLogin(login));
-
-        cart.setNumberOfProduct(1);
-
-        /*if(product.getProductCategories().size() == 0){
-            bindingResult.rejectValue("productCategories", "error.product",
-                    "Товар должен иметь хотя бы 1 категорию !");
-        }*/
-        /*if (bindingResult.hasErrors()){
-            product.setProductCategories(new HashSet<>());
-            ModelAndView modelAndView = new ModelAndView("Product/newProduct");
-            modelAndView.addObject("listProductCategory", productCategoryService.findAllProductCategory());
-            modelAndView.addObject("product", product);
-            return modelAndView;
-        }*/
-        //productService.saveProduct(product);
-
-        cartService.saveCart(cart);
-
+        if(cartService.productExist(product, user)){
+            Cart cart = new Cart();
+            cart.setProduct(product);
+            cart.setUser(user);
+            cart.setNumberOfProduct(1);
+            cartService.saveCart(cart);
+        }
+        else{
+            Cart cart = cartService.findByUserAndProduct(product, user);
+            cart.setNumberOfProduct(cart.getNumberOfProduct() + 1);
+            cartService.updateCart(cart);
+        }
         return new ModelAndView("redirect:/api/v1/store");
     }
-
-
 }
 

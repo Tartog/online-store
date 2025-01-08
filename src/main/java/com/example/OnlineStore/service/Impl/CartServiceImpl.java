@@ -54,4 +54,10 @@ public class CartServiceImpl implements CartService {
     public boolean productExist(Product product, User user) {
         return repository.findByProductAndUser(product, user).isEmpty();
     }
+
+    @Override
+    public Cart findByUserAndProduct(Product product, User user) {
+        return repository.findByProductAndUser(product, user).orElseThrow(()->
+                new RuntimeException("Данный товар или пользователь отсутствует"));
+    }
 }

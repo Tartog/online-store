@@ -193,7 +193,7 @@ public class GetController {
     public ModelAndView showCart(@PathVariable String login){
         ModelAndView modelAndView = new ModelAndView("Cart/cartPage");
         List<Cart> cart = cartService.findAllByUser(userService.findByLogin(login));
-        int totalPrice = 0;
+        double totalPrice = 0;
         for(Cart productInCart: cart){
             totalPrice += productInCart.getNumberOfProduct() * productInCart.getProduct().getPrice();
         }
