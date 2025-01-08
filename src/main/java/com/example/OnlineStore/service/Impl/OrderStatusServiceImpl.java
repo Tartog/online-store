@@ -52,17 +52,22 @@ public class OrderStatusServiceImpl implements OrderStatusService, CommandLineRu
 
     @Override
     public void run(String... args) throws Exception {
+        OrderStatus awaiting = new OrderStatus();
+        awaiting.setStatus("Awaiting");
         OrderStatus delivered = new OrderStatus();
         delivered.setStatus("Delivered");
-        OrderStatus awaitingReceipt = new OrderStatus();
-        awaitingReceipt.setStatus("Awaiting receipt");
+        OrderStatus returned = new OrderStatus();
+        returned.setStatus("Returned");
         OrderStatus received = new OrderStatus();
         received.setStatus("Received");
+        if (repository.findByStatus(awaiting.getStatus()).isEmpty()){
+            repository.save(awaiting);
+        }
         if (repository.findByStatus(delivered.getStatus()).isEmpty()){
             repository.save(delivered);
         }
-        if (repository.findByStatus(awaitingReceipt.getStatus()).isEmpty()){
-            repository.save(awaitingReceipt);
+        if (repository.findByStatus(returned.getStatus()).isEmpty()){
+            repository.save(returned);
         }
         if (repository.findByStatus(received.getStatus()).isEmpty()){
             repository.save(received);
