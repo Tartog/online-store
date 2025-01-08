@@ -10,6 +10,18 @@
 </hr>
 <div th:each="productInCart : ${listCart}">
   <a th:text="${productInCart.getProduct().getName() + ', ' + productInCart.getNumberOfProduct()}">product</a>
+    <form th:method="DELETE"
+          th:action="@{/api/v1/store/deleteProductInCart/{login}/{productId}
+          (login=${user.getLogin()},
+          productId=${productInCart.getProduct().getId()})}">
+        <input type="submit" value="Удалить полностью товар из корзины">
+    </form>
+    <form th:method="PATCH"
+          th:action="@{/api/v1/store/deleteProductInCart/{login}/{productId}
+          (login=${user.getLogin()},
+          productId=${productInCart.getProduct().getId()})}">
+        <input type="submit" value="Удалить 1 товар">
+    </form>
 </div>
 <hr/>
 <a th:text="${'Общая стоимость = ' + totalPrice}">price</a>

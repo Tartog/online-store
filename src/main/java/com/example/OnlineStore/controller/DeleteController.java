@@ -1,5 +1,6 @@
 package com.example.OnlineStore.controller;
 
+import com.example.OnlineStore.model.Product;
 import com.example.OnlineStore.model.Role;
 import com.example.OnlineStore.model.User;
 import com.example.OnlineStore.service.*;
@@ -22,6 +23,7 @@ public class DeleteController {
     private ProductService productService;
     private UserService userService;
     private RoleService roleService;
+    private CartService cartService;
 
     @DeleteMapping("productCategory/deleteCategory/{category}")
     public ModelAndView deleteCategory(@PathVariable String category){
@@ -53,5 +55,14 @@ public class DeleteController {
             return new ModelAndView("redirect:/api/v1/store/listOfUsers");
         }
         return new ModelAndView("redirect:/logout");
+    }
+
+    @PreAuthorize("hasAuthority('User') and authentication.name == #login")
+    @DeleteMapping("deleteProductInCart/{login}/{productId}")
+    public ModelAndView deleteProductInCart(@PathVariable String login, @PathVariable String productId){
+        User user = userService.findByLogin(login);
+        Product product = productService.findById(Long.parseLong(productId));
+        cartService.deleteCart(cartService.findByUserAndProduct(product, user).getId());
+        return new ModelAndView("redirect:/api/v1/store/cart/" + login);
     }
 }

@@ -188,17 +188,19 @@ public class GetController {
         return modelAndView;
     }
 
-    @PreAuthorize("hasAuthority('User')")
+    @PreAuthorize("hasAuthority('User') and authentication.name == #login")
     @GetMapping("/cart/{login}")
     public ModelAndView showCart(@PathVariable String login){
         ModelAndView modelAndView = new ModelAndView("Cart/cartPage");
-        List<Cart> cart = cartService.findAllByUser(userService.findByLogin(login));
+        User user = userService.findByLogin(login);
+        List<Cart> cart = cartService.findAllByUser(user);
         double totalPrice = 0;
         for(Cart productInCart: cart){
             totalPrice += productInCart.getNumberOfProduct() * productInCart.getProduct().getPrice();
         }
         modelAndView.addObject("listCart", cart);
         modelAndView.addObject("totalPrice", totalPrice);
+        modelAndView.addObject("user", user);
         return modelAndView;
     }
 }
