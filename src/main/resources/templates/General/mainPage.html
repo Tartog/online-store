@@ -32,6 +32,21 @@
     <div th:if="${currentUser.getRole().getUserRole() == 'User'}">
         <p><a th:href="@{/api/v1/store/cart/{login}(login=${currentUser.getLogin()})}">Корзина</a></p>
     </div>
+
+    <div th:each="product : ${listOfProduct}">
+        <a th:text="${product.getName() + ', Цена: ' + product.getPrice() + ', Количество на складе: '
+        + product.getNumberOfProducts()}">product</a>
+        <form th:method="GET"
+              th:action="@{/api/v1/store/product/{productId}(productId=${product.getId()})}">
+            <input type="submit" value="Страница товара">
+        </form>
+        <form th:method="POST"
+              th:action="@{/api/v1/store/cart/{login}/{productId}(login=${currentUser.getLogin()}, productId=${product.getId()})}">
+            <input type="submit" value="Добавить в корзину">
+        </form>
+        </hr>
+        </br>
+    </div>
 </div>
 <div th:unless="${isAuthenticated}">
     <h1>Добро пожаловать, гость!</h1>
@@ -40,22 +55,20 @@
     <p><a th:href="@{/api/v1/store/newUser/{role}(role=${user.getUserRole()})}">Зарегистрироваться как пользователь</a></p>
     <p><a th:href="@{/api/v1/store/newUser/{role}(role=${seller.getUserRole()})}">Зарегистрироваться как продавец</a></p>
     <!-- Контент для незарегистрированных пользователей -->
+
+    <div th:each="product : ${listOfProduct}">
+        <a th:text="${product.getName() + ', Цена: ' + product.getPrice() + ', Количество на складе: '
+        + product.getNumberOfProducts()}">product</a>
+        <form th:method="GET"
+              th:action="@{/api/v1/store/product/{productId}(productId=${product.getId()})}">
+            <input type="submit" value="Страница товара">
+        </form>
+        </hr>
+        </br>
+    </div>
 </div>
 
-<div th:each="product : ${listOfProduct}">
-    <a th:text="${product.getName() + ', Цена: ' + product.getPrice() + ', Количество на складе: '
-        + product.getNumberOfProducts()}">product</a>
-    <form th:method="GET"
-          th:action="@{/api/v1/store/product/{productId}(productId=${product.getId()})}">
-        <input type="submit" value="Страница товара">
-    </form>
-    <form th:method="POST"
-          th:action="@{/api/v1/store/cart/{login}/{productId}(login=${currentUser.getLogin()}, productId=${product.getId()})}">
-        <input type="submit" value="Добавить в корзину">
-    </form>
-    </hr>
-    </br>
-</div>
+
 
 
 

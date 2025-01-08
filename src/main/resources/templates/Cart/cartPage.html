@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart page</title>
+</head>
+<body>
+<a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
+</br>
+</hr>
+<div th:each="productInCart : ${listCart}">
+  <a th:text="${productInCart.getProduct().getName() + ', ' + productInCart.getNumberOfProduct()}">product</a>
+</div>
+<hr/>
+<a th:text="${'Общая стоимость = ' + totalPrice}">price</a>
+</body>
+</html>

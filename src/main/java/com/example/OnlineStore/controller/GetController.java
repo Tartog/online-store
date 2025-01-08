@@ -10,6 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/store")
 @AllArgsConstructor
@@ -22,6 +24,7 @@ public class GetController {
     private DeliveryAddressService deliveryAddressService;
     private ProductCategoryService productCategoryService;
     private ProductService productService;
+    private CartService cartService;
 
     //private final UserServiceImpl userServiceImpl;
 
@@ -181,5 +184,17 @@ public class GetController {
         return modelAndView;
     }
 
-
+    @PreAuthorize("hasAuthority('User')")
+    @GetMapping("/cart/{login}")
+    public ModelAndView showCart(@PathVariable String login){
+        ModelAndView modelAndView = new ModelAndView("Cart/cartPage");
+        List<Cart> cart = cartService.findAllByUser(userService.findByLogin(login));
+        int totalPrice = 0;
+        for(Cart productInCart: cart){
+            totalPrice += productInCart.getNumberOfProduct() * productInCart.getProduct().getPrice();
+        }
+        modelAndView.addObject("listCart", cart);
+        modelAndView.addObject("totalPrice", totalPrice);
+        return modelAndView;
+    }
 }

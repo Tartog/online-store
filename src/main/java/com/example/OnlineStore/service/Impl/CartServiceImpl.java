@@ -1,6 +1,7 @@
 package com.example.OnlineStore.service.Impl;
 
 import com.example.OnlineStore.model.Cart;
+import com.example.OnlineStore.model.User;
 import com.example.OnlineStore.repository.CartRepository;
 import com.example.OnlineStore.service.CartService;
 import jakarta.transaction.Transactional;
@@ -41,5 +42,10 @@ public class CartServiceImpl implements CartService {
     @Override
     public void deleteCart(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public List<Cart> findAllByUser(User user) {
+        return repository.findAllByUser(user);
     }
 }

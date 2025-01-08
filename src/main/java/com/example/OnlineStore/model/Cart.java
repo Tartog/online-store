@@ -2,6 +2,7 @@ package com.example.OnlineStore.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,7 +25,7 @@ public class Cart {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @NotEmpty(message = "Поле 'количество товара' обязательно для заполнения !")
+    @NotNull(message = "Поле 'количество товара' обязательно для заполнения !")
     @Column(name = "number_of_product")
     private int numberOfProduct;
 }
