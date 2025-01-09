@@ -11,7 +11,7 @@
 </hr>
 </br>
 <div th:each="deliveryAddress : ${listAddress}">
-    <a th:text="${'г. ' + deliveryAddress.getCity() + ', ул. ' + deliveryAddress.getStreet() + 'д. №'
+    <a th:text="${'г. ' + deliveryAddress.getCity() + ', ул. ' + deliveryAddress.getStreet() + '  д. №'
         + deliveryAddress.getHouseNumber()}">address</a>
     <form th:method="DELETE"
           th:action="@{/api/v1/store/deliveryAddress/deleteAddress/{addressId}(addressId=${deliveryAddress.getId()})}">

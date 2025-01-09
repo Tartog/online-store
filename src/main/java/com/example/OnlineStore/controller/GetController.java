@@ -222,8 +222,8 @@ public class GetController {
         //System.out.println("*********************************************************************************");
 
         order.setOrderStatus(orderStatusService
-                .findByStatus("Delivered")
-                .orElseThrow(()-> new RuntimeException("Отсутствует стандартный статус Delivered !")));
+                .findByStatus("Доставляется")
+                .orElseThrow(()-> new RuntimeException("Отсутствует стандартный статус 'Доставляется' !")));
         //modelAndView.addObject("listProductCategory", productCategoryService.findAllProductCategory());
 
         LocalDate localDate = LocalDate.now(); // текущая дата
@@ -245,14 +245,6 @@ public class GetController {
         ModelAndView modelAndView = new ModelAndView("Order/userOrders");
         User user = userService.findByLogin(login);
         modelAndView.addObject("listOrder", orderService.findAllByUser(user));
-
-        List<List<ProductsInOrder>> productsInOrders = new ArrayList<>();
-        for(Order order : orderService.findAllByUser(user)){
-            productsInOrders.add(productsInOrderService.findAllProductsInOrder(order));
-        }
-
-        modelAndView.addObject("listProductsInOrders", productsInOrders);
-        //modelAndView.addObject("listProducts", productsInOrderService.fin)
         return modelAndView;
     }
 }

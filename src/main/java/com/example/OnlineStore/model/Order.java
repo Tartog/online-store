@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "orders")
@@ -34,4 +37,21 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private User user;
+
+    @OneToMany
+    @JoinColumn(name = "order_id")
+    private Set<ProductsInOrder> productsInOrders = new HashSet<ProductsInOrder>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order)) return false;
+        Order order = (Order) o;
+        return Objects.equals(id, order.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
