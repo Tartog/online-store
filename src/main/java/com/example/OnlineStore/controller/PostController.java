@@ -23,6 +23,8 @@ public class PostController {
     private ProductCategoryService productCategoryService;
     private ProductService productService;
     private CartService cartService;
+    private OrderService orderService;
+    private ProductsInOrderService productsInOrderService;
 
     @PostMapping
     public ModelAndView createUser(@Valid User user, BindingResult bindingResult){
@@ -116,5 +118,53 @@ public class PostController {
         }
         return new ModelAndView("redirect:/api/v1/store");
     }
+
+    @PreAuthorize("hasAuthority('User') and @userSecurity.hasAccess(authentication, #login)")
+    @PostMapping("/order/{login}/newOrder")
+    public ModelAndView createOrder(@PathVariable String login, @Valid Order order, BindingResult bindingResult){
+        if(order.getDeliveryAddress() == null){
+            bindingResult.rejectValue("deliveryAddress", "error.deliveryAddress",
+                    "Необходимо выбрать адрес доставки !");
+            for(int i = 0;i < 10;i++){
+                System.out.println(1);
+            }
+        }
+
+        User user = userService.findByLogin(login);
+
+        if (bindingResult.hasErrors()){
+            /*System.out.println("*********************************");
+            System.out.println(order.getOrderDate());
+            System.out.println(order.getOrderStatus());
+            System.out.println(order.getId());
+            System.out.println(order.getDeliveryAddress().getCity());
+            System.out.println(order.getDeliveryAddress().getStreet());
+            System.out.println(order.getDeliveryAddress().getHouseNumber());
+            System.out.println(order.getDeliveryAddress().getId());
+            System.out.println(order.getUser().getId());
+            System.out.println(order.getUser().getLogin());
+            System.out.println("*********************************");*/
+
+            ModelAndView modelAndView = new ModelAndView("Order/newOrder");
+            modelAndView.addObject("order", order);
+            modelAndView.addObject("user", user);
+            modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
+            return modelAndView;
+        }
+
+
+        orderService.saveOrder(order);
+        for(Cart cart : cartService.findAllByUser(user)){
+            ProductsInOrder products = new ProductsInOrder();
+            products.setProduct(cart.getProduct());
+            products.setOrder(order);
+            products.setNumberOfProduct(cart.getNumberOfProduct());
+            productsInOrderService.saveProductsInOrder(products);
+        }
+        cartService.deleteAllByUser(user);
+
+        return new ModelAndView("redirect:/api/v1/store");
+    }
+
 }
 

@@ -2,6 +2,7 @@ package com.example.OnlineStore.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity
@@ -12,7 +13,7 @@ public class ProductsInOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Поле 'количество товара' обязательно для заполнения !")
+    @NotNull(message = "Поле 'количество товара' обязательно для заполнения !")
     @Column(name = "number_of_product")
     private int numberOfProduct;
 

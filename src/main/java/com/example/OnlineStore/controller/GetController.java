@@ -10,6 +10,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,6 +28,9 @@ public class GetController {
     private ProductCategoryService productCategoryService;
     private ProductService productService;
     private CartService cartService;
+    private OrderService orderService;
+    private OrderStatusService orderStatusService;
+    private ProductsInOrderService productsInOrderService;
 
     //private final UserServiceImpl userServiceImpl;
 
@@ -209,16 +215,44 @@ public class GetController {
     public ModelAndView newOrder(@PathVariable String login){
         ModelAndView modelAndView = new ModelAndView("Order/newOrder");
         User user = userService.findByLogin(login);
-
         Order order = new Order();
         order.setUser(user);
+        //System.out.println("*********************************************************************************");
+        //System.out.println(order.getUser().getLogin());
+        //System.out.println("*********************************************************************************");
 
-        Product product = new Product();
-        product.setUser(user);
-        //modelAndView.addObject("seller", seller);
-        modelAndView.addObject("listProductCategory", productCategoryService.findAllProductCategory());
-        modelAndView.addObject("product", product);
+        order.setOrderStatus(orderStatusService
+                .findByStatus("Delivered")
+                .orElseThrow(()-> new RuntimeException("Отсутствует стандартный статус Delivered !")));
+        //modelAndView.addObject("listProductCategory", productCategoryService.findAllProductCategory());
 
+        LocalDate localDate = LocalDate.now(); // текущая дата
+        Date sqlDate = Date.valueOf(localDate); // преобразование в java.sql.Date
+
+        order.setOrderDate(sqlDate);
+
+
+        modelAndView.addObject("order", order);
+        modelAndView.addObject("user", user);
+        modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
+
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasAuthority('User') and authentication.name == #login")
+    @GetMapping("/order/{login}/orders")
+    public ModelAndView showUserOrders(@PathVariable String login){
+        ModelAndView modelAndView = new ModelAndView("Order/userOrders");
+        User user = userService.findByLogin(login);
+        modelAndView.addObject("listOrder", orderService.findAllByUser(user));
+
+        List<List<ProductsInOrder>> productsInOrders = new ArrayList<>();
+        for(Order order : orderService.findAllByUser(user)){
+            productsInOrders.add(productsInOrderService.findAllProductsInOrder(order));
+        }
+
+        modelAndView.addObject("listProductsInOrders", productsInOrders);
+        //modelAndView.addObject("listProducts", productsInOrderService.fin)
         return modelAndView;
     }
 }

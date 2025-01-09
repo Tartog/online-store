@@ -2,6 +2,7 @@ package com.example.OnlineStore.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +19,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Поле 'дата доставки' обязательно для заполнения' !")
+    @NotNull(message = "Поле 'дата доставки' обязательно для заполнения' !")
     @Column(name = "order_date")
     private Date orderDate;
 

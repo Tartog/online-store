@@ -2,15 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Cart page</title>
+    <title>User orders</title>
 </head>
 <body>
 <a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
-<a th:href="@{/api/v1/store/order/{login}/newOrder(login=${user.getLogin()})}">Сделать заказ</a>
-</br>
-</hr>
-<div th:each="productInCart : ${listCart}">
-  <a th:text="${productInCart.getProduct().getName() + ', ' + productInCart.getNumberOfProduct()}">product</a>
+
+<div th:each="order : ${listOrder}">
+    <a th:text="${productInCart.getProduct().getName() + ', ' + productInCart.getNumberOfProduct()}">product</a>
     <form th:method="DELETE"
           th:action="@{/api/v1/store/deleteProductInCart/{login}/{productId}
           (login=${user.getLogin()},
@@ -24,7 +22,6 @@
         <input type="submit" value="Удалить 1 товар">
     </form>
 </div>
-<hr/>
-<a th:text="${'Общая стоимость = ' + totalPrice}">price</a>
+
 </body>
 </html>
