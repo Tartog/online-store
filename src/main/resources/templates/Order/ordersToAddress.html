@@ -7,7 +7,20 @@
 <body>
 <a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
 
-<a th:href="@{/api/v1/store/orders/{addressId}(addressId=${})">Вернуться на главную страницу</a>
+<form method="GET" th:action="@{/api/v1/store/orders}">
+    <label for="address">Адрес:</label>
+    <select id="address" name="addressId" required>
+        <option value="" disabled selected>Выберите адрес</option>
+        <option th:each="address : ${listAddress}"
+                th:value="${address.id}"
+                th:text="${address.city} + ', ' + ${address.street} + ' ' + ${address.houseNumber}"></option>
+    </select>
+    <button type="submit">Показать заказы по выбранному адресу</button>
+</form>
+<form method="GET" th:action="@{/api/v1/store/orders}">
+    <input type="hidden" name="addressId" th:value="${'all'}">
+    <button type="submit">Показать все заказы</button>
+</form>
 
 <table>
     <thead>

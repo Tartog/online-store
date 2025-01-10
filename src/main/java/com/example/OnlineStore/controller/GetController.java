@@ -253,24 +253,41 @@ public class GetController {
         return modelAndView;
     }
 
-    @PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
-    @GetMapping("/order/{addressId}")
+    /*@PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
+    @GetMapping("/orders/{addressId}")
     public ModelAndView showOrders(@PathVariable String addressId){
         ModelAndView modelAndView = new ModelAndView("Order/ordersToAddress");
-        DeliveryAddress address = deliveryAddressService.findById(Long.parseLong(addressId));
-        modelAndView.addObject("listOrder", orderService.findAllByAddress(address));
+
+        if(addressId.equals("all")){
+            modelAndView.addObject("listOrder", orderService.findAllOrder());
+        }
+        else {
+            DeliveryAddress address = deliveryAddressService.findById(Long.parseLong(addressId));
+            modelAndView.addObject("listOrder", orderService.findAllByAddress(address));
+        }
+
+
+        //System.out.println("*****************************************************************");
+        //System.out.println(orderService.findAllByAddress(address).size());
+        //System.out.println("*****************************************************************");
+
         modelAndView.addObject("listStatus", orderStatusService.findAllOrderStatus());
         modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
         return modelAndView;
-    }
+    }*/
 
     @PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
     @GetMapping("/orders")
-    public ModelAndView showAllOrders(){
+    public ModelAndView showAllOrders(@RequestParam("addressId") String addressId){
         ModelAndView modelAndView = new ModelAndView("Order/ordersToAddress");
-        //DeliveryAddress address = deliveryAddressService.findById(Long.parseLong(addressId));
-        //modelAndView.addObject("listOrder", orderService.findAllByAddress(address));
-        modelAndView.addObject("listOrder", orderService.findAllOrder());
+        if(addressId.equals("all")) {
+            modelAndView.addObject("listOrder", orderService.findAllOrder());
+        }
+        else{
+            DeliveryAddress address = deliveryAddressService.findById(Long.parseLong(addressId));
+            modelAndView.addObject("listOrder", orderService.findAllByAddress(address));
+        }
+        //modelAndView.addObject("listOrder", orderService.findAllOrder());
         modelAndView.addObject("listStatus", orderStatusService.findAllOrderStatus());
         modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
         return modelAndView;
