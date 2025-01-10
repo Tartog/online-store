@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -204,6 +205,12 @@ public class GetController {
         for(Cart productInCart: cart){
             totalPrice += productInCart.getNumberOfProduct() * productInCart.getProduct().getPrice();
         }
+        if(cartService.findAllByUser(user).size() == 0){
+            modelAndView.addObject("cartNotEmpty", false);
+        }
+        else{
+            modelAndView.addObject("cartNotEmpty", true);
+        }
         modelAndView.addObject("listCart", cart);
         modelAndView.addObject("totalPrice", totalPrice);
         modelAndView.addObject("user", user);
@@ -213,13 +220,12 @@ public class GetController {
     @PreAuthorize("hasAuthority('User') and authentication.name == #login")
     @GetMapping("/order/{login}/newOrder")
     public ModelAndView newOrder(@PathVariable String login){
-        ModelAndView modelAndView = new ModelAndView("Order/newOrder");
         User user = userService.findByLogin(login);
+
+        ModelAndView modelAndView = new ModelAndView("Order/newOrder");
+
         Order order = new Order();
         order.setUser(user);
-        //System.out.println("*********************************************************************************");
-        //System.out.println(order.getUser().getLogin());
-        //System.out.println("*********************************************************************************");
 
         order.setOrderStatus(orderStatusService
                 .findByStatus("Доставляется")
@@ -230,7 +236,6 @@ public class GetController {
         Date sqlDate = Date.valueOf(localDate); // преобразование в java.sql.Date
 
         order.setOrderDate(sqlDate);
-
 
         modelAndView.addObject("order", order);
         modelAndView.addObject("user", user);

@@ -125,9 +125,6 @@ public class PostController {
         if(order.getDeliveryAddress() == null){
             bindingResult.rejectValue("deliveryAddress", "error.deliveryAddress",
                     "Необходимо выбрать адрес доставки !");
-            for(int i = 0;i < 10;i++){
-                System.out.println(1);
-            }
         }
 
         User user = userService.findByLogin(login);
