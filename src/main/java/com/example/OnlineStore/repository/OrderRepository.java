@@ -1,5 +1,6 @@
 package com.example.OnlineStore.repository;
 
+import com.example.OnlineStore.model.DeliveryAddress;
 import com.example.OnlineStore.model.Order;
 import com.example.OnlineStore.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,4 +12,5 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAllByUser(User user);
+    List<Order> findAllByDeliveryAddress(DeliveryAddress deliveryAddress);
 }

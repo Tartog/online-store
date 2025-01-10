@@ -1,5 +1,6 @@
 package com.example.OnlineStore.service.Impl;
 
+import com.example.OnlineStore.model.DeliveryAddress;
 import com.example.OnlineStore.model.Order;
 import com.example.OnlineStore.model.User;
 import com.example.OnlineStore.repository.OrderRepository;
@@ -47,5 +48,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findAllByUser(User user) {
         return repository.findAllByUser(user);
+    }
+
+    @Override
+    public List<Order> findAllByAddress(DeliveryAddress deliveryAddress) {
+        return repository.findAllByDeliveryAddress(deliveryAddress);
     }
 }

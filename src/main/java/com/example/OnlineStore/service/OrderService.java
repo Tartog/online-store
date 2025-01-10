@@ -1,5 +1,6 @@
 package com.example.OnlineStore.service;
 
+import com.example.OnlineStore.model.DeliveryAddress;
 import com.example.OnlineStore.model.Order;
 import com.example.OnlineStore.model.OrderStatus;
 import com.example.OnlineStore.model.User;
@@ -14,4 +15,5 @@ public interface OrderService {
     void updateOrder(Order order);
     void deleteOrder(Long id);
     List<Order> findAllByUser(User user);
+    List<Order> findAllByAddress(DeliveryAddress deliveryAddress);
 }
