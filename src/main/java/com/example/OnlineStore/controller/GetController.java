@@ -252,4 +252,13 @@ public class GetController {
         modelAndView.addObject("listOrder", orderService.findAllByUser(user));
         return modelAndView;
     }
+
+    @PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
+    @GetMapping("/order/{addressId}")
+    public ModelAndView showOrders(@PathVariable String addressId){
+        ModelAndView modelAndView = new ModelAndView("Order/userOrders");
+        DeliveryAddress address = deliveryAddressService.findById(Long.parseLong(addressId));
+        modelAndView.addObject("listOrder", orderService.findAllByAddress(address));
+        return modelAndView;
+    }
 }

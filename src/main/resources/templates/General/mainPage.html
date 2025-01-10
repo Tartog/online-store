@@ -34,6 +34,9 @@
         <p><a th:href="@{/api/v1/store/cart/{login}(login=${currentUser.getLogin()})}">Корзина</a></p>
         <p><a th:href="@{/api/v1/store/order/{login}/orders(login=${currentUser.getLogin()})}">Мои заказы</a></p>
     </div>
+    <div th:if="${currentUser.getRole().getUserRole() == 'Worker' or currentUser.getRole().getUserRole() == 'Admin'}">
+        <p><a th:href="@{/api/v1/store/products/{login}(login=${currentUser.getLogin()})}">Заказы</a></p>
+    </div>
 
     <div th:each="product : ${listOfProduct}">
         <a th:text="${product.getName() + ', Цена: ' + product.getPrice() + ', Количество на складе: '
