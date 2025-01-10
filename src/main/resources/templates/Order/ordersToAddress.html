@@ -37,7 +37,22 @@
         <td th:text="${order.id}"></td>
         <td th:text="${order.orderDate}"></td>
         <td th:text="${order.user.getLogin()}"></td>
+
+
+
         <td th:text="${order.orderStatus.getStatus()}"></td>
+        <td>
+            <form th:method="PATCH" th:action="@{updateOrderStatus(orderId=${order.id})}">
+                <select th:name="statusId" th:value="${order.orderStatus.id}">
+                    <option th:each="status : ${listStatus}"
+                            th:value="${status.id}"
+                            th:text="${status.status}"></option>
+                </select>
+                <input type="hidden" name="addressId" th:value="${addressId}">
+                <button type="submit">Обновить</button>
+            </form>
+        </td>
+
         <td>
             <ul>
                 <li th:each="productInOrder : ${order.getProductsInOrders()}">

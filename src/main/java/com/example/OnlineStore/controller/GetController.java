@@ -278,7 +278,7 @@ public class GetController {
 
     @PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
     @GetMapping("/orders")
-    public ModelAndView showAllOrders(@RequestParam("addressId") String addressId){
+    public ModelAndView showOrders(@RequestParam("addressId") String addressId){
         ModelAndView modelAndView = new ModelAndView("Order/ordersToAddress");
         if(addressId.equals("all")) {
             modelAndView.addObject("listOrder", orderService.findAllOrder());
@@ -287,9 +287,9 @@ public class GetController {
             DeliveryAddress address = deliveryAddressService.findById(Long.parseLong(addressId));
             modelAndView.addObject("listOrder", orderService.findAllByAddress(address));
         }
-        //modelAndView.addObject("listOrder", orderService.findAllOrder());
         modelAndView.addObject("listStatus", orderStatusService.findAllOrderStatus());
         modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
+        modelAndView.addObject("addressId", addressId);
         return modelAndView;
     }
 }

@@ -1,12 +1,10 @@
 package com.example.OnlineStore.controller;
 
 import com.example.OnlineStore.model.Cart;
+import com.example.OnlineStore.model.Order;
 import com.example.OnlineStore.model.Product;
 import com.example.OnlineStore.model.User;
-import com.example.OnlineStore.service.CartService;
-import com.example.OnlineStore.service.MyUserDetailService;
-import com.example.OnlineStore.service.ProductService;
-import com.example.OnlineStore.service.UserService;
+import com.example.OnlineStore.service.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RestController
 @RequestMapping("/api/v1/store")
@@ -29,6 +28,9 @@ public class PatchController {
     private MyUserDetailService myUserDetailService;
     private CartService cartService;
     private ProductService productService;
+    private OrderService orderService;
+    private OrderStatusService orderStatusService;
+    private DeliveryAddressService deliveryAddressService;
 
     @PatchMapping("/{login}/updateUser")
     public ModelAndView updateUser(@Valid User user, BindingResult bindingResult){
@@ -73,4 +75,24 @@ public class PatchController {
         }
         return new ModelAndView("redirect:/api/v1/store/cart/" + login);
     }
+
+    @PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
+    @PatchMapping("/updateOrderStatus")
+    public ModelAndView updateOrderStatus(@RequestParam Long orderId, @RequestParam Long statusId, @RequestParam String addressId){
+        //redirectAttributes.addAttribute("addressId", orderService.findById(orderId).getDeliveryAddress().getId());
+        ModelAndView modelAndView = new ModelAndView("redirect:/api/v1/store/orders");
+        if(addressId.equals("all")){
+            modelAndView.addObject("addressId", addressId);
+        }
+        else{
+            modelAndView.addObject("addressId", Long.parseLong(addressId));
+        }
+        Order order  = orderService.findById(orderId);
+        order.setOrderStatus(orderStatusService.findById(statusId));
+        orderService.updateOrder(order);
+        //ModelAndView modelAndView = new ModelAndView("redirect:/api/v1/store/orders");
+        //modelAndView.addObject("addressId", orderService.findById(orderId).getDeliveryAddress().getId());
+        return modelAndView;//new ModelAndView("redirect:/api/v1/store/orders");
+    }
+
 }
