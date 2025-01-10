@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders to address</title>
+</head>
+<body>
+<a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
+
+<a th:href="@{/api/v1/store/orders/{addressId}(addressId=${})">Вернуться на главную страницу</a>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID заказа</th>
+        <th>Дата заказа</th>
+        <th>Покупатель</th>
+        <th>Статус заказа</th>
+        <th>Товары</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${listOrder}">
+        <td th:text="${order.id}"></td>
+        <td th:text="${order.orderDate}"></td>
+        <td th:text="${order.user.getLogin()}"></td>
+        <td th:text="${order.orderStatus.getStatus()}"></td>
+        <td>
+            <ul>
+                <li th:each="productInOrder : ${order.getProductsInOrders()}">
+                    <span th:text="${productInOrder.product.getName()}">Товар</span> x
+                    <span th:text="${productInOrder.getNumberOfProduct()}">Количество</span> -
+                    <span th:text="${productInOrder.product.getPrice()}">Цена</span>
+                </li>
+            </ul>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

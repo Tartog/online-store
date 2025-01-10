@@ -256,9 +256,23 @@ public class GetController {
     @PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
     @GetMapping("/order/{addressId}")
     public ModelAndView showOrders(@PathVariable String addressId){
-        ModelAndView modelAndView = new ModelAndView("Order/userOrders");
+        ModelAndView modelAndView = new ModelAndView("Order/ordersToAddress");
         DeliveryAddress address = deliveryAddressService.findById(Long.parseLong(addressId));
         modelAndView.addObject("listOrder", orderService.findAllByAddress(address));
+        modelAndView.addObject("listStatus", orderStatusService.findAllOrderStatus());
+        modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
+    @GetMapping("/orders")
+    public ModelAndView showAllOrders(){
+        ModelAndView modelAndView = new ModelAndView("Order/ordersToAddress");
+        //DeliveryAddress address = deliveryAddressService.findById(Long.parseLong(addressId));
+        //modelAndView.addObject("listOrder", orderService.findAllByAddress(address));
+        modelAndView.addObject("listOrder", orderService.findAllOrder());
+        modelAndView.addObject("listStatus", orderStatusService.findAllOrderStatus());
+        modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
         return modelAndView;
     }
 }
