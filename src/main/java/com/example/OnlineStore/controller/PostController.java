@@ -4,6 +4,7 @@ import com.example.OnlineStore.model.*;
 import com.example.OnlineStore.service.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.validation.BindingResult;
@@ -28,6 +29,9 @@ public class PostController {
     private CartService cartService;
     private OrderService orderService;
     private ProductsInOrderService productsInOrderService;
+
+    //@Value("${spring.web.resources.static-locations}")
+    //private String staticLocations;
 
     @PostMapping
     public ModelAndView createUser(@Valid User user, BindingResult bindingResult){
@@ -92,12 +96,31 @@ public class PostController {
         }
 
         if (!image.isEmpty()) {
-            //String imagePath = "/images/Products" + image.getOriginalFilename();
-            String imagePath = image.getOriginalFilename();
+            //String directoryPath = System.getProperty("user.dir") + "\\images\\";
+            //System.out.println(directoryPath);
+            //File directory = new File(directoryPath);
+            String directoryPath = "C:/Users/Tartog/OnlineStore/Images/";
+            File directory = new File(directoryPath);
+
+            // Создаем директорию, если она не существует
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            String imagePath = directoryPath + image.getOriginalFilename();
+            //System.out.println(imagePath);
+            //String imagePath = "src/main/resources/static/images/" + image.getOriginalFilename();
+            //String imagePath = "/images/" + image.getOriginalFilename();
+            //String imagePath = image.getOriginalFilename();
             File file = new File(imagePath);
             try {
                 image.transferTo(file);
-                product.setImagePath(imagePath);
+                //imagePath = "/images/" + image.getOriginalFilename();
+                //imagePath = "/images/" + image.getOriginalFilename() + "?t=" + System.currentTimeMillis();
+                //product.setImagePath(imagePath);
+                //product.setImagePath("/images/" + image.getOriginalFilename());
+                //product.setImagePath(imagePath);
+                product.setImagePath("/" + image.getOriginalFilename());
             } catch (IOException e) {
                 e.printStackTrace();
                 bindingResult.rejectValue("imagePath", "error.imagePath",

@@ -43,8 +43,12 @@
     </div>
 
     <div th:each="product : ${listOfProduct}">
+        <p><img th:src="@{${product.imagePath}}" alt="Изображение товара" style="max-width: 200px; max-height: 200px;"/></p>
+
         <a th:text="${product.getName() + ', Цена: ' + product.getPrice() + ', Количество на складе: '
         + product.getNumberOfProducts()}">product</a>
+<!--        <img th:src="@{${product.imagePath}}" alt="Изображение товара" style="max-width: 200px; max-height: 200px;"/>-->
+
         <form th:method="GET"
               th:action="@{/api/v1/store/product/{productId}(productId=${product.getId()})}">
             <input type="submit" value="Страница товара">
@@ -55,8 +59,7 @@
                 <input type="submit" value="Добавить в корзину">
             </form>
         </div>
-        </hr>
-        </br>
+        <hr/>
     </div>
 
 

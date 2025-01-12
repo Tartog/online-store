@@ -292,4 +292,9 @@ public class GetController {
         modelAndView.addObject("addressId", addressId);
         return modelAndView;
     }
+
+    @GetMapping("/test-image")
+    public String testImage() {
+        return "<img src='/images/Kinder.jpg' />";
+    }
 }

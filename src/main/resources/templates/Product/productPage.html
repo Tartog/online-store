@@ -8,6 +8,10 @@
 <a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
 </br>
 </hr>
+<!--<img th:src="@{${product.imagePath}}" alt="Изображение товара" style="max-width: 200px; max-height: 200px;"/>-->
+<!--<img th:src="@{${product.imagePath}}" alt="Изображение товара"/>-->
+<p><img th:src="@{${product.imagePath}}" alt="Изображение товара" style="max-width: 200px; max-height: 200px;"/></p>
+<hr/>
 <p th:text="${'Товар: ' + product.getName()}">name</p>
 <p th:text="${'Количество на складе: ' + product.getNumberOfProducts()}">numberOfProducts</p>
 <p th:text="${'Цена: ' + product.getPrice()}">price</p>

@@ -13,3 +13,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  web:
+    resources:
+      static-locations: file:///C:/Users/Tartog/OnlineStore/Images/
