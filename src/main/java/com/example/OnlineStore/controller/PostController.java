@@ -9,7 +9,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 
 @RestController
@@ -78,7 +81,7 @@ public class PostController {
 
     @PreAuthorize("hasAuthority('Seller')")
     @PostMapping("/product/newProduct")
-    public ModelAndView createProduct(@Valid Product product, BindingResult bindingResult){
+    public ModelAndView createProduct(@RequestParam("image") MultipartFile image, @Valid Product product, BindingResult bindingResult){
         if(productService.existsProduct(product)){
             bindingResult.rejectValue("name", "error.product", "Такое название товара уже есть !");
 
@@ -87,6 +90,21 @@ public class PostController {
             bindingResult.rejectValue("productCategories", "error.product",
                     "Товар должен иметь хотя бы 1 категорию !");
         }
+
+        if (!image.isEmpty()) {
+            //String imagePath = "/images/Products" + image.getOriginalFilename();
+            String imagePath = image.getOriginalFilename();
+            File file = new File(imagePath);
+            try {
+                image.transferTo(file);
+                product.setImagePath(imagePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+                bindingResult.rejectValue("imagePath", "error.imagePath",
+                        "Ошибка при добавлении изображения !");
+            }
+        }
+
         if (bindingResult.hasErrors()){
             product.setProductCategories(new HashSet<>());
             ModelAndView modelAndView = new ModelAndView("Product/newProduct");

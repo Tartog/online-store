@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form th:method="POST" th:action="@{/api/v1/store/product/newProduct}" th:object="${product}">
+<form th:method="POST" th:action="@{/api/v1/store/product/newProduct}" th:object="${product}" enctype="multipart/form-data">
     <label for="name">Введите название товара: </label>
     <input type="text" th:field="*{name}" id="name"/>
     <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
@@ -18,6 +18,11 @@
     <label for="price">Введите цену: </label>
     <input type="text" th:field="*{price}" id="price"/>
     <div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price error</div>
+    <br/>
+
+    <label for="imagePath">Загрузите изображение товара: </label>
+    <input type="file" name="image" id="imagePath" accept="image/*" required/>
+    <div style="color:red" th:if="${#fields.hasErrors('imagePath')}" th:errors="*{imagePath}">Image path error</div>
     <br/>
 
     <label>Категории:</label>

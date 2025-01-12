@@ -53,6 +53,9 @@ public class Product {
     @JoinColumn(name = "seller_id")
     private User user;
 
+    @Column(name = "image_path")
+    private String imagePath;
+
     public String getProductCategoriesAsString() {
         return productCategories.stream()
                 .map(ProductCategory::getCategory) // или используйте другое поле/метод для получения строки
@@ -67,6 +70,7 @@ public class Product {
                 .append(", name='").append(name).append("'")
                 .append(", numberOfProducts=").append(numberOfProducts)
                 .append(", price=").append(price)
+                .append(", imagePath='").append(imagePath).append("'")
                 .append(", categoriesCount=").append(productCategories != null ? productCategories.size() : 0)
                 .append('}');
         return sb.toString();
