@@ -120,7 +120,11 @@ public class PostController {
                 //product.setImagePath(imagePath);
                 //product.setImagePath("/images/" + image.getOriginalFilename());
                 //product.setImagePath(imagePath);
-                product.setImagePath("/" + image.getOriginalFilename());
+
+
+
+                product.setImagePath("/Images/" + image.getOriginalFilename());
+                //product.setImagePath("/" + image.getOriginalFilename());
             } catch (IOException e) {
                 e.printStackTrace();
                 bindingResult.rejectValue("imagePath", "error.imagePath",

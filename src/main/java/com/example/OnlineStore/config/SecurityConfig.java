@@ -56,7 +56,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 //"/api/v1/store/welcome",
                                 "/api/v1/store/newUser/**",
-                                "/api/v1/store"
+                                "/api/v1/store",
+                                "/Images/**"
                         )
                         .permitAll()
                         //.requestMatchers("/api/v1/store/abc"

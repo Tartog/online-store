@@ -73,6 +73,8 @@
     <!-- Контент для незарегистрированных пользователей -->
 
     <div th:each="product : ${listOfProduct}">
+        <p><img th:src="@{${product.imagePath}}" alt="Изображение товара" style="max-width: 200px; max-height: 200px;"/></p>
+
         <a th:text="${product.getName() + ', Цена: ' + product.getPrice() + ', Количество на складе: '
         + product.getNumberOfProducts()}">product</a>
         <form th:method="GET"

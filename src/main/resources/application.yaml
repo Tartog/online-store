@@ -15,4 +15,4 @@ spring:
         format_sql: true
   web:
     resources:
-      static-locations: file:///C:/Users/Tartog/OnlineStore/Images/
+      static-locations: file:///C:/Users/Tartog/OnlineStore/
