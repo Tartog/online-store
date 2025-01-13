@@ -26,6 +26,10 @@ public class Order {
     @Column(name = "order_date")
     private Date orderDate;
 
+    @NotNull(message = "Поле 'ожидаемая дата получения' обязательно для заполнения' !")
+    @Column(name = "expected_receive_date")
+    private Date expectedReceiveDate;
+
     @ManyToOne
     @JoinColumn(name = "order_id")
     private OrderStatus orderStatus;
