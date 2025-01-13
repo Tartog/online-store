@@ -27,6 +27,7 @@
     <tr>
         <th>ID заказа</th>
         <th>Дата заказа</th>
+        <th>Ожидаемая дата получения</th>
         <th>Покупатель</th>
         <th>Статус заказа</th>
         <th>Товары</th>
@@ -36,6 +37,7 @@
     <tr th:each="order : ${listOrder}">
         <td th:text="${order.id}"></td>
         <td th:text="${order.orderDate}"></td>
+        <td th:text="${order.expectedReceiveDate}"></td>
         <td th:text="${order.user.getLogin()}"></td>
 
 

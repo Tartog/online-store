@@ -11,6 +11,7 @@
     <tr>
         <th>ID заказа</th>
         <th>Дата заказа</th>
+        <th>Ожидаемая дата получения</th>
         <th>Статус заказа</th>
         <th>Адрес доставки</th>
         <th>Товары</th>
@@ -20,6 +21,7 @@
     <tr th:each="order : ${listOrder}">
         <td th:text="${order.id}"></td>
         <td th:text="${order.orderDate}"></td>
+        <td th:text="${order.expectedReceiveDate}"></td>
         <td th:text="${order.orderStatus.getStatus()}"></td>
         <td th:text="${'г. ' + order.getDeliveryAddress().getCity() +
         ', ул. ' + order.getDeliveryAddress().getStreet() +

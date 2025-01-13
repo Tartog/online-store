@@ -233,9 +233,10 @@ public class GetController {
         //modelAndView.addObject("listProductCategory", productCategoryService.findAllProductCategory());
 
         LocalDate localDate = LocalDate.now(); // текущая дата
-        Date sqlDate = Date.valueOf(localDate); // преобразование в java.sql.Date
+        Date sqlDate = Date.valueOf(localDate); // преобразование в java.sql.Dat
 
         order.setOrderDate(sqlDate);
+        order.setExpectedReceiveDate(Date.valueOf(localDate.plusDays(7)));
 
         modelAndView.addObject("order", order);
         modelAndView.addObject("user", user);
@@ -249,6 +250,15 @@ public class GetController {
     public ModelAndView showUserOrders(@PathVariable String login){
         ModelAndView modelAndView = new ModelAndView("Order/userOrders");
         User user = userService.findByLogin(login);
+        /*double totalPrice = 0;
+        List<Order> orders = orderService.findAllByUser(user);
+        for(Order order: orders){
+            for(ProductsInOrder productsInOrder: productsInOrderService.findAllProductsInOrder(order)){
+                totalPrice += productsInOrder.get
+            }
+        }*/
+
+        //modelAndView.addObject("totalPrice", totalPrice);
         modelAndView.addObject("listOrder", orderService.findAllByUser(user));
         return modelAndView;
     }
