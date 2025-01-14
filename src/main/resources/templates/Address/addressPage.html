@@ -7,10 +7,30 @@
 </head>
 <body>
 <a href="/api/v1/store">Вернуться на главную страницу</a>
-<p><a href="/api/v1/store/deliveryAddress/newAddress">Добавить новый адрес пункта выдачи</a></p>
+<p><button id="add-address-button">Добавить новый адрес</button></p>
 <br/>
 <hr/>
 <br/>
+
+<!-- Форма для добавления нового адреса -->
+<div id="new-address-form" style="display:none;">
+    <h3>Добавить новый адрес</h3>
+    <form id="address-form">
+        <label for="city">Введите город: </label>
+        <input type="text" id="city" required/>
+        <br/>
+        <label for="street">Введите улицу: </label>
+        <input type="text" id="street" required/>
+        <br/>
+        <label for="houseNumber">Введите номер дома: </label>
+        <input type="text" id="houseNumber" required/>
+        <br/>
+        <input type="submit" value="Создать !"/>
+    </form>
+    <br/>
+    <hr/>
+    <br/>
+</div>
 
 <div id="address-list">
     <!-- Список адресов будет загружен здесь -->
@@ -81,6 +101,39 @@
         $('#next-page').click(function() {
             currentPage++;
             loadAddresses(currentPage);
+        });
+
+        // Обработчик для кнопки добавления нового адреса
+        $('#add-address-button').click(function() {
+            $('#new-address-form').toggle(); // Показать или скрыть форму
+        });
+
+        // Обработчик отправки формы
+        $('#address-form').submit(function(event) {
+            event.preventDefault(); // Предотвратить стандартное поведение формы
+
+            const newAddress = {
+                city: $('#city').val(),
+                street: $('#street').val(),
+                houseNumber: $('#houseNumber').val()
+            };
+
+            $.ajax({
+                url: '/api/v1/store/deliveryAddress/newAddress',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(newAddress),
+                success: function(response) {
+                    $('#new-address-form').hide(); // Скрыть форму после успешного добавления
+                    loadAddresses(currentPage); // Обновить список адресов
+                    $('#address-form')[0].reset(); // Очистить форму
+                },
+                error: function(xhr, error) {
+                    console.error("Ошибка при добавлении адреса:", error);
+                    let errorMessage = xhr.responseText || "Произошла ошибка при добавлении адреса."; // Получаем сообщение об ошибке
+                    alert(errorMessage); // Выводим сообщение об ошибке
+                }
+            });
         });
     });
 </script>

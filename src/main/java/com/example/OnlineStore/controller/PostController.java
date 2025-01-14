@@ -5,9 +5,12 @@ import com.example.OnlineStore.service.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,7 +53,7 @@ public class PostController {
         return new ModelAndView("redirect:/api/v1/store");
     }
 
-    @PreAuthorize("hasAuthority('Admin')")
+    /*@PreAuthorize("hasAuthority('Admin')")
     @PostMapping("/deliveryAddress/newAddress")
     public ModelAndView createAddress(@Valid DeliveryAddress deliveryAddress, BindingResult bindingResult){
 
@@ -66,6 +69,25 @@ public class PostController {
         deliveryAddressService.saveDeliveryAddress(deliveryAddress);
         //return new ModelAndView("redirect:/api/v1/store/deliveryAddress");
         return new ModelAndView("redirect:/api/v1/store/deliveryAddressPage");
+    }*/
+
+    @PreAuthorize("hasAuthority('Admin')")
+    @PostMapping("/deliveryAddress/newAddress")
+    public ResponseEntity<String> createAddress(@RequestBody @Valid DeliveryAddress deliveryAddress, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            StringBuilder errorMessage = new StringBuilder("Ошибка валидации: ");
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                errorMessage.append(error.getDefaultMessage()).append("; "); // Добавляем текст ошибки
+            }
+            return ResponseEntity.badRequest().body(errorMessage.toString()); // Возвращаем сообщения об ошибках
+        }
+
+        if (deliveryAddressService.existsAddress(deliveryAddress)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Такой адрес уже существует!"); // Возвращаем 409 при конфликте
+        }
+
+        deliveryAddressService.saveDeliveryAddress(deliveryAddress);
+        return ResponseEntity.ok("Адрес успешно добавлен!"); // Возвращаем 200 OK
     }
 
     @PreAuthorize("hasAuthority('Admin') or hasAuthority('Seller')")
