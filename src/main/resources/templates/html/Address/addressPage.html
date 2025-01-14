@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Address page</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script th:src="@{/js/Address/addressScript.js}" defer></script> <!-- Подключаем JS файл -->
+</head>
+<body>
+<a href="/api/v1/store">Вернуться на главную страницу</a>
+<p><button id="add-address-button">Добавить новый адрес</button></p>
+<br/>
+<hr/>
+<br/>
+
+<!-- Форма для добавления нового адреса -->
+<div id="new-address-form" style="display:none;">
+  <h3>Добавить новый адрес</h3>
+  <form id="address-form">
+    <label for="city">Введите город: </label>
+    <input type="text" id="city" required/>
+    <br/>
+    <label for="street">Введите улицу: </label>
+    <input type="text" id="street" required/>
+    <br/>
+    <label for="houseNumber">Введите номер дома: </label>
+    <input type="text" id="houseNumber" required/>
+    <br/>
+    <input type="submit" value="Создать !"/>
+  </form>
+  <br/>
+  <hr/>
+  <br/>
+</div>
+
+<div id="address-list">
+  <!-- Список адресов будет загружен здесь -->
+</div>
+
+<div>
+  <button id="prev-page" style="display:none;">Предыдущие</button>
+  <button id="next-page">Следующие</button>
+</div>
+
+</body>
+</html>

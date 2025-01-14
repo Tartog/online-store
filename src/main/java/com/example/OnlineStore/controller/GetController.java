@@ -58,7 +58,7 @@ public class GetController {
 
     @GetMapping
     public ModelAndView showMainPage(){
-        ModelAndView modelAndView = new ModelAndView("General/mainPage");
+        ModelAndView modelAndView = new ModelAndView("html/General/mainPage");
         Role user = roleService.findByUserRole("User").
                 orElseThrow(() -> new RuntimeException("Отсутствует стандартная роль User"));//.get();
         Role seller = roleService.findByUserRole("Seller").
@@ -89,7 +89,7 @@ public class GetController {
 
     @GetMapping("/newUser/{role}")
     public ModelAndView newUser(@PathVariable String role){
-        ModelAndView modelAndView = new ModelAndView("User/newUser");
+        ModelAndView modelAndView = new ModelAndView("html/User/newUser");
         Role userRole = roleService.findByUserRole(role).
                 orElseThrow(() -> new RuntimeException("Роль " + role + " отсутствует"));
         User user = new User();
@@ -103,7 +103,7 @@ public class GetController {
     @PreAuthorize("@userSecurity.hasAccess(authentication, #login)")
     @GetMapping("/{login}/edit")
     public ModelAndView editUser(@PathVariable String login){
-        ModelAndView modelAndView = new ModelAndView("User/editUser");
+        ModelAndView modelAndView = new ModelAndView("html/User/editUser");
         User user = userService.findByLogin(login);
         user.setPasswordHash(null);
         modelAndView.addObject("user", user);
@@ -114,7 +114,7 @@ public class GetController {
     @PreAuthorize("@userSecurity.hasAccess(authentication, #login)")
     @GetMapping("/{login}/profile")
     public ModelAndView showProfile(@PathVariable String login){
-        ModelAndView modelAndView = new ModelAndView("General/profilePage");
+        ModelAndView modelAndView = new ModelAndView("html/General/profilePage");
         User user = userService.findByLogin(login);
         modelAndView.addObject("user", user);
         //modelAndView.addObject("role", user.getRole());
@@ -124,7 +124,7 @@ public class GetController {
     /*@PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/deliveryAddress")
     public ModelAndView showAddressPage(){
-        ModelAndView modelAndView = new ModelAndView("Address/addressPage");
+        ModelAndView modelAndView = new ModelAndView("html/Address/addressPage");
         modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
         return modelAndView;
     }*/
@@ -135,7 +135,7 @@ public class GetController {
         int pageSize = 10; // количество адресов на странице
         Page<DeliveryAddress> addressesPage = deliveryAddressService.findAllDeliveryAddress(PageRequest.of(page, pageSize));
 
-        ModelAndView modelAndView = new ModelAndView("Address/addressPage"); // Имя вашего шаблона
+        ModelAndView modelAndView = new ModelAndView("html/Address/addressPage"); // Имя вашего шаблона
 
         if (addressesPage.isEmpty()) {
             modelAndView.addObject("message", "No addresses found.");
@@ -159,7 +159,7 @@ public class GetController {
     @PreAuthorize("hasAuthority('Admin') or hasAuthority('Seller')")
     @GetMapping("/productCategory")
     public ModelAndView showProductCategoryPage(){
-        ModelAndView modelAndView = new ModelAndView("Category/categoryPage");
+        ModelAndView modelAndView = new ModelAndView("html/Category/categoryPage");
         modelAndView.addObject("listProductCategory", productCategoryService.findAllProductCategory());
         return modelAndView;
     }
@@ -167,25 +167,25 @@ public class GetController {
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/listOfUsers")
     public ModelAndView showListOfUsers(){
-        ModelAndView modelAndView = new ModelAndView("User/listOfUsersPage");
+        ModelAndView modelAndView = new ModelAndView("html/User/listOfUsersPage");
         modelAndView.addObject("listOfUsers", userService.findAllUser());
         return modelAndView;
     }
 
-    @PreAuthorize("hasAuthority('Admin')")
+    /*@PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/deliveryAddress/newAddress")
     public ModelAndView newAddress(){
-        ModelAndView modelAndView = new ModelAndView("Address/newAddress");
+        ModelAndView modelAndView = new ModelAndView("html/Address/newAddress");
         DeliveryAddress deliveryAddress = new DeliveryAddress();
         modelAndView.addObject("deliveryAddress", deliveryAddress);
 
         return modelAndView;
-    }
+    }*/
 
     @PreAuthorize("hasAuthority('Admin') or hasAuthority('Seller')")
     @GetMapping("/productCategory/newCategory")
     public ModelAndView newCategory(){
-        ModelAndView modelAndView = new ModelAndView("Category/newCategory");
+        ModelAndView modelAndView = new ModelAndView("html/Category/newCategory");
         ProductCategory productCategory = new ProductCategory();
         modelAndView.addObject("productCategory", productCategory);
 
@@ -195,7 +195,7 @@ public class GetController {
     @PreAuthorize("hasAuthority('Seller') and @userSecurity.hasAccess(authentication, #login)")
     @GetMapping("/products/{login}")
     public ModelAndView showProductsPage(@PathVariable String login){
-        ModelAndView modelAndView = new ModelAndView("Product/productsPage");
+        ModelAndView modelAndView = new ModelAndView("html/Product/productsPage");
         User seller = userService.findByLogin(login);
         modelAndView.addObject("seller", seller);
         modelAndView.addObject("listProduct", productService.findAllProduct(seller));
@@ -206,7 +206,7 @@ public class GetController {
     @PreAuthorize("hasAuthority('Seller')")
     @GetMapping("/products/{login}/newProduct")
     public ModelAndView newProduct(@PathVariable String login){
-        ModelAndView modelAndView = new ModelAndView("Product/newProduct");
+        ModelAndView modelAndView = new ModelAndView("html/Product/newProduct");
         User seller = userService.findByLogin(login);
         Product product = new Product();
         product.setUser(seller);
@@ -219,7 +219,7 @@ public class GetController {
 
     @GetMapping("/product/{productId}")
     public ModelAndView showProductPage(@PathVariable String productId){
-        ModelAndView modelAndView = new ModelAndView("Product/productPage");
+        ModelAndView modelAndView = new ModelAndView("html/Product/productPage");
         Product product = productService.findById(Long.parseLong(productId));
         modelAndView.addObject("product", product);
         return modelAndView;
@@ -228,7 +228,7 @@ public class GetController {
     @PreAuthorize("hasAuthority('User') and authentication.name == #login")
     @GetMapping("/cart/{login}")
     public ModelAndView showCart(@PathVariable String login){
-        ModelAndView modelAndView = new ModelAndView("Cart/cartPage");
+        ModelAndView modelAndView = new ModelAndView("html/Cart/cartPage");
         User user = userService.findByLogin(login);
         List<Cart> cart = cartService.findAllByUser(user);
         double totalPrice = 0;
@@ -252,7 +252,7 @@ public class GetController {
     public ModelAndView newOrder(@PathVariable String login){
         User user = userService.findByLogin(login);
 
-        ModelAndView modelAndView = new ModelAndView("Order/newOrder");
+        ModelAndView modelAndView = new ModelAndView("html/Order/newOrder");
 
         Order order = new Order();
         order.setUser(user);
@@ -278,7 +278,7 @@ public class GetController {
     @PreAuthorize("hasAuthority('User') and authentication.name == #login")
     @GetMapping("/order/{login}/orders")
     public ModelAndView showUserOrders(@PathVariable String login){
-        ModelAndView modelAndView = new ModelAndView("Order/userOrders");
+        ModelAndView modelAndView = new ModelAndView("html/Order/userOrders");
         User user = userService.findByLogin(login);
         /*double totalPrice = 0;
         List<Order> orders = orderService.findAllByUser(user);
@@ -319,7 +319,7 @@ public class GetController {
     @PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
     @GetMapping("/orders")
     public ModelAndView showOrders(@RequestParam("addressId") String addressId){
-        ModelAndView modelAndView = new ModelAndView("Order/ordersToAddress");
+        ModelAndView modelAndView = new ModelAndView("html/Order/ordersToAddress");
         if(addressId.equals("all")) {
             modelAndView.addObject("listOrder", orderService.findAllOrder());
         }

@@ -45,7 +45,7 @@ public class PostController {
             bindingResult.rejectValue("login", "error.user", "Такой логин уже зарегистрирован !");
         }
         if (bindingResult.hasErrors()){
-            ModelAndView modelAndView = new ModelAndView("User/newUser");
+            ModelAndView modelAndView = new ModelAndView("html/User/newUser");
             modelAndView.addObject("user", user);
             return modelAndView;
         }
@@ -157,7 +157,7 @@ public class PostController {
 
         if (bindingResult.hasErrors()){
             product.setProductCategories(new HashSet<>());
-            ModelAndView modelAndView = new ModelAndView("Product/newProduct");
+            ModelAndView modelAndView = new ModelAndView("html/Product/newProduct");
             modelAndView.addObject("listProductCategory", productCategoryService.findAllProductCategory());
             modelAndView.addObject("product", product);
             return modelAndView;
@@ -218,7 +218,7 @@ public class PostController {
             System.out.println(order.getUser().getLogin());
             System.out.println("*********************************");*/
 
-            ModelAndView modelAndView = new ModelAndView("Order/newOrder");
+            ModelAndView modelAndView = new ModelAndView("html/Order/newOrder");
             modelAndView.addObject("order", order);
             modelAndView.addObject("user", user);
             modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
