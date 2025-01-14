@@ -1,12 +1,11 @@
 package com.example.OnlineStore.controller;
 
-import com.example.OnlineStore.model.Cart;
-import com.example.OnlineStore.model.Order;
-import com.example.OnlineStore.model.Product;
-import com.example.OnlineStore.model.User;
+import com.example.OnlineStore.model.*;
 import com.example.OnlineStore.service.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -14,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -95,4 +95,18 @@ public class PatchController {
         return modelAndView;//new ModelAndView("redirect:/api/v1/store/orders");
     }
 
+    @PreAuthorize("hasAuthority('Admin')")
+    @PatchMapping("deliveryAddress/updateAddress")
+    public ResponseEntity<String> updateAddress(@RequestBody @Valid DeliveryAddress address, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            StringBuilder errorMessage = new StringBuilder("Ошибка валидации: ");
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                errorMessage.append(error.getDefaultMessage()).append("; "); // Добавляем текст ошибки
+            }
+            return ResponseEntity.badRequest().body(errorMessage.toString()); // Возвращаем сообщения об ошибках
+        }
+
+        deliveryAddressService.updateDeliveryAddress(address);
+        return ResponseEntity.ok("Адрес успешно обновлен!"); // Возвращаем 200 OK
+    }
 }

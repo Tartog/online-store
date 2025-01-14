@@ -10,6 +10,7 @@ function loadAddresses(page) {
                 $('#address-list').append(`
                 <div>
                     <span>${'г. ' + deliveryAddress.city + ', ул. ' + deliveryAddress.street + '  д. №' + deliveryAddress.houseNumber}</span>
+                    <button class="update-button" data-id="${deliveryAddress.id}">Редактировать</button>
                     <button class="delete-button" data-id="${deliveryAddress.id}">Удалить</button>
                     <hr>
                 </div>
@@ -47,6 +48,28 @@ $(document).ready(function() {
         }
     });
 
+    $(document).on('click', '.update-button', function() {
+        const addressId = $(this).data('id');
+        // Получите данные адреса, используя его ID
+        $.ajax({
+            url: `/api/v1/store/deliveryAddress/${addressId}`, // Правильный URL для получения адреса
+            method: 'GET',
+            success: function(deliveryAddress) {
+                // Заполните форму редактирования
+                $('#update-id').val(deliveryAddress.id);
+                $('#update-city').val(deliveryAddress.city);
+                $('#update-street').val(deliveryAddress.street);
+                $('#update-houseNumber').val(deliveryAddress.houseNumber);
+                $('#update-address-form').show(); // Покажите форму редактирования
+            },
+            error: function(xhr, status, error) {
+                console.error("Ошибка при получении адреса:", error);
+                let errorMessage = xhr.responseText || "Произошла ошибка при получении адреса.";
+                alert(errorMessage);
+            }
+        });
+    });
+
     $('#prev-page').click(function() {
         if (currentPage > 0) {
             currentPage--;
@@ -62,6 +85,33 @@ $(document).ready(function() {
     // Обработчик для кнопки добавления нового адреса
     $('#add-address-button').click(function() {
         $('#new-address-form').toggle(); // Показать или скрыть форму
+    });
+
+    $('#update-form').submit(function(event) {
+        event.preventDefault(); // Предотвратить стандартное поведение формы
+
+        const updatedAddress = {
+            id: $('#update-id').val(),
+            city: $('#update-city').val(),
+            street: $('#update-street').val(),
+            houseNumber: $('#update-houseNumber').val()
+        };
+
+        $.ajax({
+            url: `/api/v1/store/deliveryAddress/updateAddress`, // Убедитесь, что этот URL правильный
+            method: 'PATCH', // Используйте PUT для обновления
+            contentType: 'application/json',
+            data: JSON.stringify(updatedAddress),
+            success: function(response) {
+                $('#update-address-form').hide(); // Скрыть форму после успешного обновления
+                loadAddresses(currentPage); // Обновить список адресов
+            },
+            error: function(xhr, error) {
+                console.error("Ошибка при обновлении адреса:", error);
+                let errorMessage = xhr.responseText || "Произошла ошибка при обновлении адреса.";
+                alert(errorMessage);
+            }
+        });
     });
 
     // Обработчик отправки формы

@@ -333,6 +333,16 @@ public class GetController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('Admin')")
+    @GetMapping("/deliveryAddress/{id}")
+    public ResponseEntity<DeliveryAddress> getAddressById(@PathVariable Long id) {
+        DeliveryAddress address = deliveryAddressService.findById(id);
+        if (address == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(address);
+    }
+
     @GetMapping("/test-image")
     public String testImage() {
         return "<img src='/images/Kinder.jpg' />";

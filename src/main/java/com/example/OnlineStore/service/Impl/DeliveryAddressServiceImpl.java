@@ -45,7 +45,11 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
 
     @Override
     public void updateDeliveryAddress(DeliveryAddress deliveryAddress) {
-        repository.save(deliveryAddress);
+        repository.setDeliveryAddressInfoById(
+                deliveryAddress.getCity(),
+                deliveryAddress.getStreet(),
+                deliveryAddress.getHouseNumber(),
+                deliveryAddress.getId());
     }
 
     @Override
