@@ -6,6 +6,8 @@ import com.example.OnlineStore.service.DeliveryAddressService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,5 +51,15 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
     @Override
     public void deleteDeliveryAddress(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public Page<DeliveryAddress> findAllDeliveryAddress(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    @Override
+    public long countTotalAddresses() {
+        return repository.count();
     }
 }

@@ -64,7 +64,8 @@ public class PostController {
             return modelAndView;
         }
         deliveryAddressService.saveDeliveryAddress(deliveryAddress);
-        return new ModelAndView("redirect:/api/v1/store/deliveryAddress");
+        //return new ModelAndView("redirect:/api/v1/store/deliveryAddress");
+        return new ModelAndView("redirect:/api/v1/store/deliveryAddressPage");
     }
 
     @PreAuthorize("hasAuthority('Admin') or hasAuthority('Seller')")

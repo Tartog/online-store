@@ -5,6 +5,7 @@ import com.example.OnlineStore.model.Role;
 import com.example.OnlineStore.model.User;
 import com.example.OnlineStore.service.*;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.Authentication;
@@ -31,10 +32,11 @@ public class DeleteController {
         return new ModelAndView("redirect:/api/v1/store/productCategory");
     }
 
+    @PreAuthorize("hasAuthority('Admin')")
     @DeleteMapping("deliveryAddress/deleteAddress/{addressId}")
-    public ModelAndView deleteAddress(@PathVariable String addressId){
+    public ResponseEntity<Void> deleteAddress(@PathVariable String addressId) {
         deliveryAddressService.deleteDeliveryAddress(Long.parseLong(addressId));
-        return new ModelAndView("redirect:/api/v1/store/deliveryAddress");
+        return ResponseEntity.noContent().build(); // Возвращаем 204 No Content
     }
 
     @DeleteMapping("products/deleteProduct/{productId}")

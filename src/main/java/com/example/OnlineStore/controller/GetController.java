@@ -3,6 +3,9 @@ package com.example.OnlineStore.controller;
 import com.example.OnlineStore.model.*;
 import com.example.OnlineStore.service.*;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.Authentication;
@@ -118,12 +121,39 @@ public class GetController {
         return modelAndView;
     }
 
-    @PreAuthorize("hasAuthority('Admin')")
+    /*@PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/deliveryAddress")
     public ModelAndView showAddressPage(){
         ModelAndView modelAndView = new ModelAndView("Address/addressPage");
         modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
         return modelAndView;
+    }*/
+
+    @PreAuthorize("hasAuthority('Admin')")
+    @GetMapping("/deliveryAddressPage")
+    public ModelAndView getDeliveryAddressesPage(@RequestParam(defaultValue = "0") int page) {
+        int pageSize = 10; // количество адресов на странице
+        Page<DeliveryAddress> addressesPage = deliveryAddressService.findAllDeliveryAddress(PageRequest.of(page, pageSize));
+
+        ModelAndView modelAndView = new ModelAndView("Address/addressPage"); // Имя вашего шаблона
+
+        if (addressesPage.isEmpty()) {
+            modelAndView.addObject("message", "No addresses found.");
+        } else {
+            modelAndView.addObject("addresses", addressesPage.getContent());
+            modelAndView.addObject("totalPages", addressesPage.getTotalPages());
+            modelAndView.addObject("currentPage", page);
+        }
+
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasAuthority('Admin')")
+    @GetMapping("/deliveryAddress")
+    public ResponseEntity<Page<DeliveryAddress>> getDeliveryAddresses(@RequestParam(defaultValue = "0") int page) {
+        int pageSize = 10; // количество адресов на странице
+        Page<DeliveryAddress> addressesPage = deliveryAddressService.findAllDeliveryAddress(PageRequest.of(page, pageSize));
+        return ResponseEntity.ok(addressesPage);
     }
 
     @PreAuthorize("hasAuthority('Admin') or hasAuthority('Seller')")

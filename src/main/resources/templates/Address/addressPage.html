@@ -3,25 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <title>Address page</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
-<p><a th:href="@{/api/v1/store/deliveryAddress/newAddress}">Добавить новый адрес пункта выдачи</a></p>
-</br>
-</hr>
-</br>
-<div th:each="deliveryAddress : ${listAddress}">
-    <a th:text="${'г. ' + deliveryAddress.getCity() + ', ул. ' + deliveryAddress.getStreet() + '  д. №'
-        + deliveryAddress.getHouseNumber()}">address</a>
-    <form th:method="DELETE"
-          th:action="@{/api/v1/store/deliveryAddress/deleteAddress/{addressId}(addressId=${deliveryAddress.getId()})}">
-        <input type="submit" value="Удалить">
-    </form>
-    </hr>
-    </br>
+<a href="/api/v1/store">Вернуться на главную страницу</a>
+<p><a href="/api/v1/store/deliveryAddress/newAddress">Добавить новый адрес пункта выдачи</a></p>
+<br/>
+<hr/>
+<br/>
+
+<div id="address-list">
+    <!-- Список адресов будет загружен здесь -->
 </div>
 
+<div>
+    <button id="prev-page" style="display:none;">Предыдущие</button>
+    <button id="next-page">Следующие</button>
+</div>
 
+<script>
+    let currentPage = 0;
+
+    function loadAddresses(page) {
+        $.ajax({
+            url: '/api/v1/store/deliveryAddress?page=' + page,
+            method: 'GET',
+            success: function(data) {
+                $('#address-list').empty(); // Очистить текущий список адресов
+                data.content.forEach(function(deliveryAddress) {
+                    $('#address-list').append(`
+                    <div>
+                        <span>${'г. ' + deliveryAddress.city + ', ул. ' + deliveryAddress.street + '  д. №' + deliveryAddress.houseNumber}</span>
+                        <button class="delete-button" data-id="${deliveryAddress.id}">Удалить</button>
+                        <hr>
+                    </div>
+                `);
+                });
+
+                // Управление кнопками пагинации
+                $('#prev-page').toggle(page > 0);
+                $('#next-page').toggle(data.totalPages > page + 1);
+            },
+            error: function(xhr, status, error) {
+                console.error("Ошибка при загрузке адресов:", error);
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        loadAddresses(currentPage); // Загрузить адреса при загрузке страницы
+
+        // Обработчик события для кнопок удаления
+        $(document).on('click', '.delete-button', function() {
+            const addressId = $(this).data('id');
+            if (confirm("Вы уверены, что хотите удалить этот адрес?")) {
+                $.ajax({
+                    url: `/api/v1/store/deliveryAddress/deleteAddress/${addressId}`,
+                    method: 'DELETE',
+                    success: function() {
+                        // После удаления, перезагрузим адреса
+                        loadAddresses(currentPage);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Ошибка при удалении адреса:", error);
+                    }
+                });
+            }
+        });
+
+        $('#prev-page').click(function() {
+            if (currentPage > 0) {
+                currentPage--;
+                loadAddresses(currentPage);
+            }
+        });
+
+        $('#next-page').click(function() {
+            currentPage++;
+            loadAddresses(currentPage);
+        });
+    });
+</script>
 
 </body>
 </html>
