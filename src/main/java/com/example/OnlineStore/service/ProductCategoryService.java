@@ -17,4 +17,5 @@ public interface ProductCategoryService {
     boolean existsProductCategoryByCategory(String category);
     Page<ProductCategory> findAllProductCategory(Pageable pageable);
     long countTotalAddresses();
+    Page<ProductCategory> findByCategoryContaining(String category, Pageable pageable);
 }

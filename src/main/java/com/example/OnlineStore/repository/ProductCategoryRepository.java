@@ -1,6 +1,8 @@
 package com.example.OnlineStore.repository;
 
 import com.example.OnlineStore.model.ProductCategory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +18,9 @@ public interface ProductCategoryRepository extends JpaRepository<ProductCategory
     void deleteByCategory(String category);
     boolean existsByCategoryAndIdNot(String category, Long id);
     boolean existsProductCategoryByCategory(String category);
+
+    @Query("SELECT p FROM ProductCategory p WHERE LOWER(p.category) LIKE LOWER(CONCAT('%', ?1, '%'))")
+    Page<ProductCategory> findByCategoryContaining(String category, Pageable pageable);
 
     @Modifying
     @Transactional

@@ -71,4 +71,9 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     public long countTotalAddresses() {
         return repository.count();
     }
+
+    @Override
+    public Page<ProductCategory> findByCategoryContaining(String category, Pageable pageable) {
+        return repository.findByCategoryContaining(category, pageable);
+    }
 }

@@ -1,8 +1,9 @@
 let currentPage = 0;
+let searchQuery = '';
 
-function loadCategories(page) {
+function loadCategories(page, query = '') {
     $.ajax({
-        url: '/api/v1/store/productCategory?page=' + page,
+        url: `/api/v1/store/productCategory?page=${page}&search=${query}`,
         method: 'GET',
         success: function(data) {
             $('#category-list').empty();
@@ -26,6 +27,8 @@ function loadCategories(page) {
         }
     });
 }
+
+
 
 $(document).ready(function() {
     loadCategories(currentPage);
@@ -65,6 +68,11 @@ $(document).ready(function() {
                 alert(errorMessage);
             }
         });
+    });
+
+    $('#search-button').click(function() {
+        searchQuery = $('#search-category').val().trim();
+        loadCategories(0, searchQuery); // Сбросить страницу и выполнить поиск
     });
 
     $('#prev-page').click(function() {
