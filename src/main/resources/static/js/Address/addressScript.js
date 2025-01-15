@@ -1,8 +1,24 @@
 let currentPage = 0;
+let searchParams = {
+    city: '',
+    street: '',
+    houseNumber: ''
+};
 
-function loadAddresses(page) {
+function loadAddresses(page, params = {}) {
+    let url = `/api/v1/store/deliveryAddress?page=${page}`;
+    if (params.city) {
+        url += `&city=${encodeURIComponent(params.city)}`;
+    }
+    if (params.street) {
+        url += `&street=${encodeURIComponent(params.street)}`;
+    }
+    if (params.houseNumber) {
+        url += `&houseNumber=${params.houseNumber}`;
+    }
+
     $.ajax({
-        url: '/api/v1/store/deliveryAddress?page=' + page,
+        url: url,
         method: 'GET',
         success: function(data) {
             $('#address-list').empty(); // Очистить текущий список адресов
@@ -136,9 +152,18 @@ $(document).ready(function() {
             },
             error: function(xhr, error) {
                 console.error("Ошибка при добавлении адреса:", error);
-                let errorMessage = xhr.responseText || "Произошла ошибка при добавлении адреса."; // Получаем сообщение об ошибке
+                let errorMessage = xhr.responseText || "Произошла ошибка при добавлении адреса.";
                 alert(errorMessage); // Выводим сообщение об ошибке
             }
         });
     });
+
+    $('#search-button').click(function() {
+        searchParams.city = $('#search-city').val().trim();
+        searchParams.street = $('#search-street').val().trim();
+        searchParams.houseNumber = parseInt($('#search-houseNumber').val().trim(), 10) || null;
+        currentPage = 0;
+        loadAddresses(currentPage, searchParams);
+    });
+
 });

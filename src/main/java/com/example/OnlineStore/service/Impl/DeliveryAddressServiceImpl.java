@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,5 +66,22 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
     @Override
     public long countTotalAddresses() {
         return repository.count();
+    }
+
+    @Override
+    public Page<DeliveryAddress> findByFilters(String city, String street, Integer houseNumber, Pageable pageable) {
+        Specification<DeliveryAddress> spec = Specification.where(null);
+
+        if (city != null && !city.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("city"), "%" + city + "%"));
+        }
+        if (street != null && !street.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("street"), "%" + street + "%"));
+        }
+        if (houseNumber != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("houseNumber"), houseNumber));
+        }
+
+        return repository.findAll(spec, pageable);
     }
 }

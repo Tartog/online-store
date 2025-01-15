@@ -151,10 +151,26 @@ public class GetController {
 
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/deliveryAddress")
-    public ResponseEntity<Page<DeliveryAddress>> getDeliveryAddresses(@RequestParam(defaultValue = "0") int page) {
-        int pageSize = 10; // количество адресов на странице
-        Page<DeliveryAddress> addressesPage = deliveryAddressService.findAllDeliveryAddress(PageRequest.of(page, pageSize));
-        return ResponseEntity.ok(addressesPage);
+    public ResponseEntity<Page<DeliveryAddress>> getDeliveryAddresses(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String street,
+            @RequestParam(required = false) Integer houseNumber) {
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<DeliveryAddress> addresses;
+
+        if (city == null && street == null && houseNumber == null) {
+            addresses = deliveryAddressService.findAllDeliveryAddress(pageable);
+        } else {
+            addresses = deliveryAddressService.findByFilters(
+                    (city != null && !city.isEmpty()) ? city : null,
+                    (street != null && !street.isEmpty()) ? street : null,
+                    houseNumber,
+                    pageable
+            );
+        }
+
+        return ResponseEntity.ok(addresses);
     }
 
     @PreAuthorize("hasAuthority('Admin')")

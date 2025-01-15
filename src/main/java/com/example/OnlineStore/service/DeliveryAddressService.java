@@ -15,4 +15,5 @@ public interface DeliveryAddressService {
     void deleteDeliveryAddress(Long id);
     Page<DeliveryAddress> findAllDeliveryAddress(Pageable pageable);
     long countTotalAddresses();
+    Page<DeliveryAddress> findByFilters(String city, String street, Integer houseNumber, Pageable pageable);
 }
