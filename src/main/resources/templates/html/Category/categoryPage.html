@@ -3,21 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <title>Product category</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script th:src="@{/js/ProductCategory/productCategoryScript.js}" defer></script> <!-- Подключаем JS файл -->
 </head>
 <body>
 <a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
-<p><a th:href="@{/api/v1/store/productCategory/newCategory}">Добавить новую категорию товара</a></p>
-</br>
-</hr>
-</br>
-<div th:each="productCategory : ${listProductCategory}">
-    <a th:text="${productCategory.getCategory()}">category</a>
-    <form th:method="DELETE"
-          th:action="@{/api/v1/store/productCategory/deleteCategory/{category}(category=${productCategory.getCategory()})}">
-        <input type="submit" value="Удалить">
+<p><button id="add-productCategory-button">Добавить новую категорию</button></p>
+<br/>
+<hr/>
+<br/>
+
+<div id="new-category-div" style="display:none">
+    <h3>Добавить новую категорию</h3>
+    <form id="new-category-form">
+        <label for="new-category">Введите название категории: </label>
+        <input type="text" id="new-category" required/>
+        <br/>
+        <input type="submit" value="Создать"/>
     </form>
-    </hr>
-    </br>
+    <br/>
+    <hr/>
+    <br/>
 </div>
+
+<div id="update-category-div" style="display:none">
+    <h3>Редактировать категорию</h3>
+    <form id="update-category-form">
+        <input type="hidden" id="update-id" />
+        <label for="update-category">Введите название категории: </label>
+        <input type="text" id="update-category" required/>
+        <br/>
+        <input type="submit" value="Сохранить изменения"/>
+    </form>
+    <br/>
+    <hr/>
+    <br/>
+</div>
+
+<div id="category-list">
+
+</div>
+
+<div>
+    <button id="prev-page" style="display:none;">Назад</button>
+    <button id="next-page">Далее</button>
+</div>
+
 </body>
 </html>

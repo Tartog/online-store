@@ -31,6 +31,7 @@ public class PatchController {
     private OrderService orderService;
     private OrderStatusService orderStatusService;
     private DeliveryAddressService deliveryAddressService;
+    private ProductCategoryService productCategoryService;
 
     @PatchMapping("/{login}/updateUser")
     public ModelAndView updateUser(@Valid User user, BindingResult bindingResult){
@@ -108,5 +109,23 @@ public class PatchController {
 
         deliveryAddressService.updateDeliveryAddress(address);
         return ResponseEntity.ok("Адрес успешно обновлен!"); // Возвращаем 200 OK
+    }
+
+    @PreAuthorize("hasAuthority('Admin') or hasAuthority('Seller')")
+    @PatchMapping("productCategory/updateProductCategory")
+    public ResponseEntity<String> updateCategory(@RequestBody @Valid ProductCategory productCategory, BindingResult bindingResult) {
+        if (productCategoryService.existsByCategoryAndIdNot(productCategory.getCategory(), productCategory.getId())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Такая категория уже существует!");
+        }
+        if(bindingResult.hasErrors()) {
+            StringBuilder errorMessage = new StringBuilder("Ошибка валидации: ");
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                errorMessage.append(error.getDefaultMessage()).append("; ");
+            }
+            return ResponseEntity.badRequest().body(errorMessage.toString());
+        }
+
+        productCategoryService.updateProductCategory(productCategory);
+        return ResponseEntity.ok("Категория успешно обновлена!");
     }
 }

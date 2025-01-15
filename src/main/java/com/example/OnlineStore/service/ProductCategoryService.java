@@ -1,6 +1,8 @@
 package com.example.OnlineStore.service;
 
 import com.example.OnlineStore.model.ProductCategory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -11,5 +13,8 @@ public interface ProductCategoryService {
     void updateProductCategory(ProductCategory ProductCategory);
     void deleteProductCategory(Long id);
     void deleteByCategory(String category);
-    boolean existsCategory(ProductCategory productCategory);
+    boolean existsByCategoryAndIdNot(String category, Long id);
+    boolean existsProductCategoryByCategory(String category);
+    Page<ProductCategory> findAllProductCategory(Pageable pageable);
+    long countTotalAddresses();
 }

@@ -6,6 +6,8 @@ import com.example.OnlineStore.service.ProductCategoryService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,7 +37,9 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 
     @Override
     public void updateProductCategory(ProductCategory productCategory) {
-        repository.save(productCategory);
+        repository.setCategoryInfoById(
+                productCategory.getCategory(),
+                productCategory.getId());
     }
 
     @Override
@@ -49,7 +53,22 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     @Override
-    public boolean existsCategory(ProductCategory productCategory) {
-        return repository.findProductCategoryByCategory(productCategory.getCategory()).isPresent();
+    public boolean existsByCategoryAndIdNot(String category, Long id) {
+        return repository.existsByCategoryAndIdNot(category, id);
+    }
+
+    @Override
+    public boolean existsProductCategoryByCategory(String category) {
+        return repository.existsProductCategoryByCategory(category);
+    }
+
+    @Override
+    public Page<ProductCategory> findAllProductCategory(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    @Override
+    public long countTotalAddresses() {
+        return repository.count();
     }
 }

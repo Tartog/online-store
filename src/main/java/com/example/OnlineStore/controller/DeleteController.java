@@ -26,10 +26,10 @@ public class DeleteController {
     private RoleService roleService;
     private CartService cartService;
 
-    @DeleteMapping("productCategory/deleteCategory/{category}")
-    public ModelAndView deleteCategory(@PathVariable String category){
-        productCategoryService.deleteByCategory(category);
-        return new ModelAndView("redirect:/api/v1/store/productCategory");
+    @DeleteMapping("productCategory/deleteCategory/{categoryId}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable String categoryId){
+        productCategoryService.deleteProductCategory(Long.parseLong(categoryId));
+        return ResponseEntity.noContent().build();
     }
 
     @PreAuthorize("hasAuthority('Admin')")

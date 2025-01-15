@@ -25,7 +25,7 @@
         <!-- Дополнительный контент для зарегистрированных пользователей -->
     </div>
     <div th:if="${currentUser.getRole().getUserRole() == 'Seller' or currentUser.getRole().getUserRole() == 'Admin'}">
-        <p><a th:href="@{/api/v1/store/productCategory}">Категории товаров</a></p>
+        <p><a th:href="@{/api/v1/store/productCategoryPage}">Категории товаров</a></p>
     </div>
     <div th:if="${currentUser.getRole().getUserRole() == 'Seller'}">
         <p><a th:href="@{/api/v1/store/products/{login}(login=${currentUser.getLogin()})}">Товары</a></p>

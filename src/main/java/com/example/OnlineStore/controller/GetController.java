@@ -131,7 +131,7 @@ public class GetController {
 
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/deliveryAddressPage")
-    public ModelAndView getDeliveryAddressesPage(@RequestParam(defaultValue = "0") int page) {
+    public ModelAndView showDeliveryAddressesPage(@RequestParam(defaultValue = "0") int page) {
         int pageSize = 10; // количество адресов на странице
         Page<DeliveryAddress> addressesPage = deliveryAddressService.findAllDeliveryAddress(PageRequest.of(page, pageSize));
 
@@ -156,12 +156,57 @@ public class GetController {
         return ResponseEntity.ok(addressesPage);
     }
 
-    @PreAuthorize("hasAuthority('Admin') or hasAuthority('Seller')")
+    @PreAuthorize("hasAuthority('Admin')")
+    @GetMapping("/deliveryAddress/{id}")
+    public ResponseEntity<DeliveryAddress> getAddressById(@PathVariable Long id) {
+        DeliveryAddress address = deliveryAddressService.findById(id);
+        if (address == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(address);
+    }
+
+    /*@PreAuthorize("hasAuthority('Admin') or hasAuthority('Seller')")
     @GetMapping("/productCategory")
     public ModelAndView showProductCategoryPage(){
         ModelAndView modelAndView = new ModelAndView("html/Category/categoryPage");
         modelAndView.addObject("listProductCategory", productCategoryService.findAllProductCategory());
         return modelAndView;
+    }*/
+
+    @PreAuthorize("hasAuthority('Admin') or hasAuthority('Seller')")
+    @GetMapping("/productCategoryPage")
+    public ModelAndView showProductCategoryPage(@RequestParam(defaultValue = "0") int page){
+        int pageSize = 10;
+        Page<ProductCategory> productCategoryPage = productCategoryService.findAllProductCategory(PageRequest.of(page, pageSize));
+        ModelAndView modelAndView = new ModelAndView("html/Category/categoryPage");
+
+        if (productCategoryPage.isEmpty()) {
+            modelAndView.addObject("message", "No addresses found.");
+        } else {
+            modelAndView.addObject("categories", productCategoryPage.getContent());
+            modelAndView.addObject("totalPages", productCategoryPage.getTotalPages());
+            modelAndView.addObject("currentPage", page);
+        }
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasAuthority('Admin')")
+    @GetMapping("/productCategory")
+    public ResponseEntity<Page<ProductCategory>> getProductCategory(@RequestParam(defaultValue = "0") int page) {
+        int pageSize = 10;
+        Page<ProductCategory> productCategoryPage = productCategoryService.findAllProductCategory(PageRequest.of(page, pageSize));
+        return ResponseEntity.ok(productCategoryPage);
+    }
+
+    @PreAuthorize("hasAuthority('Admin')")
+    @GetMapping("/productCategory/{id}")
+    public ResponseEntity<ProductCategory> getProductCategoryById(@PathVariable Long id) {
+        ProductCategory productCategory = productCategoryService.findById(id);
+        if (productCategory == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(productCategory);
     }
 
     @PreAuthorize("hasAuthority('Admin')")
@@ -331,16 +376,6 @@ public class GetController {
         modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
         modelAndView.addObject("addressId", addressId);
         return modelAndView;
-    }
-
-    @PreAuthorize("hasAuthority('Admin')")
-    @GetMapping("/deliveryAddress/{id}")
-    public ResponseEntity<DeliveryAddress> getAddressById(@PathVariable Long id) {
-        DeliveryAddress address = deliveryAddressService.findById(id);
-        if (address == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(address);
     }
 
     @GetMapping("/test-image")

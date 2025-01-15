@@ -92,18 +92,19 @@ public class PostController {
 
     @PreAuthorize("hasAuthority('Admin') or hasAuthority('Seller')")
     @PostMapping("/productCategory/newCategory")
-    public ModelAndView createProductCategory(@Valid ProductCategory productCategory, BindingResult bindingResult){
-        if(productCategoryService.existsCategory(productCategory)){
-            bindingResult.rejectValue("category", "error.category", "Такая категория уже есть !");
+    public ResponseEntity<String> createProductCategory(@RequestBody @Valid ProductCategory productCategory, BindingResult bindingResult){
+        if(productCategoryService.existsProductCategoryByCategory(productCategory.getCategory())){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Такая категория уже существует!");
         }
-
         if (bindingResult.hasErrors()){
-            ModelAndView modelAndView = new ModelAndView("Category/newCategory");
-            modelAndView.addObject("productCategory", productCategory);
-            return modelAndView;
+            StringBuilder errorMessage = new StringBuilder("Ошибка валидации: ");
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                errorMessage.append(error.getDefaultMessage()).append("; ");
+            }
+            return ResponseEntity.badRequest().body(errorMessage.toString());
         }
         productCategoryService.saveProductCategory(productCategory);
-        return new ModelAndView("redirect:/api/v1/store/productCategory");
+        return ResponseEntity.ok("Категория успешно добавлена!");
     }
 
     @PreAuthorize("hasAuthority('Seller')")
