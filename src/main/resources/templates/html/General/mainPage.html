@@ -36,7 +36,7 @@
     </div>
     <div th:if="${currentUser.getRole().getUserRole() == 'Worker' or currentUser.getRole().getUserRole() == 'Admin'}">
         <form th:method="GET"
-              th:action="@{/api/v1/store/orders}">
+              th:action="@{/api/v1/store/ordersPage}">
             <input type="hidden" name="addressId" th:value="${'all'}">
             <input type="submit" value="Заказы">
         </form>

@@ -1,5 +1,6 @@
 package com.example.OnlineStore.model;
 
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @Data
 @Setter
 @Getter
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +42,8 @@ public class Product {
 
     @NotNull(message = "Товар должен иметь хотя бы 1 категорию !")
     //@ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "product_in_category",
             joinColumns = @JoinColumn(name = "product_id", referencedColumnName="id"),
@@ -49,6 +52,7 @@ public class Product {
     private Set<ProductCategory> productCategories;
 
     //@ManyToOne(cascade = CascadeType.ALL)
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "seller_id")
     private User user;

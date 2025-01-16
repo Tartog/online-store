@@ -1,5 +1,6 @@
 package com.example.OnlineStore.model;
 
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +18,8 @@ import java.util.Set;
 @Data
 @Getter
 @Setter
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,11 +41,14 @@ public class Order {
     @JoinColumn(name = "delivery_address_id")
     private DeliveryAddress deliveryAddress;
 
+    //@JsonBackReference
     @ManyToOne
     @JoinColumn(name = "client_id")
     private User user;
 
-    @OneToMany
+    //@JsonIgnore // Игнорируем это поле при сериализации
+    //@JsonManagedReference
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     private Set<ProductsInOrder> productsInOrders = new HashSet<ProductsInOrder>();
 

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders to address</title>
+</head>
+<body>
+<a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
+
+<form method="GET" th:action="@{/api/v1/store/orders}">
+    <label for="address">Адрес:</label>
+    <select id="address" name="addressId" required>
+        <option value="" disabled selected>Выберите адрес</option>
+        <option th:each="address : ${listAddress}"
+                th:value="${address.id}"
+                th:text="${address.city} + ', ' + ${address.street} + ' ' + ${address.houseNumber}"></option>
+    </select>
+    <button type="submit">Показать заказы по выбранному адресу</button>
+</form>
+<form method="GET" th:action="@{/api/v1/store/orders}">
+    <input type="hidden" name="addressId" th:value="${'all'}">
+    <button type="submit">Показать все заказы</button>
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID заказа</th>
+        <th>Дата заказа</th>
+        <th>Ожидаемая дата получения</th>
+        <th>Покупатель</th>
+        <th>Статус заказа</th>
+        <th>Товары</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${listOrder}">
+        <td th:text="${order.id}"></td>
+        <td th:text="${order.orderDate}"></td>
+        <td th:text="${order.expectedReceiveDate}"></td>
+        <td th:text="${order.user.getLogin()}"></td>
+
+
+
+        <td th:text="${order.orderStatus.getStatus()}"></td>
+        <td>
+            <form th:method="PATCH" th:action="@{updateOrderStatus(orderId=${order.id})}">
+                <select th:name="statusId" th:value="${order.orderStatus.id}">
+                    <option th:each="status : ${listStatus}"
+                            th:value="${status.id}"
+                            th:text="${status.status}"></option>
+                </select>
+                <input type="hidden" name="addressId" th:value="${addressId}">
+                <button type="submit">Обновить</button>
+            </form>
+        </td>
+
+        <td>
+            <ul>
+                <li th:each="productInOrder : ${order.getProductsInOrders()}">
+                    <span th:text="${productInOrder.product.getName()}">Товар</span> x
+                    <span th:text="${productInOrder.getNumberOfProduct()}">Количество</span> -
+                    <span th:text="${productInOrder.product.getPrice()}">Цена</span>
+                </li>
+            </ul>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

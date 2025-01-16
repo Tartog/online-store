@@ -18,7 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/store")
@@ -208,6 +210,59 @@ public class GetController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
+    @GetMapping("/ordersPage")
+    public ModelAndView showOrders(@RequestParam("addressId") String addressId, @RequestParam(defaultValue = "0") int page){
+        int pageSize = 10;
+        Page<Order> orderPage;
+        // = productCategoryService.findAllProductCategory(PageRequest.of(page, pageSize));
+        ModelAndView modelAndView = new ModelAndView("html/Order/ordersToAddress");
+        if(addressId.equals("all")) {
+            orderPage = orderService.findAllOrders(PageRequest.of(page, pageSize));
+        }
+        else{
+            DeliveryAddress address = deliveryAddressService.findById(Long.parseLong(addressId));
+            orderPage = orderService.findAllOrdersByAddress(address, PageRequest.of(page, pageSize));
+        }
+        if (orderPage.isEmpty()) {
+            modelAndView.addObject("message", "No orders found.");
+        } else {
+            modelAndView.addObject("orders", orderPage.getContent());
+            modelAndView.addObject("totalPages", orderPage.getTotalPages());
+            modelAndView.addObject("currentPage", page);
+        }
+        //modelAndView.addObject("listStatus", orderStatusService.findAllOrderStatus());
+        //modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
+        modelAndView.addObject("addressId", addressId);
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
+    @GetMapping("/orders")
+    public ResponseEntity<Page<Order>> getOrders(
+            @RequestParam("addressId") String addressId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Order> orders;
+        //List<Order> orders;
+        if (addressId.equals("all")) {
+            orders = orderService.findAllOrders(pageable);
+        } else {
+            DeliveryAddress address = deliveryAddressService.findById(Long.parseLong(addressId));
+            orders = orderService.findAllOrdersByAddress(address, pageable);
+        }
+        //Map<String, Object> response = new HashMap<>();
+        //orders.getTotalPages();
+        //int totalPages = (int) Math.ceil((double) orderService.getTotalCount(addressId) / size);
+        //int totalPages = orders.getSize() / size;
+        //response.put("listOrder", orders.getContent());
+        //.put("totalPages", orders.getTotalPages());
+
+        return ResponseEntity.ok(orders);
+    }
+
+
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/productCategory")
     public ResponseEntity<Page<ProductCategory>> getProductCategory(@RequestParam(defaultValue = "0") int page,
@@ -385,23 +440,6 @@ public class GetController {
         modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
         return modelAndView;
     }*/
-
-    @PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
-    @GetMapping("/orders")
-    public ModelAndView showOrders(@RequestParam("addressId") String addressId){
-        ModelAndView modelAndView = new ModelAndView("html/Order/ordersToAddress");
-        if(addressId.equals("all")) {
-            modelAndView.addObject("listOrder", orderService.findAllOrder());
-        }
-        else{
-            DeliveryAddress address = deliveryAddressService.findById(Long.parseLong(addressId));
-            modelAndView.addObject("listOrder", orderService.findAllByAddress(address));
-        }
-        modelAndView.addObject("listStatus", orderStatusService.findAllOrderStatus());
-        modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
-        modelAndView.addObject("addressId", addressId);
-        return modelAndView;
-    }
 
     @GetMapping("/test-image")
     public String testImage() {

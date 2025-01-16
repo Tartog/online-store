@@ -2,12 +2,15 @@ package com.example.OnlineStore.service.Impl;
 
 import com.example.OnlineStore.model.DeliveryAddress;
 import com.example.OnlineStore.model.Order;
+import com.example.OnlineStore.model.ProductCategory;
 import com.example.OnlineStore.model.User;
 import com.example.OnlineStore.repository.OrderRepository;
 import com.example.OnlineStore.service.OrderService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,6 +51,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findAllByUser(User user) {
         return repository.findAllByUser(user);
+    }
+
+    @Override
+    public Page<Order> findAllOrders(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Order> findAllOrdersByAddress(DeliveryAddress deliveryAddress, Pageable pageable) {
+        return repository.findAllByDeliveryAddress(deliveryAddress, pageable);
     }
 
     @Override
