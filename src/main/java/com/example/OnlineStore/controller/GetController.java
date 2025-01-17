@@ -233,7 +233,7 @@ public class GetController {
             modelAndView.addObject("message", "No orders found.");
         } else {
             modelAndView.addObject("orders", orderPage.getContent());
-            modelAndView.addObject("totalPages", orderPage.getTotalPages());
+            //modelAndView.addObject("totalPages", orderPage.getTotalPages());
             modelAndView.addObject("currentPage", page);
         }
         //modelAndView.addObject("listStatus", orderStatusService.findAllOrderStatus());
@@ -246,9 +246,8 @@ public class GetController {
     @GetMapping("/orders")
     public ResponseEntity<Page<OrderDTO>> getOrders(
             @RequestParam("addressId") String addressId,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
+            @RequestParam(defaultValue = "0") int page) {
+        Pageable pageable = PageRequest.of(page, 10);
         Page<Order> orders;
         //List<Order> orders;
         if (addressId.equals("all")) {
