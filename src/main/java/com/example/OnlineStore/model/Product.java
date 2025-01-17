@@ -42,7 +42,7 @@ public class Product {
 
     @NotNull(message = "Товар должен иметь хотя бы 1 категорию !")
     //@ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "product_in_category",
@@ -52,7 +52,7 @@ public class Product {
     private Set<ProductCategory> productCategories;
 
     //@ManyToOne(cascade = CascadeType.ALL)
-    @JsonBackReference
+    //@JsonBackReference
     @ManyToOne
     @JoinColumn(name = "seller_id")
     private User user;

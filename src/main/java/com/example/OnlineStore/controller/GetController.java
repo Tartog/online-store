@@ -1,5 +1,9 @@
 package com.example.OnlineStore.controller;
 
+import com.example.OnlineStore.DTO.Mapper.OrderMapper;
+import com.example.OnlineStore.DTO.Mapper.ProductCategoryMapper;
+import com.example.OnlineStore.DTO.OrderDTO;
+import com.example.OnlineStore.DTO.ProductCategoryDTO;
 import com.example.OnlineStore.model.*;
 import com.example.OnlineStore.service.*;
 import lombok.AllArgsConstructor;
@@ -163,6 +167,7 @@ public class GetController {
 
         if (city == null && street == null && houseNumber == null) {
             addresses = deliveryAddressService.findAllDeliveryAddress(pageable);
+
         } else {
             addresses = deliveryAddressService.findByFilters(
                     (city != null && !city.isEmpty()) ? city : null,
@@ -239,7 +244,7 @@ public class GetController {
 
     @PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
     @GetMapping("/orders")
-    public ResponseEntity<Page<Order>> getOrders(
+    public ResponseEntity<Page<OrderDTO>> getOrders(
             @RequestParam("addressId") String addressId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -252,6 +257,9 @@ public class GetController {
             DeliveryAddress address = deliveryAddressService.findById(Long.parseLong(addressId));
             orders = orderService.findAllOrdersByAddress(address, pageable);
         }
+
+        Page<OrderDTO> orderDTOs = orders.map(OrderMapper::toDTO);
+
         //Map<String, Object> response = new HashMap<>();
         //orders.getTotalPages();
         //int totalPages = (int) Math.ceil((double) orderService.getTotalCount(addressId) / size);
@@ -259,14 +267,14 @@ public class GetController {
         //response.put("listOrder", orders.getContent());
         //.put("totalPages", orders.getTotalPages());
 
-        return ResponseEntity.ok(orders);
+        return ResponseEntity.ok(orderDTOs);
     }
 
 
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/productCategory")
-    public ResponseEntity<Page<ProductCategory>> getProductCategory(@RequestParam(defaultValue = "0") int page,
-                                                                    @RequestParam(required = false) String search) {
+    public ResponseEntity<Page<ProductCategoryDTO>> getProductCategory(@RequestParam(defaultValue = "0") int page,
+                                                                       @RequestParam(required = false) String search) {
         Pageable pageable = PageRequest.of(page, 10);
         Page<ProductCategory> categories;
 
@@ -276,17 +284,21 @@ public class GetController {
             categories = productCategoryService.findAllProductCategory(pageable);
         }
 
-        return ResponseEntity.ok(categories);
+        Page<ProductCategoryDTO> productCategoryDTOs = categories.map(ProductCategoryMapper::toDTO);
+
+        return ResponseEntity.ok(productCategoryDTOs);
     }
 
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/productCategory/{id}")
-    public ResponseEntity<ProductCategory> getProductCategoryById(@PathVariable Long id) {
+    public ResponseEntity<ProductCategoryDTO> getProductCategoryById(@PathVariable Long id){
         ProductCategory productCategory = productCategoryService.findById(id);
         if (productCategory == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(productCategory);
+        ProductCategoryDTO productCategoryDTO = ProductCategoryMapper.toDTO(productCategory);
+
+        return ResponseEntity.ok(productCategoryDTO);
     }
 
     @PreAuthorize("hasAuthority('Admin')")

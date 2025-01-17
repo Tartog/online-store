@@ -59,7 +59,7 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @JsonManagedReference
+    //@JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "seller_id")
     private Set<Product> products = new HashSet<Product>();
