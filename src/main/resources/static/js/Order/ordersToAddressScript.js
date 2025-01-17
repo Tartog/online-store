@@ -17,13 +17,24 @@ function loadOrders(page, addressId = 'all') {
                     return `<li>${product.product?.name || 'Неизвестно'} x ${product.numberOfProduct} - ${product.product?.price || 0}</li>`;
                 }).join(''); // Создаем список товаров
 
+                const statusOptions = ['Ожидает', 'Доставляется', 'Возвращен', 'Получен'];
+                const statusDropdown =
+                    `<select id="status-${order.id}">
+                    ${statusOptions.map(status => `<option value="${status}" 
+                        ${status === order.orderStatus?.status ? 'selected' : ''}>${status}</option>`).join('')}
+                    </select>
+                    <button class="update-status" data-order-id="${order.id}">Обновить статус</button>`;
+
                 const row =
                     `<tr>
                         <td>${order.id}</td>
                         <td>${order.orderDate}</td>
                         <td>${order.expectedReceiveDate}</td>
                         <td>${order.user?.login || 'Неизвестно'}</td>
-                        <td>${order.orderStatus?.status || 'Неизвестно'}</td>
+                        <td>
+                            ${order.orderStatus?.status || 'Неизвестно'}
+                            ${statusDropdown}
+                        </td>
                         <td>
                             <ul>
                                 ${productsList} <!-- Вставляем список товаров -->
@@ -67,5 +78,25 @@ $(document).ready(function() {
     $('#next').click(function() {
         currentPage++;
         loadOrders(currentPage);
+    });
+
+    $(document).on('click', '.update-status', function() {
+        const orderId = $(this).data('order-id');
+        const selectedStatus = $(`#status-${orderId}`).val();
+
+        // Отправка запроса на обновление статуса
+        $.ajax({
+            url: `/api/v1/store/orders/updateOrderStatus/${orderId}`, // URL для обновления статуса
+            method: 'PATCH',
+            contentType: 'application/json',
+            data: JSON.stringify(selectedStatus), // Передаем новый статус
+            success: function(response) {
+                console.log('Статус обновлён:', response);
+                loadOrders(currentPage); // Перезагружаем заказы, чтобы обновить статус в таблице
+            },
+            error: function(xhr, status, error) {
+                console.error('Ошибка обновления статуса:', error);
+            }
+        });
     });
 });

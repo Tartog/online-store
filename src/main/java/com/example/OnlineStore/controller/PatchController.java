@@ -1,5 +1,7 @@
 package com.example.OnlineStore.controller;
 
+import com.example.OnlineStore.DTO.Mapper.OrderMapper;
+import com.example.OnlineStore.DTO.OrderDTO;
 import com.example.OnlineStore.model.*;
 import com.example.OnlineStore.service.*;
 import jakarta.validation.Valid;
@@ -17,6 +19,8 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.sql.SQLOutput;
 
 @RestController
 @RequestMapping("/api/v1/store")
@@ -77,7 +81,7 @@ public class PatchController {
         return new ModelAndView("redirect:/api/v1/store/cart/" + login);
     }
 
-    @PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
+    /*@PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
     @PatchMapping("/updateOrderStatus")
     public ModelAndView updateOrderStatus(@RequestParam Long orderId, @RequestParam Long statusId, @RequestParam String addressId){
         //redirectAttributes.addAttribute("addressId", orderService.findById(orderId).getDeliveryAddress().getId());
@@ -94,7 +98,7 @@ public class PatchController {
         //ModelAndView modelAndView = new ModelAndView("redirect:/api/v1/store/orders");
         //modelAndView.addObject("addressId", orderService.findById(orderId).getDeliveryAddress().getId());
         return modelAndView;//new ModelAndView("redirect:/api/v1/store/orders");
-    }
+    }*/
 
     @PreAuthorize("hasAuthority('Admin')")
     @PatchMapping("deliveryAddress/updateAddress")
@@ -127,5 +131,21 @@ public class PatchController {
 
         productCategoryService.updateProductCategory(productCategory);
         return ResponseEntity.ok("Категория успешно обновлена!");
+    }
+
+    @PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
+    @PatchMapping("/orders/updateOrderStatus/{id}")
+    public ResponseEntity<OrderDTO> updateOrderStatus(@PathVariable("id") Long orderId, @RequestBody String status){
+        Order order = orderService.findById(orderId);
+        if (order == null) {
+            return ResponseEntity.notFound().build();
+        }
+        status = status.substring(1, status.length() - 1);
+        String finalStatus = status;
+        order.setOrderStatus(orderStatusService.findByStatus(status).orElseThrow(()->
+                new RuntimeException("Отсутствует статус заказа " + finalStatus + " !")));
+        orderService.updateOrder(order);
+
+        return ResponseEntity.ok(OrderMapper.toDTO(order));
     }
 }
