@@ -217,17 +217,19 @@ public class GetController {
 
     @PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
     @GetMapping("/ordersPage")
-    public ModelAndView showOrders(@RequestParam("addressId") String addressId, @RequestParam(defaultValue = "0") int page){
+    //public ModelAndView showOrders(@RequestParam("addressId") String addressId, @RequestParam(defaultValue = "0") int page){
+    public ModelAndView showOrders(@RequestParam(required = false) Long id, @RequestParam(defaultValue = "0") int page){
         int pageSize = 10;
         Page<Order> orderPage;
         // = productCategoryService.findAllProductCategory(PageRequest.of(page, pageSize));
-        ModelAndView modelAndView = new ModelAndView("html/Order/ordersToAddress");
-        if(addressId.equals("all")) {
+        ModelAndView modelAndView = new ModelAndView("html/Order/workerOrders");
+        if(id == null) {
             orderPage = orderService.findAllOrders(PageRequest.of(page, pageSize));
         }
         else{
-            DeliveryAddress address = deliveryAddressService.findById(Long.parseLong(addressId));
-            orderPage = orderService.findAllOrdersByAddress(address, PageRequest.of(page, pageSize));
+            //DeliveryAddress address = deliveryAddressService.findById(Long.parseLong(addressId));
+            //orderPage = orderService.findAllOrdersByAddress(address, PageRequest.of(page, pageSize));
+            orderPage = orderService.findAllOrdersById(id, PageRequest.of(page, pageSize));
         }
         if (orderPage.isEmpty()) {
             modelAndView.addObject("message", "No orders found.");
@@ -238,23 +240,30 @@ public class GetController {
         }
         //modelAndView.addObject("listStatus", orderStatusService.findAllOrderStatus());
         //modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
-        modelAndView.addObject("addressId", addressId);
+        //modelAndView.addObject("addressId", addressId);
         return modelAndView;
     }
 
     @PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
     @GetMapping("/orders")
     public ResponseEntity<Page<OrderDTO>> getOrders(
-            @RequestParam("addressId") String addressId,
-            @RequestParam(defaultValue = "0") int page) {
+            @RequestParam(defaultValue = "0") int page,
+            //@RequestParam(required = false) String city,
+            //@RequestParam(required = false) String street,
+            //@RequestParam(required = false) Integer houseNumber,
+            //@RequestParam(required = false) String status,
+            @RequestParam(required = false) Long id) {
         Pageable pageable = PageRequest.of(page, 10);
         Page<Order> orders;
         //List<Order> orders;
-        if (addressId.equals("all")) {
+        //List<DeliveryAddress> deliveryAddresses = deliveryAddressService.findByFilters(city, street, houseNumber);
+        if (id == null) {
             orders = orderService.findAllOrders(pageable);
         } else {
-            DeliveryAddress address = deliveryAddressService.findById(Long.parseLong(addressId));
-            orders = orderService.findAllOrdersByAddress(address, pageable);
+            orders = orderService.findAllOrdersById(id, pageable);
+            //DeliveryAddress address = deliveryAddressService.findById(Long.parseLong(addressId));
+            //orders = orderService.findAllOrdersByAddress(address, pageable);
+            //orders = orderService.findByFilters(city, street, houseNumber, status, id, pageable);
         }
 
         Page<OrderDTO> orderDTOs = orders.map(OrderMapper::toDTO);

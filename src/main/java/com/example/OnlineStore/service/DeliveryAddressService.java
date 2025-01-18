@@ -16,4 +16,5 @@ public interface DeliveryAddressService {
     Page<DeliveryAddress> findAllDeliveryAddress(Pageable pageable);
     long countTotalAddresses();
     Page<DeliveryAddress> findByFilters(String city, String street, Integer houseNumber, Pageable pageable);
+    List<DeliveryAddress> findByFilters(String city, String street, Integer houseNumber);
 }

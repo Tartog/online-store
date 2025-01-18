@@ -1,8 +1,16 @@
 let currentPage = 0;
+let searchID;
 
-function loadOrders(page, addressId = 'all') {
+function loadOrders(page, searchID) {
+    let url = `/api/v1/store/orders?&page=${page}`;
+
+    if (searchID) {
+        url += `&id=${searchID}`;
+    }
+
     $.ajax({
-        url: `/api/v1/store/orders?addressId=${addressId}&page=${page}`, // Запрос к контроллеру
+        //url: `/api/v1/store/orders?addressId=${addressId}&page=${page}`, // Запрос к контроллеру
+        url: url,
         method: 'GET',
         success: function(data) {
             console.log(data); // Для отладки
@@ -92,11 +100,21 @@ $(document).ready(function() {
             data: JSON.stringify(selectedStatus), // Передаем новый статус
             success: function(response) {
                 console.log('Статус обновлён:', response);
-                loadOrders(currentPage); // Перезагружаем заказы, чтобы обновить статус в таблице
+                loadOrders(currentPage, searchID); // Перезагружаем заказы, чтобы обновить статус в таблице
             },
             error: function(xhr, status, error) {
                 console.error('Ошибка обновления статуса:', error);
             }
         });
+    });
+
+    $('#search-button').click(function() {
+        // searchParams.city = $('#search-city').val().trim();
+        // searchParams.street = $('#search-street').val().trim();
+        // searchParams.houseNumber = parseInt($('#search-houseNumber').val().trim(), 10) || null;
+        // searchParams.status = $('#search-status').val().trim();
+        searchID = parseInt($('#search-id').val().trim(), 10) || null;
+        currentPage = 0;
+        loadOrders(currentPage, searchID);
     });
 });

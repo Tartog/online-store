@@ -35,11 +35,12 @@
         <p><a th:href="@{/api/v1/store/order/{login}/orders(login=${currentUser.getLogin()})}">Мои заказы</a></p>
     </div>
     <div th:if="${currentUser.getRole().getUserRole() == 'Worker' or currentUser.getRole().getUserRole() == 'Admin'}">
-        <form th:method="GET"
-              th:action="@{/api/v1/store/ordersPage}">
-            <input type="hidden" name="addressId" th:value="${'all'}">
-            <input type="submit" value="Заказы">
-        </form>
+        <p><a th:href="@{/api/v1/store/ordersPage}">Заказы</a></p>
+<!--        <form th:method="GET"-->
+<!--              th:action="@{/api/v1/store/ordersPage}">-->
+<!--            <input type="hidden" name="addressId" th:value="${'all'}">-->
+<!--            <input type="submit" value="Заказы">-->
+<!--        </form>-->
     </div>
 
     <div th:each="product : ${listOfProduct}">

@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -64,7 +65,35 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Page<Order> findAllOrdersById(Long id, Pageable pageable) {
+        return repository.findById(id, pageable);
+    }
+
+    @Override
     public List<Order> findAllByAddress(DeliveryAddress deliveryAddress) {
         return repository.findAllByDeliveryAddress(deliveryAddress);
     }
+
+    /*@Override
+    public Page<Order> findByFilters(String city, String street, Integer houseNumber, String status, Long id, Pageable pageable) {
+        Specification<Order> spec = Specification.where(null);
+
+        if (city != null && !city.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("city"), "%" + city + "%"));
+        }
+        if (street != null && !street.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("street"), "%" + street + "%"));
+        }
+        if (houseNumber != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("houseNumber"), houseNumber));
+        }
+        if (status != null && !status.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("status"), "%" + status + "%"));
+        }
+        if (id != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("id"), id));
+        }
+
+        return repository.findAll(spec, pageable);
+    }*/
 }

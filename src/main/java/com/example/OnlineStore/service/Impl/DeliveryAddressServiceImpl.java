@@ -84,4 +84,21 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
 
         return repository.findAll(spec, pageable);
     }
+
+    @Override
+    public List<DeliveryAddress> findByFilters(String city, String street, Integer houseNumber) {
+        Specification<DeliveryAddress> spec = Specification.where(null);
+
+        if (city != null && !city.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("city"), "%" + city + "%"));
+        }
+        if (street != null && !street.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("street"), "%" + street + "%"));
+        }
+        if (houseNumber != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("houseNumber"), houseNumber));
+        }
+
+        return repository.findAll(spec);
+    }
 }

@@ -17,4 +17,6 @@ public interface OrderService {
     Page<Order> findAllOrders(Pageable pageable);
     Page<Order> findAllOrdersByAddress(DeliveryAddress deliveryAddress, Pageable pageable);
     List<Order> findAllByAddress(DeliveryAddress deliveryAddress);
+    //public Page<Order> findByFilters(String city, String street, Integer houseNumber, String status, Long id, Pageable pageable);
+    Page<Order> findAllOrdersById(Long id, Pageable pageable);
 }
