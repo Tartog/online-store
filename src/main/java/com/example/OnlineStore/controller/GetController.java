@@ -283,7 +283,7 @@ public class GetController {
             categories = productCategoryService.findAllProductCategory(pageable);
         }
 
-        Page<ProductCategoryDTO> productCategoryDTOs = categories.map(ProductCategoryMapper::toDTO);
+        Page<ProductCategoryDTO> productCategoryDTOs = categories.map(ProductCategoryMapper::toDTO_FULL);
 
         return ResponseEntity.ok(productCategoryDTOs);
     }
@@ -295,7 +295,7 @@ public class GetController {
         if (productCategory == null) {
             return ResponseEntity.notFound().build();
         }
-        ProductCategoryDTO productCategoryDTO = ProductCategoryMapper.toDTO(productCategory);
+        ProductCategoryDTO productCategoryDTO = ProductCategoryMapper.toDTO_FULL(productCategory);
 
         return ResponseEntity.ok(productCategoryDTO);
     }

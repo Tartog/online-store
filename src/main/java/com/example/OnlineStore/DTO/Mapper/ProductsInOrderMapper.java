@@ -11,16 +11,11 @@ public class ProductsInOrderMapper {
         ProductsInOrderDTO dto = new ProductsInOrderDTO();
         dto.setId(productsInOrder.getId());
         dto.setNumberOfProduct(productsInOrder.getNumberOfProduct());
-        dto.setProduct(ProductMapper.toDTO(productsInOrder.getProduct()));
-        //dto.setOrder(OrderMapper.toDTO(productsInOrder.getOrder()));
-
+        dto.setProduct(ProductMapper.toDTO_FULL(productsInOrder.getProduct()));
         return dto;
     }
 
     public static Set<ProductsInOrderDTO> toDTOSet(Set<ProductsInOrder> productsInOrder) {
-        /*if (productsInOrder == null) {
-            return Set.of();
-        }*/
         return productsInOrder.stream()
                 .map(ProductsInOrderMapper::toDTO)
                 .collect(Collectors.toSet());

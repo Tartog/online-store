@@ -8,7 +8,7 @@ public class CartMapper {
         CartDTO dto = new CartDTO();
         dto.setId(cart.getId());
         dto.setUser(UserMapper.toDTO(cart.getUser()));
-        dto.setProduct(ProductMapper.toDTO(cart.getProduct()));
+        dto.setProduct(ProductMapper.toDTO_FULL(cart.getProduct()));
         dto.setNumberOfProduct(cart.getNumberOfProduct());
         return dto;
     }
