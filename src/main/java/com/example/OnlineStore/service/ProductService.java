@@ -1,7 +1,10 @@
 package com.example.OnlineStore.service;
 
+import com.example.OnlineStore.model.DeliveryAddress;
 import com.example.OnlineStore.model.Product;
 import com.example.OnlineStore.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -14,4 +17,5 @@ public interface ProductService {
     boolean existsProduct(Product product);
     void deleteProductByName(String name);
     List<Product> findAll();
+    Page<Product> findAllProductsBySeller(User user, Pageable pageable);
 }

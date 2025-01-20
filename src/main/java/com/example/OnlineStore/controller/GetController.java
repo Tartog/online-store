@@ -342,10 +342,36 @@ public class GetController {
     public ModelAndView showProductsPage(@PathVariable String login){
         ModelAndView modelAndView = new ModelAndView("html/Product/productsPage");
         User seller = userService.findByLogin(login);
-        modelAndView.addObject("seller", seller);
-        modelAndView.addObject("listProduct", productService.findAllProduct(seller));
+        //modelAndView.addObject("seller", seller);
+        //modelAndView.addObject("listProduct", productService.findAllProduct(seller));
 
         return modelAndView;
+    }
+
+    @PreAuthorize("hasAuthority('Seller') and @userSecurity.hasAccess(authentication, #login)")
+    @GetMapping("/products/{login}")
+    public ResponseEntity<Page<Product>> getProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @PathVariable("login") String login) {
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<Product> products;
+        User seller = userService.findByLogin(login);
+        products = productService.findAllProductsBySeller(seller, pageable);
+
+        /*if (city == null && street == null && houseNumber == null) {
+            addresses = deliveryAddressService.findAllDeliveryAddress(pageable);
+
+        } else {
+            addresses = deliveryAddressService.findByFilters(
+                    (city != null && !city.isEmpty()) ? city : null,
+                    (street != null && !street.isEmpty()) ? street : null,
+                    houseNumber,
+                    pageable
+            );
+        }*/
+
+
+        return ResponseEntity.ok(products);
     }
 
     @PreAuthorize("hasAuthority('Seller')")

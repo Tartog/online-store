@@ -8,6 +8,8 @@ import com.example.OnlineStore.service.ProductService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,5 +61,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public Page<Product> findAllProductsBySeller(User seller, Pageable pageable) {
+        return repository.findAllProductsBySeller(seller, pageable);
     }
 }

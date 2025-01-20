@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Products page</title>
+</head>
+<body>
+<a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
+<p><a th:href="@{/api/v1/store/products/{login}/newProduct(login=${seller.getLogin()})}">Добавить новый товар</a></p>
+</br>
+</hr>
+</br>
+<div th:each="product : ${listProduct}">
+    <a th:text="${product.getName() + ', Цена: ' + product.getPrice() + ', Количество на складе: '
+        + product.getNumberOfProducts()}">product</a>
+    <form th:method="DELETE"
+          th:action="@{/api/v1/store/products/deleteProduct/{productId}(productId=${product.getId()})}">
+        <input type="submit" value="Удалить">
+    </form>
+    </hr>
+    </br>
+</div>
+</body>
+</html>
