@@ -65,6 +65,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> findAllProductsBySeller(User seller, Pageable pageable) {
-        return repository.findAllProductsBySeller(seller, pageable);
+        return repository.findAllProductsByUser(seller, pageable);
     }
 }

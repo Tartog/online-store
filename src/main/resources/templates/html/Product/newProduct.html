@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>New product</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/Product/newProductScript.js" defer></script>
 </head>
 <body>
 
@@ -11,10 +13,12 @@
     <input type="text" th:field="*{name}" id="name"/>
     <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
     <br/>
+
     <label for="numberOfProducts">Введите количество товара на складе: </label>
     <input type="text" th:field="*{numberOfProducts}" id="numberOfProducts"/>
     <div style="color:red" th:if="${#fields.hasErrors('numberOfProducts')}" th:errors="*{numberOfProducts}">Number of products error</div>
     <br/>
+
     <label for="price">Введите цену: </label>
     <input type="text" th:field="*{price}" id="price"/>
     <div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price error</div>
@@ -26,23 +30,37 @@
     <br/>
 
     <label>Категории:</label>
-    <div th:each="category : ${listProductCategory}">
-        <input type="checkbox" th:id="'category_' + ${category.getId()}"
-               th:value="${category.getId()}"
-               th:name="productCategories"
-               th:field="*{productCategories}" />
-        <label th:for="'category_' + ${category.getId()}">
-            <span th:text="${category.getCategory()}"></span>
-        </label>
+    <div id="category-list">
+        <div th:if="${categoryPage != null}">
+            <div th:if="${not #lists.isEmpty(categoryPage.content)}">
+                <div th:each="category : ${categoryPage.content}">
+                    <div>
+                        <input type="checkbox" th:id="'category_' + ${category.id}" th:value="${category.id}" name="productCategories" />
+                        <label th:for="'category_' + ${category.id}">[[${category.category}]]</label>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${#lists.isEmpty(categoryPage.content)}">Нет доступных категорий</div>
+        </div>
+        <div th:if="${categoryPage == null}">Нет доступных категорий</div>
     </div>
+
     <div style="color:red" th:if="${#fields.hasErrors('productCategories')}" th:errors="*{productCategories}">Category error</div>
 
     <input type="hidden" th:field="*{id}" id="id" />
+    <input type="hidden" th:field="*{user}" id="user" />
 
-    <input type="hidden" th:field="*{user}" id="${product.getUser()}}" />
+    <div>
+        <button id="prev-category" style="display:none;">Предыдущие</button>
+        <button id="next-category">Следующие</button>
+    </div>
+
+    <br/>
 
     <input type="submit" value="Создать !"/>
 </form>
+
+
 
 </body>
 </html>

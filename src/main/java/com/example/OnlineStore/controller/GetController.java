@@ -2,8 +2,11 @@ package com.example.OnlineStore.controller;
 
 import com.example.OnlineStore.DTO.Mapper.OrderMapper;
 import com.example.OnlineStore.DTO.Mapper.ProductCategoryMapper;
+import com.example.OnlineStore.DTO.Mapper.ProductMapper;
+import com.example.OnlineStore.DTO.Mapper.UserMapper;
 import com.example.OnlineStore.DTO.OrderDTO;
 import com.example.OnlineStore.DTO.ProductCategoryDTO;
+import com.example.OnlineStore.DTO.ProductDTO;
 import com.example.OnlineStore.model.*;
 import com.example.OnlineStore.service.*;
 import lombok.AllArgsConstructor;
@@ -337,41 +340,45 @@ public class GetController {
         return modelAndView;
     }
 
-    @PreAuthorize("hasAuthority('Seller') and @userSecurity.hasAccess(authentication, #login)")
+    /*@PreAuthorize("hasAuthority('Seller') and @userSecurity.hasAccess(authentication, #login)")
     @GetMapping("/products/{login}")
     public ModelAndView showProductsPage(@PathVariable String login){
         ModelAndView modelAndView = new ModelAndView("html/Product/productsPage");
         User seller = userService.findByLogin(login);
-        //modelAndView.addObject("seller", seller);
-        //modelAndView.addObject("listProduct", productService.findAllProduct(seller));
+        modelAndView.addObject("seller", seller);
+        modelAndView.addObject("listProduct", productService.findAllProduct(seller));
 
         return modelAndView;
-    }
+    }*/
+
+    /*@PreAuthorize("hasAuthority('Seller') and @userSecurity.hasAccess(authentication, #login)")
+    @GetMapping("/products/{login}")
+    public ModelAndView showProductsPage(@PathVariable String login,
+                                         @RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "10") int size) {
+        ModelAndView modelAndView = new ModelAndView("html/Product/productsPage");
+        User seller = userService.findByLogin(login);
+        modelAndView.addObject("seller", seller);
+        modelAndView.addObject("page", productService.findAllProductsBySeller(seller, PageRequest.of(page, size)));
+
+        return modelAndView;
+    }*/
 
     @PreAuthorize("hasAuthority('Seller') and @userSecurity.hasAccess(authentication, #login)")
-    @GetMapping("/products/{login}")
-    public ResponseEntity<Page<Product>> getProducts(
+    @GetMapping("/products")
+    public ResponseEntity<Page<ProductDTO>> getProducts(
             @RequestParam(defaultValue = "0") int page,
-            @PathVariable("login") String login) {
+            @RequestParam("login") String login) {
         Pageable pageable = PageRequest.of(page, 10);
         Page<Product> products;
         User seller = userService.findByLogin(login);
         products = productService.findAllProductsBySeller(seller, pageable);
 
-        /*if (city == null && street == null && houseNumber == null) {
-            addresses = deliveryAddressService.findAllDeliveryAddress(pageable);
+        Page<ProductDTO> productDTOs = products.map(ProductMapper::toDTO_FULL);
 
-        } else {
-            addresses = deliveryAddressService.findByFilters(
-                    (city != null && !city.isEmpty()) ? city : null,
-                    (street != null && !street.isEmpty()) ? street : null,
-                    houseNumber,
-                    pageable
-            );
-        }*/
+        return ResponseEntity.ok(productDTOs);
 
-
-        return ResponseEntity.ok(products);
+        //return ResponseEntity.ok(products);
     }
 
     @PreAuthorize("hasAuthority('Seller')")
@@ -382,11 +389,38 @@ public class GetController {
         Product product = new Product();
         product.setUser(seller);
         //modelAndView.addObject("seller", seller);
-        modelAndView.addObject("listProductCategory", productCategoryService.findAllProductCategory());
+        //modelAndView.addObject("listProductCategory", productCategoryService.findAllProductCategory());
+        Page<ProductCategory> categoryPage = productCategoryService.findAllProductCategory(PageRequest.of(0, 10));
+
+
+        //System.out.println("*****************");
+        //System.out.println(categoryPage.getContent().toString());
+        //System.out.println("*****************");
+
+
+        modelAndView.addObject("categoryPage", categoryPage);
         modelAndView.addObject("product", product);
 
         return modelAndView;
     }
+
+    @PreAuthorize("hasAuthority('Seller')")
+    @GetMapping("/products/{login}")
+    public ModelAndView showProductsPage(@PathVariable String login,
+                                       @RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(defaultValue = "10") int size) {
+        ModelAndView modelAndView = new ModelAndView("html/Product/productsPage");
+        User seller = userService.findByLogin(login);
+        Page<Product> productPage = productService.findAllProductsBySeller(seller, PageRequest.of(page, size));
+
+        modelAndView.addObject("productPage", productPage);
+        modelAndView.addObject("seller", UserMapper.toDTO_WithoutProducts(seller));
+        modelAndView.addObject("currentPage", page);
+        modelAndView.addObject("totalPages", productPage.getTotalPages());
+
+        return modelAndView;
+    }
+
 
     @GetMapping("/product/{productId}")
     public ModelAndView showProductPage(@PathVariable String productId){

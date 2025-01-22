@@ -4,11 +4,18 @@
     <meta charset="UTF-8">
     <title>Products page</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script th:src="@{/js/Product/productScript.js}" defer></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        let seller = /*[[${seller.getLogin()}]]*/ {};
+        /*]]>*/
+    </script>
+<!--    <script> let seller = [[${seller.login}]]; // Убедитесь, что это правильно</script>-->
+    <script src="/js/Product/productScript.js" defer></script>
 </head>
 <body>
 <a href="/api/v1/store">Вернуться на главную страницу</a>
 <p><button id="add-product-button">Добавить новый товар</button></p>
+<p><a th:href="@{/api/v1/store/products/{login}/newProduct(login=${seller.getLogin()})}">Добавить новый товар</a></p>
 <br/>
 <hr/>
 <br/>
@@ -20,5 +27,6 @@
     <button id="prev-page" style="display:none;">Предыдущие</button>
     <button id="next-page">Следующие</button>
 </div>
+
 </body>
 </html>

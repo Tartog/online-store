@@ -109,6 +109,48 @@ public class PostController {
 
     @PreAuthorize("hasAuthority('Seller')")
     @PostMapping("/product/newProduct")
+    public ModelAndView createProduct(@RequestParam("image") MultipartFile image, @Valid Product product, BindingResult bindingResult) {
+        if (productService.existsProduct(product)) {
+            bindingResult.rejectValue("name", "error.product", "Такое название товара уже есть !");
+        }
+
+        if (product.getProductCategories() == null || product.getProductCategories().isEmpty()) {
+            bindingResult.rejectValue("productCategories", "error.product", "Товар должен иметь хотя бы 1 категорию !");
+        }
+
+        // Обработка загрузки изображения
+        if (!image.isEmpty()) {
+            String directoryPath = "C:/Users/Tartog/OnlineStore/Images/";
+            File directory = new File(directoryPath);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            String imagePath = directoryPath + image.getOriginalFilename();
+            File file = new File(imagePath);
+            try {
+                image.transferTo(file);
+                product.setImagePath("/Images/" + image.getOriginalFilename());
+            } catch (IOException e) {
+                e.printStackTrace();
+                bindingResult.rejectValue("imagePath", "error.imagePath", "Ошибка при добавлении изображения !");
+            }
+        }
+
+        if (bindingResult.hasErrors()) {
+            product.setProductCategories(new HashSet<>());
+            ModelAndView modelAndView = new ModelAndView("html/Product/newProduct");
+            modelAndView.addObject("listProductCategory", productCategoryService.findAllProductCategory());
+            modelAndView.addObject("product", product);
+            return modelAndView;
+        }
+
+        productService.saveProduct(product);
+        return new ModelAndView("redirect:/api/v1/store/products/" + product.getUser().getLogin());
+    }
+
+    /*@PreAuthorize("hasAuthority('Seller')")
+    @PostMapping("/product/newProduct")
     public ModelAndView createProduct(@RequestParam("image") MultipartFile image, @Valid Product product, BindingResult bindingResult){
         if(productService.existsProduct(product)){
             bindingResult.rejectValue("name", "error.product", "Такое название товара уже есть !");
@@ -165,7 +207,7 @@ public class PostController {
         }
         productService.saveProduct(product);
         return new ModelAndView("redirect:/api/v1/store/products/" + product.getUser().getLogin());
-    }
+    }*/
 
     @PreAuthorize("hasAuthority('User')")
     @PostMapping("/cart/{login}/{productId}")
