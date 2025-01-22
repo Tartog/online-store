@@ -7,8 +7,15 @@ function loadProducts(page, seller) {
         .done(function(data) {
             $('#product-list').empty(); // Очистить текущий список
             if (data.content) {
-                data.content.forEach(product => {
-                    $('#product-list').append(`<div>${product.name} - ${product.price}</div>`);
+                data.content.forEach(function(product) {
+                    $('#product-list').append(`
+                    <div>
+                        <span>${product.name}</span>
+                        <button class="update-button" data-id="${product.id}">Редактировать</button>
+                        <button class="delete-button" data-id="${product.id}">Удалить</button>
+                        </hr>
+                    </div>
+                `);
                 });
             } else {
                 console.error("Полученные данные не содержат 'content':", data);
@@ -26,6 +33,22 @@ function loadProducts(page, seller) {
 
 $(document).ready(function() {
     loadProducts(currentPage, seller); // Используйте seller здесь
+
+    $(document).on('click', '.delete-button', function() {
+        const productId = $(this).data('id');
+        if (confirm("Вы уверены, что хотите удалить этот товар?")) {
+            $.ajax({
+                url: `/api/v1/store/products/deleteProduct/${productId}`,
+                method: 'DELETE',
+                success: function() {
+                    loadProducts(currentPage, seller);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Ошибка при удалении товара:", error);
+                }
+            });
+        }
+    });
 
     $('#prev-page').click(function() {
         currentPage--;

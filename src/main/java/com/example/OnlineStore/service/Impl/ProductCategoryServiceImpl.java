@@ -1,8 +1,10 @@
 package com.example.OnlineStore.service.Impl;
 
+import com.example.OnlineStore.model.Product;
 import com.example.OnlineStore.model.ProductCategory;
 import com.example.OnlineStore.repository.ProductCategoryRepository;
 import com.example.OnlineStore.service.ProductCategoryService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Primary;
@@ -44,11 +46,26 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 
     @Override
     public void deleteProductCategory(Long id) {
+        ProductCategory category = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+
+        // Удаляем связь с товарами
+        for (Product product : category.getProducts()) {
+            product.getProductCategories().remove(category);
+        }
+
+        // Удаляем категорию
+        //repository.delete(category);
         repository.deleteById(id);
     }
 
     @Override
     public void deleteByCategory(String category) {
+        ProductCategory productCategory = repository.findProductCategoryByCategory(category)
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+        for (Product product : productCategory.getProducts()) {
+            product.getProductCategories().remove(productCategory);
+        }
         repository.deleteByCategory(category);
     }
 

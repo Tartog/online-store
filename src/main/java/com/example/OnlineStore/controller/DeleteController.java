@@ -39,11 +39,13 @@ public class DeleteController {
         return ResponseEntity.noContent().build(); // Возвращаем 204 No Content
     }
 
+    @PreAuthorize("hasAuthority('Seller')")
     @DeleteMapping("products/deleteProduct/{productId}")
-    public ModelAndView deleteProduct(@PathVariable String productId){
-        User seller = productService.findById(Long.parseLong(productId)).getUser();
-        productService.deleteProductByName(productService.findById(Long.parseLong(productId)).getName());
-        return new ModelAndView("redirect:/api/v1/store/products/" + seller.getLogin());
+    public ResponseEntity<Void> deleteProduct(@PathVariable String productId){
+        //productService.deleteProductByName(productService.findById(Long.parseLong(productId)).getName());
+        productService.deleteProduct(Long.parseLong(productId));
+        //productService.deleteProductByName(productService.findById(Long.parseLong(productId)).getName());
+        return ResponseEntity.noContent().build();
     }
 
     @PreAuthorize("hasAuthority('Admin') or authentication.name == #login")

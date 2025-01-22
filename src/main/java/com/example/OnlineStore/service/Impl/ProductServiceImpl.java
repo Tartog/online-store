@@ -1,10 +1,12 @@
 package com.example.OnlineStore.service.Impl;
 
 import com.example.OnlineStore.model.Product;
+import com.example.OnlineStore.model.ProductCategory;
 import com.example.OnlineStore.model.User;
 import com.example.OnlineStore.repository.ProductCategoryRepository;
 import com.example.OnlineStore.repository.ProductRepository;
 import com.example.OnlineStore.service.ProductService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Primary;
@@ -45,7 +47,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long id) {
-        repository.deleteById(id);
+
+        Product product = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Product not found"));
+
+        // Удаляем связи с категориями
+        for (ProductCategory category : product.getProductCategories()) {
+            category.getProducts().remove(product);
+        }
+
+        // Удаляем товар
+        repository.delete(product);
     }
 
     @Override
