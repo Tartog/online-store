@@ -282,7 +282,7 @@ public class GetController {
     }
 
 
-    @PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('Admin') or hasAuthority('Seller')")
     @GetMapping("/productCategory")
     public ResponseEntity<Page<ProductCategoryDTO>> getProductCategory(@RequestParam(defaultValue = "0") int page,
                                                                        @RequestParam(required = false) String search) {

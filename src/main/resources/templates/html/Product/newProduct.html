@@ -31,36 +31,24 @@
 
     <label>Категории:</label>
     <div id="category-list">
-        <div th:if="${categoryPage != null}">
-            <div th:if="${not #lists.isEmpty(categoryPage.content)}">
-                <div th:each="category : ${categoryPage.content}">
-                    <div>
-                        <input type="checkbox" th:id="'category_' + ${category.id}" th:value="${category.id}" name="productCategories" />
-                        <label th:for="'category_' + ${category.id}">[[${category.category}]]</label>
-                    </div>
-                </div>
-            </div>
-            <div th:if="${#lists.isEmpty(categoryPage.content)}">Нет доступных категорий</div>
-        </div>
-        <div th:if="${categoryPage == null}">Нет доступных категорий</div>
+        <!-- Список категорий будет загружен здесь с помощью JavaScript -->
     </div>
 
     <div style="color:red" th:if="${#fields.hasErrors('productCategories')}" th:errors="*{productCategories}">Category error</div>
 
     <input type="hidden" th:field="*{id}" id="id" />
     <input type="hidden" th:field="*{user}" id="user" />
-
-    <div>
-        <button id="prev-category" style="display:none;">Предыдущие</button>
-        <button id="next-category">Следующие</button>
-    </div>
-
-    <br/>
+    <input type="hidden" id="selectedCategories" name="selectedCategories" />
 
     <input type="submit" value="Создать !"/>
 </form>
 
+<br/>
 
+<div>
+    <button id="prev-category" style="display:none;">Предыдущие</button>
+    <button id="next-category">Следующие</button>
+</div>
 
 </body>
 </html>

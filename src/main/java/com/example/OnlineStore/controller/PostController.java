@@ -17,7 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/store")
@@ -109,13 +112,29 @@ public class PostController {
 
     @PreAuthorize("hasAuthority('Seller')")
     @PostMapping("/product/newProduct")
-    public ModelAndView createProduct(@RequestParam("image") MultipartFile image, @Valid Product product, BindingResult bindingResult) {
+    public ModelAndView createProduct(
+            @RequestParam("image") MultipartFile image,
+            @RequestParam("selectedCategories") String selectedCategories,
+            @Valid Product product, BindingResult bindingResult) {
+
+
         if (productService.existsProduct(product)) {
             bindingResult.rejectValue("name", "error.product", "Такое название товара уже есть !");
         }
 
-        if (product.getProductCategories() == null || product.getProductCategories().isEmpty()) {
+        if (selectedCategories == null || selectedCategories.isEmpty()) {
             bindingResult.rejectValue("productCategories", "error.product", "Товар должен иметь хотя бы 1 категорию !");
+        }
+        else{
+            Set<ProductCategory> categories = new HashSet<>();
+            for (String idStr : selectedCategories.split(",")) {
+                Long id = Long.parseLong(idStr);
+                ProductCategory category = productCategoryService.findById(id);
+                if (category != null) {
+                    categories.add(category);
+                }
+            }
+            product.setProductCategories(categories);
         }
 
         // Обработка загрузки изображения
@@ -138,6 +157,11 @@ public class PostController {
         }
 
         if (bindingResult.hasErrors()) {
+            if (bindingResult.getErrorCount() == 1 && bindingResult.hasFieldErrors("productCategories")
+                    && !(selectedCategories == null || selectedCategories.isEmpty())) {
+                productService.saveProduct(product);
+                return new ModelAndView("redirect:/api/v1/store/products/" + product.getUser().getLogin());
+            }
             product.setProductCategories(new HashSet<>());
             ModelAndView modelAndView = new ModelAndView("html/Product/newProduct");
             modelAndView.addObject("listProductCategory", productCategoryService.findAllProductCategory());
