@@ -11,7 +11,6 @@ function loadProducts(page, seller) {
                     $('#product-list').append(`
                     <div>
                         <span>${product.name}</span>
-                        <button class="update-button" data-id="${product.id}">Редактировать</button>
                         <button class="delete-button" data-id="${product.id}">Удалить</button>
                         </hr>
                     </div>

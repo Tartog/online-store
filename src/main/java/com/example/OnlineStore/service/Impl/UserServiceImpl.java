@@ -1,18 +1,26 @@
 package com.example.OnlineStore.service.Impl;
 
+import com.example.OnlineStore.model.Product;
+import com.example.OnlineStore.model.ProductCategory;
 import com.example.OnlineStore.model.User;
 import com.example.OnlineStore.repository.ProductRepository;
 import com.example.OnlineStore.repository.RoleRepository;
 import com.example.OnlineStore.repository.UserRepository;
+import com.example.OnlineStore.service.ProductService;
 import com.example.OnlineStore.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.hibernate.TransientObjectException;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,6 +32,8 @@ public class UserServiceImpl implements UserService, CommandLineRunner {
 
     private UserRepository repository;
     private RoleRepository repositoryRole;
+    //private ProductRepository productRepository;
+    private ProductService productService;
     private PasswordEncoder passwordEncoder;
     //private ProductRepository repositoryProduct;
 
@@ -76,8 +86,19 @@ public class UserServiceImpl implements UserService, CommandLineRunner {
 
     @Override
     public void deleteUser(Long id) {
-        //repositoryProduct.deleteByUserId(id);
-        repository.deleteById(id);
+        try {
+            User user = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("User  not found"));
+            //List<Product> products = new ArrayList<>(user.getProducts());
+            for (Product product : user.getProducts()) {
+                //product.setUser(null);
+                productService.deleteProduct(product.getId());
+            }
+            //productRepository.deleteAll(products);
+            repository.deleteById(id);
+        } catch (TransientObjectException e) {
+            throw new RuntimeException("Не удалось удалить пользователя из-за связанных объектов", e);
+        }
+        //repository.deleteById(id);
     }
 
     @Override
@@ -94,8 +115,7 @@ public class UserServiceImpl implements UserService, CommandLineRunner {
         if(repository.findByLogin(login).isEmpty() || repository.findById(id).get().getLogin().equals(login)){
             return true;
         }
-        return false; // Метод поиска пользователя по email
-        //return repository.findByLogin(login).isEmpty(); // Метод поиска пользователя по login
+        return false;
     }
 
     public boolean emailExists(String email, Long id) {
@@ -108,7 +128,24 @@ public class UserServiceImpl implements UserService, CommandLineRunner {
 
     @Override
     public void deleteUserByLogin(String login) {
-        repository.deleteUserByLogin(login);
+        try {
+            User user = repository.findByLogin(login).orElseThrow(() -> new EntityNotFoundException("User  not found"));
+            //List<Product> products = new ArrayList<>(user.getProducts());
+            //productRepository.deleteAll(products);
+            for (Product product : user.getProducts()) {
+                //product.setUser(null);
+                productService.deleteProduct(product.getId());
+            }
+            repository.deleteUserByLogin(login);
+        } catch (TransientObjectException e) {
+            throw new RuntimeException("Не удалось удалить пользователя из-за связанных объектов", e);
+        }
+        //repository.deleteUserByLogin(login);
+    }
+
+    @Override
+    public Page<User> findAllUsers(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     @Override

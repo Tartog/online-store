@@ -3,21 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>List of users</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script th:src="@{/js/User/userScript.js}" defer></script> <!-- Подключаем JS файл -->
 </head>
 <body>
 <a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
-<!--<p><a th:href="@{/api/v1/store/productCategory/newCategory}">Add new product category</a></p>-->
-</br>
-</hr>
-</br>
-<div th:each="user : ${listOfUsers}">
-    <a th:text="${user.getLogin() + ', ' + user.getRole().getUserRole()}">category</a>
-    <form th:method="DELETE"
-          th:action="@{/api/v1/store/deleteUser/{login}(login=${user.getLogin()})}">
-        <input type="submit" value="Удалить">
-    </form>
-    </hr>
-    </br>
+<br/>
+<hr/>
+<br/>
+
+<div id="user-list">
+    <!-- Список адресов будет загружен здесь -->
 </div>
+
+<div>
+    <button id="prev-page" style="display:none;">Назад</button>
+    <button id="next-page">Далее</button>
+</div>
+
 </body>
 </html>

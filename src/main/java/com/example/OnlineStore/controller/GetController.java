@@ -7,6 +7,7 @@ import com.example.OnlineStore.DTO.Mapper.UserMapper;
 import com.example.OnlineStore.DTO.OrderDTO;
 import com.example.OnlineStore.DTO.ProductCategoryDTO;
 import com.example.OnlineStore.DTO.ProductDTO;
+import com.example.OnlineStore.DTO.UserDTO;
 import com.example.OnlineStore.model.*;
 import com.example.OnlineStore.service.*;
 import lombok.AllArgsConstructor;
@@ -181,6 +182,16 @@ public class GetController {
         }
 
         return ResponseEntity.ok(addresses);
+    }
+
+    @PreAuthorize("hasAuthority('Admin')")
+    @GetMapping("/users")
+    public ResponseEntity<Page<UserDTO>> getUsers(@RequestParam(defaultValue = "0") int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<User> users;
+        users = userService.findAllUsers(pageable);
+        Page<UserDTO> userDTOs = users.map(UserMapper::toDTO);
+        return ResponseEntity.ok(userDTOs);
     }
 
     @PreAuthorize("hasAuthority('Admin')")

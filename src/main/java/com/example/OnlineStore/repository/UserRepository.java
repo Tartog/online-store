@@ -1,6 +1,10 @@
 package com.example.OnlineStore.repository;
 
+import com.example.OnlineStore.model.DeliveryAddress;
+import com.example.OnlineStore.model.Order;
 import com.example.OnlineStore.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,6 +21,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmailAndIdNot(String email, Long id);
     boolean existsByLoginAndIdNot(String login, Long id);
     void deleteUserByLogin(String login);
+    Page<User> findAll(Pageable pageable);
 
     @Modifying
     @Transactional

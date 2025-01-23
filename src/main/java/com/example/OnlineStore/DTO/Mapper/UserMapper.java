@@ -13,7 +13,7 @@ public class UserMapper {
         dto.setLogin(user.getLogin());
         dto.setEmail(user.getEmail());
         dto.setPhoneNumber(user.getPhoneNumber());
-        dto.setRole(user.getRole());
+        dto.setRole(user.getRole().getUserRole());
         dto.setProducts(ProductMapper.toDTOSet(user.getProducts()));
         return dto;
     }
@@ -27,7 +27,7 @@ public class UserMapper {
         dto.setLogin(user.getLogin());
         dto.setEmail(user.getEmail());
         dto.setPhoneNumber(user.getPhoneNumber());
-        dto.setRole(user.getRole());
+        dto.setRole(user.getRole().getUserRole());
         return dto;
     }
 }

@@ -47,15 +47,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long id) {
-
         Product product = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Product not found"));
-
-        // Удаляем связи с категориями
         for (ProductCategory category : product.getProductCategories()) {
             category.getProducts().remove(product);
         }
-
-        // Удаляем товар
         repository.delete(product);
     }
 
