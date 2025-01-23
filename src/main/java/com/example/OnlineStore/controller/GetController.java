@@ -437,7 +437,7 @@ public class GetController {
         return modelAndView;
     }
 
-    @PreAuthorize("hasAuthority('User') and authentication.name == #login")
+    /*@PreAuthorize("hasAuthority('User') and authentication.name == #login")
     @GetMapping("/cart/{login}")
     public ModelAndView showCart(@PathVariable String login){
         ModelAndView modelAndView = new ModelAndView("html/Cart/cartPage");
@@ -457,7 +457,44 @@ public class GetController {
         modelAndView.addObject("totalPrice", totalPrice);
         modelAndView.addObject("user", user);
         return modelAndView;
+    }*/
+
+    @PreAuthorize("hasAuthority('User') and authentication.name == #login")
+    @GetMapping("/cart/{login}")
+    public ModelAndView showCartAndOrder(@PathVariable String login) {
+        ModelAndView modelAndView = new ModelAndView("html/Cart/cartPage");
+        User user = userService.findByLogin(login);
+
+        List<Cart> cart = cartService.findAllByUser (user);
+        double totalPrice = 0;
+        for (Cart productInCart : cart) {
+            totalPrice += productInCart.getNumberOfProduct() * productInCart.getProduct().getPrice();
+        }
+
+        boolean cartNotEmpty = !cart.isEmpty();
+        modelAndView.addObject("cartNotEmpty", cartNotEmpty);
+        modelAndView.addObject("listCart", cart);
+        modelAndView.addObject("totalPrice", totalPrice);
+        modelAndView.addObject("user", user);
+
+        Order order = new Order();
+        order.setUser (user);
+        order.setOrderStatus(orderStatusService
+                .findByStatus("Доставляется")
+                .orElseThrow(() -> new RuntimeException("Отсутствует стандартный статус 'Доставляется' !")));
+
+        LocalDate localDate = LocalDate.now();
+        Date sqlDate = Date.valueOf(localDate);
+
+        order.setOrderDate(sqlDate);
+        order.setExpectedReceiveDate(Date.valueOf(localDate.plusDays(7)));
+
+        modelAndView.addObject("order", order);
+        modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
+
+        return modelAndView;
     }
+
 
     @PreAuthorize("hasAuthority('User') and authentication.name == #login")
     @GetMapping("/order/{login}/newOrder")

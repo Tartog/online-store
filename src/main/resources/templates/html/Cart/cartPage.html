@@ -8,29 +8,48 @@
 <a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
 
 <div th:if="${cartNotEmpty}">
-    <a th:href="@{/api/v1/store/order/{login}/newOrder(login=${user.getLogin()})}">Сделать заказ</a>
+    <h2>Ваша корзина</h2>
+    <div th:each="productInCart : ${listCart}">
+        <a th:text="${productInCart.getProduct().getName() + ', ' + productInCart.getNumberOfProduct()}">product</a>
+        <form th:method="DELETE"
+              th:action="@{/api/v1/store/deleteProductInCart/{login}/{productId}(login=${user.getLogin()}, productId=${productInCart.getProduct().getId()})}">
+            <input type="submit" value="Удалить полностью товар из корзины">
+        </form>
+        <form th:method="PATCH"
+              th:action="@{/api/v1/store/deleteProductInCart/{login}/{productId}(login=${user.getLogin()}, productId=${productInCart.getProduct().getId()})}">
+            <input type="submit" value="Удалить 1 товар">
+        </form>
+    </div>
+    <hr/>
+    <a th:text="${'Общая стоимость = ' + totalPrice}">price</a>
+
+    <h2>Создание нового заказа</h2>
+    <form th:method="POST" th:action="@{/api/v1/store/order/{login}/newOrder(login=${user.getLogin()})}" th:object="${order}">
+        <label for="listAddress">Выберите адрес:</label>
+        <select th:field="*{deliveryAddress}" id="listAddress">
+            <option th:each="deliveryAddress : ${listAddress}"
+                    th:value="${deliveryAddress.id}"
+                    th:text="${deliveryAddress.city} + ', ' + ${deliveryAddress.street} + ' ' + ${deliveryAddress.houseNumber}">
+            </option>
+        </select>
+        <div style="color:red" th:if="${#fields.hasErrors('deliveryAddress')}" th:errors="*{deliveryAddress}">Delivery address error</div>
+
+        <button type="submit">Сделать заказ по данному адресу</button>
+
+        <div th:if="${#fields.hasGlobalErrors()}" style="color:red;">
+            <p th:each="error : ${#fields.globalErrors()}" th:text="${error}"></p>
+        </div>
+
+        <input type="hidden" th:field="*{id}" id="id" />
+        <input type="hidden" th:field="*{user}" id="${order.getUser ()}" />
+        <input type="hidden" th:field="*{orderDate}" id="${order.getOrderDate()}" />
+        <input type="hidden" th:field="*{orderStatus}" id="${order.getOrderStatus()}" />
+        <input type="hidden" th:field="*{expectedReceiveDate}" id="${order.getExpectedReceiveDate()}" />
+    </form>
 </div>
 
-
-</br>
-</hr>
-<div th:each="productInCart : ${listCart}">
-  <a th:text="${productInCart.getProduct().getName() + ', ' + productInCart.getNumberOfProduct()}">product</a>
-    <form th:method="DELETE"
-          th:action="@{/api/v1/store/deleteProductInCart/{login}/{productId}
-          (login=${user.getLogin()},
-          productId=${productInCart.getProduct().getId()})}">
-        <input type="submit" value="Удалить полностью товар из корзины">
-    </form>
-    <form th:method="PATCH"
-          th:action="@{/api/v1/store/deleteProductInCart/{login}/{productId}
-          (login=${user.getLogin()},
-          productId=${productInCart.getProduct().getId()})}">
-        <input type="submit" value="Удалить 1 товар">
-    </form>
+<div th:if="${!cartNotEmpty}">
+    <h2>Корзина пуста</h2>
 </div>
-<hr/>
-<a th:text="${'Общая стоимость = ' + totalPrice}">price</a>
-
 </body>
 </html>
