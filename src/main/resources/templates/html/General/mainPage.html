@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Main page</title>
+    <script th:src="@{/js/General/generalScript.js}" defer></script>
 </head>
 <body>
 
-<p><a href="/api/v1/store/newUser">Register as a user (test)</a></p>
-<p><a href="/api/v1/store/newUser">Register as a seller (test)</a></p>
+<p><a href="/api/v1/store/newUser ">Register as a user (test)</a></p>
+<p><a href="/api/v1/store/newUser ">Register as a seller (test)</a></p>
 
 <div th:if="${isAuthenticated}">
-<!--    <h1>Welcome, authenticated ${currentUser}!</h1>-->
-    <h1 th:text="'Добро пожаловать, ' + ${currentUser.getLogin()}  + '!'">user</h1>
+    <h1 th:text="'Добро пожаловать, ' + ${currentUser .getLogin()}  + '!'">user</h1>
     <br/>
     <p><a href="/logout">Выйти из аккаунта</a></p>
-    <p><a th:href="@{/api/v1/store/{login}/profile(login=${currentUser.getLogin()})}">Профиль</a></p>
+    <p><a th:href="@{/api/v1/store/{login}/profile(login=${currentUser .getLogin()})}">Профиль</a></p>
+
     <!-- Дополнительный контент для зарегистрированных пользователей -->
+
     <div th:if="${currentUser.getRole().getUserRole() == 'Admin'}">
         <!--    <h1>Welcome, authenticated ${currentUser}!</h1>-->
         <p><a th:href="@{/api/v1/store/newUser/{role}(role=${admin.getUserRole()})}">Зарегистрировать нового администратора</a></p>
@@ -36,60 +38,44 @@
     </div>
     <div th:if="${currentUser.getRole().getUserRole() == 'Worker' or currentUser.getRole().getUserRole() == 'Admin'}">
         <p><a th:href="@{/api/v1/store/ordersPage}">Заказы</a></p>
-<!--        <form th:method="GET"-->
-<!--              th:action="@{/api/v1/store/ordersPage}">-->
-<!--            <input type="hidden" name="addressId" th:value="${'all'}">-->
-<!--            <input type="submit" value="Заказы">-->
-<!--        </form>-->
     </div>
-
-    <div th:each="product : ${listOfProduct}">
+    <div th:each="product : ${listOfProduct}" class="product-item">
         <p><img th:src="@{${product.imagePath}}" alt="Изображение товара" style="max-width: 200px; max-height: 200px;"/></p>
-
-        <a th:text="${product.getName() + ', Цена: ' + product.getPrice() + ', Количество на складе: '
-        + product.getNumberOfProducts()}">product</a>
-<!--        <img th:src="@{${product.imagePath}}" alt="Изображение товара" style="max-width: 200px; max-height: 200px;"/>-->
-
-        <form th:method="GET"
-              th:action="@{/api/v1/store/product/{productId}(productId=${product.getId()})}">
+        <a th:text="${product.getName() + ', Цена: ' + product.getPrice() + ', Количество на складе: ' + product.getNumberOfProducts()}">product</a>
+        <form th:method="GET" th:action="@{/api/v1/store/product/{productId}(productId=${product.getId()})}">
             <input type="submit" value="Страница товара">
         </form>
-        <div th:if="${currentUser.getRole().getUserRole() == 'User'}">
-            <form th:method="POST"
-                  th:action="@{/api/v1/store/cart/{login}/{productId}(login=${currentUser.getLogin()}, productId=${product.getId()})}">
+        <div th:if="${currentUser .getRole().getUserRole() == 'User'}">
+            <form th:method="POST" th:action="@{/api/v1/store/cart/{login}/{productId}(login=${currentUser .getLogin()}, productId=${product.getId()})}">
                 <input type="submit" value="Добавить в корзину">
             </form>
         </div>
         <hr/>
     </div>
 
-
+    <div class="pagination">
+        <button id="prevPage" onclick="changePage(-1)">Назад</button>
+        <span id="pageInfo">Страница 1</span>
+        <button id="nextPage" onclick="changePage(1)">Вперед</button>
+    </div>
 </div>
+
 <div th:unless="${isAuthenticated}">
     <h1>Добро пожаловать, гость!</h1>
     <br/>
     <p><a href="/login">Войти</a></p>
     <p><a th:href="@{/api/v1/store/newUser/{role}(role=${user.getUserRole()})}">Зарегистрироваться как пользователь</a></p>
     <p><a th:href="@{/api/v1/store/newUser/{role}(role=${seller.getUserRole()})}">Зарегистрироваться как продавец</a></p>
-    <!-- Контент для незарегистрированных пользователей -->
 
-    <div th:each="product : ${listOfProduct}">
+    <div th:each="product : ${listOfProduct}" class="product-item">
         <p><img th:src="@{${product.imagePath}}" alt="Изображение товара" style="max-width: 200px; max-height: 200px;"/></p>
-
-        <a th:text="${product.getName() + ', Цена: ' + product.getPrice() + ', Количество на складе: '
-        + product.getNumberOfProducts()}">product</a>
-        <form th:method="GET"
-              th:action="@{/api/v1/store/product/{productId}(productId=${product.getId()})}">
+        <a th:text="${product.getName() + ', Цена: ' + product.getPrice() + ', Количество на складе: ' + product.getNumberOfProducts()}">product</a>
+        <form th:method="GET" th:action="@{/api/v1/store/product/{productId}(productId=${product.getId()})}">
             <input type="submit" value="Страница товара">
         </form>
-        </hr>
-        </br>
+        <hr/>
     </div>
 </div>
-
-
-
-
 
 </body>
 </html>
