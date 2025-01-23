@@ -3,9 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>User orders</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        let user = /*[[${user.getLogin()}]]*/ {};
+        /*]]>*/
+    </script>
+    <script th:src="@{/js/Order/userOrdersScript.js}" defer></script> <!-- Подключаем JS файл -->
 </head>
 <body>
 <a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
+
+
 <table>
     <thead>
     <tr>
@@ -17,26 +26,16 @@
         <th>Товары</th>
     </tr>
     </thead>
-    <tbody>
-    <tr th:each="order : ${listOrder}">
-        <td th:text="${order.id}"></td>
-        <td th:text="${order.orderDate}"></td>
-        <td th:text="${order.expectedReceiveDate}"></td>
-        <td th:text="${order.orderStatus.getStatus()}"></td>
-        <td th:text="${'г. ' + order.getDeliveryAddress().getCity() +
-        ', ул. ' + order.getDeliveryAddress().getStreet() +
-        ', д. №' + order.getDeliveryAddress().getHouseNumber()}"></td>
-        <td>
-            <ul>
-                <li th:each="productInOrder : ${order.getProductsInOrders()}">
-                    <span th:text="${productInOrder.product.getName()}">Товар</span> x
-                    <span th:text="${productInOrder.getNumberOfProduct()}">Количество</span> -
-                    <span th:text="${productInOrder.product.getPrice()}">Цена</span>
-                </li>
-            </ul>
-        </td>
-    </tr>
+    <tbody id="order-table-body">
+    <!-- Заказы будут загружены сюда с помощью AJAX -->
     </tbody>
 </table>
+
+<div id="pagination">
+    <button id="prev" data-page="0" style="display:none;">Назад</button>
+    <button id="next" data-page="1">Далее</button>
+</div>
+
+
 </body>
 </html>

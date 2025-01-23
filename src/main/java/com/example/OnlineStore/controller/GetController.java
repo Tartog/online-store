@@ -262,10 +262,6 @@ public class GetController {
     @GetMapping("/orders")
     public ResponseEntity<Page<OrderDTO>> getOrders(
             @RequestParam(defaultValue = "0") int page,
-            //@RequestParam(required = false) String city,
-            //@RequestParam(required = false) String street,
-            //@RequestParam(required = false) Integer houseNumber,
-            //@RequestParam(required = false) String status,
             @RequestParam(required = false) Long id) {
         Pageable pageable = PageRequest.of(page, 10);
         Page<Order> orders;
@@ -491,22 +487,46 @@ public class GetController {
         return modelAndView;
     }
 
-    @PreAuthorize("hasAuthority('User') and authentication.name == #login")
+    /*@PreAuthorize("hasAuthority('User') and authentication.name == #login")
     @GetMapping("/order/{login}/orders")
     public ModelAndView showUserOrders(@PathVariable String login){
         ModelAndView modelAndView = new ModelAndView("html/Order/userOrders");
         User user = userService.findByLogin(login);
-        /*double totalPrice = 0;
-        List<Order> orders = orderService.findAllByUser(user);
-        for(Order order: orders){
-            for(ProductsInOrder productsInOrder: productsInOrderService.findAllProductsInOrder(order)){
-                totalPrice += productsInOrder.get
-            }
-        }*/
-
-        //modelAndView.addObject("totalPrice", totalPrice);
         modelAndView.addObject("listOrder", orderService.findAllByUser(user));
         return modelAndView;
+    }*/
+
+    @PreAuthorize("hasAuthority('User') and authentication.name == #login")
+    @GetMapping("/order/{login}/orders")
+    public ModelAndView showUserOrders(@PathVariable String login,
+                                       @RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(defaultValue = "10") int size){
+        ModelAndView modelAndView = new ModelAndView("html/Order/userOrders");
+
+        User user = userService.findByLogin(login);
+        Page<Order> orderPage = orderService.findAllOrders(user, PageRequest.of(page, size));
+
+        modelAndView.addObject("orderPage", orderPage);
+        modelAndView.addObject("user", UserMapper.toDTO_WithoutProducts(user));
+        modelAndView.addObject("currentPage", page);
+        modelAndView.addObject("totalPages", orderPage.getTotalPages());
+
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasAuthority('User') and authentication.name == #login")
+    @GetMapping("/userOrders")
+    public ResponseEntity<Page<OrderDTO>> getOrders(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam("login") String login) {
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<Order> orders;
+        User user = userService.findByLogin(login);
+        orders = orderService.findAllOrders(user, pageable);
+
+        Page<OrderDTO> orderDTOs = orders.map(OrderMapper::toDTO);
+
+        return ResponseEntity.ok(orderDTOs);
     }
 
     /*@PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")

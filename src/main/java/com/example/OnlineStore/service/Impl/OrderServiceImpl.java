@@ -70,6 +70,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Page<Order> findAllOrders(User user, Pageable pageable) {
+        return repository.findAllByUser(user, pageable);
+    }
+
+    @Override
     public List<Order> findAllByAddress(DeliveryAddress deliveryAddress) {
         return repository.findAllByDeliveryAddress(deliveryAddress);
     }
