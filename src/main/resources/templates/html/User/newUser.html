@@ -5,6 +5,8 @@
     <title>New User</title>
 </head>
 <body>
+<a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
+
   <form th:method="POST" th:action="@{/api/v1/store}" th:object="${user}">
     <label for="firstName">Введите имя: </label>
     <input type="text" th:field="*{firstName}" id="firstName"/>
