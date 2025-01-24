@@ -18,4 +18,5 @@ public interface ProductService {
     void deleteProductByName(String name);
     List<Product> findAll();
     Page<Product> findAllProductsBySeller(User user, Pageable pageable);
+    List<Product> findByNameContaining(String name);
 }

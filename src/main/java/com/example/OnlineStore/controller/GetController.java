@@ -68,7 +68,7 @@ public class GetController {
     }
 
     @GetMapping
-    public ModelAndView showMainPage(){
+    public ModelAndView showMainPage(@RequestParam(value = "query", defaultValue = "") String query){
         ModelAndView modelAndView = new ModelAndView("html/General/mainPage");
         Role user = roleService.findByUserRole("User").
                 orElseThrow(() -> new RuntimeException("Отсутствует стандартная роль User"));//.get();
@@ -89,7 +89,8 @@ public class GetController {
             modelAndView.addObject("isAuthenticated", false);
         }
 
-        modelAndView.addObject("listOfProduct", productService.findAll());
+        //modelAndView.addObject("listOfProduct", productService.findAll());
+        modelAndView.addObject("listOfProduct", productService.findByNameContaining(query));
         modelAndView.addObject("user", user);
         modelAndView.addObject("seller", seller);
         modelAndView.addObject("admin", admin);

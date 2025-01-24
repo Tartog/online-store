@@ -39,17 +39,7 @@
     <div th:if="${currentUser.getRole().getUserRole() == 'Worker' or currentUser.getRole().getUserRole() == 'Admin'}">
         <p><a th:href="@{/api/v1/store/ordersPage}">Заказы</a></p>
     </div>
-    <div th:each="product : ${listOfProduct}" class="product-item">
-        <p><img th:src="@{${product.imagePath}}" alt="Изображение товара" style="max-width: 200px; max-height: 200px;"/></p>
-        <a th:text="${product.getName() + ', Цена: ' + product.getPrice() + ', Количество на складе: ' + product.getNumberOfProducts()}">product</a>
-        <form th:method="GET" th:action="@{/api/v1/store/product/{productId}(productId=${product.getId()})}">
-            <input type="submit" value="Страница товара">
-        </form>
-        <div th:if="${currentUser.getRole().getUserRole() == 'User'}">
-            <button class="add-to-cart" th:data-login="${currentUser.getLogin()}" th:data-productid="${product.getId()}">Добавить в корзину</button>
-        </div>
-        <hr/>
-    </div>
+
 </div>
 
 <div th:unless="${isAuthenticated}">
@@ -58,15 +48,25 @@
     <p><a href="/login">Войти</a></p>
     <p><a th:href="@{/api/v1/store/newUser/{role}(role=${user.getUserRole()})}">Зарегистрироваться как пользователь</a></p>
     <p><a th:href="@{/api/v1/store/newUser/{role}(role=${seller.getUserRole()})}">Зарегистрироваться как продавец</a></p>
+</div>
 
-    <div th:each="product : ${listOfProduct}" class="product-item">
-        <p><img th:src="@{${product.imagePath}}" alt="Изображение товара" style="max-width: 200px; max-height: 200px;"/></p>
-        <a th:text="${product.getName() + ', Цена: ' + product.getPrice() + ', Количество на складе: ' + product.getNumberOfProducts()}">product</a>
-        <form th:method="GET" th:action="@{/api/v1/store/product/{productId}(productId=${product.getId()})}">
-            <input type="submit" value="Страница товара">
-        </form>
-        <hr/>
+<form th:method="GET" th:action="@{/api/v1/store}">
+    <input type="text" name="query" placeholder="Поиск товара" required>
+    <button type="submit">Поиск</button>
+</form>
+
+<div th:each="product : ${listOfProduct}" class="product-item">
+    <p><img th:src="@{${product.imagePath}}" alt="Изображение товара" style="max-width: 200px; max-height: 200px;"/></p>
+    <a th:text="${product.getName() + ', Цена: ' + product.getPrice() + ', Количество на складе: ' + product.getNumberOfProducts()}">product</a>
+    <form th:method="GET" th:action="@{/api/v1/store/product/{productId}(productId=${product.getId()})}">
+        <input type="submit" value="Страница товара">
+    </form>
+    <div th:if="${isAuthenticated}">
+        <div th:if="${currentUser.getRole().getUserRole() == 'User'}">
+            <button class="add-to-cart" th:data-login="${currentUser.getLogin()}" th:data-productid="${product.getId()}">Добавить в корзину</button>
+        </div>
     </div>
+    <hr/>
 </div>
 
 <div class="pagination">

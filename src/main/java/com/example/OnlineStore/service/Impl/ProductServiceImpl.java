@@ -73,4 +73,9 @@ public class ProductServiceImpl implements ProductService {
     public Page<Product> findAllProductsBySeller(User seller, Pageable pageable) {
         return repository.findAllProductsByUser(seller, pageable);
     }
+
+    @Override
+    public List<Product> findByNameContaining(String name) {
+        return repository.findByNameContainingIgnoreCase(name);
+    }
 }
