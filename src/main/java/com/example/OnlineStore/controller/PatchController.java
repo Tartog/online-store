@@ -65,7 +65,7 @@ public class PatchController {
         return new ModelAndView("redirect:/api/v1/store");
     }
 
-    @PreAuthorize("hasAuthority('User') and authentication.name == #login")
+    /*@PreAuthorize("hasAuthority('User') and authentication.name == #login")
     @PatchMapping("deleteProductInCart/{login}/{productId}")
     public ModelAndView updateProductInCart(@PathVariable String login, @PathVariable String productId){
         User user = userService.findByLogin(login);
@@ -79,7 +79,29 @@ public class PatchController {
             cartService.updateCart(cart);
         }
         return new ModelAndView("redirect:/api/v1/store/cart/" + login);
+    }*/
+
+    @PreAuthorize("hasAuthority('User') and authentication.name == #login")
+    @PatchMapping("addProductToCart/{login}/{productId}")
+    @ResponseBody
+    public ResponseEntity<String> addProductToCart(@PathVariable String login, @PathVariable String productId) {
+        User user = userService.findByLogin(login);
+        Product product = productService.findById(Long.parseLong(productId));
+        Cart cart = cartService.findByUserAndProduct(product, user);
+
+        if (cart == null) {
+            cart = new Cart();
+            cart.setUser (user);
+            cart.setProduct(product);
+            cart.setNumberOfProduct(1);
+            cartService.saveCart(cart);
+        } else {
+            cart.setNumberOfProduct(cart.getNumberOfProduct() + 1);
+            cartService.updateCart(cart);
+        }
+        return ResponseEntity.ok("Товар добавлен в корзину");
     }
+
 
     /*@PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
     @PatchMapping("/updateOrderStatus")

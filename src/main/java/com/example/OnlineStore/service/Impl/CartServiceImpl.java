@@ -57,8 +57,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart findByUserAndProduct(Product product, User user) {
-        return repository.findByProductAndUser(product, user).orElseThrow(()->
-                new RuntimeException("Данный товар или пользователь отсутствует"));
+        return repository.findByProductAndUser(product, user).orElse(null);
     }
 
     @Override

@@ -45,18 +45,10 @@
         <form th:method="GET" th:action="@{/api/v1/store/product/{productId}(productId=${product.getId()})}">
             <input type="submit" value="Страница товара">
         </form>
-        <div th:if="${currentUser .getRole().getUserRole() == 'User'}">
-            <form th:method="POST" th:action="@{/api/v1/store/cart/{login}/{productId}(login=${currentUser .getLogin()}, productId=${product.getId()})}">
-                <input type="submit" value="Добавить в корзину">
-            </form>
+        <div th:if="${currentUser.getRole().getUserRole() == 'User'}">
+            <button class="add-to-cart" th:data-login="${currentUser.getLogin()}" th:data-productid="${product.getId()}">Добавить в корзину</button>
         </div>
         <hr/>
-    </div>
-
-    <div class="pagination">
-        <button id="prevPage" onclick="changePage(-1)">Назад</button>
-        <span id="pageInfo">Страница 1</span>
-        <button id="nextPage" onclick="changePage(1)">Вперед</button>
     </div>
 </div>
 
@@ -75,6 +67,12 @@
         </form>
         <hr/>
     </div>
+</div>
+
+<div class="pagination">
+    <button id="prevPage" onclick="changePage(-1)">Назад</button>
+    <span id="pageInfo">Страница 1</span>
+    <button id="nextPage" onclick="changePage(1)">Вперед</button>
 </div>
 
 </body>
