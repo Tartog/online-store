@@ -1,5 +1,5 @@
 let currentPage = 1;
-const itemsPerPage = 2;
+const itemsPerPage = 16;
 
 function displayItems() {
     const items = document.querySelectorAll('.product-item');
