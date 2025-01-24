@@ -2,13 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css">
     <title>Main page</title>
     <script th:src="@{/js/General/generalScript.js}" defer></script>
 </head>
 <body>
-
-<p><a href="/api/v1/store/newUser ">Register as a user (test)</a></p>
-<p><a href="/api/v1/store/newUser ">Register as a seller (test)</a></p>
 
 <div th:if="${isAuthenticated}">
     <h1 th:text="'Добро пожаловать, ' + ${currentUser .getLogin()}  + '!'">user</h1>
