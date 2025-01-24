@@ -93,7 +93,7 @@ public class PostController {
         return ResponseEntity.ok("Адрес успешно добавлен!"); // Возвращаем 200 OK
     }
 
-    @PreAuthorize("hasAuthority('Admin') or hasAuthority('Seller')")
+    @PreAuthorize("hasAuthority('Admin')")
     @PostMapping("/productCategory/newCategory")
     public ResponseEntity<String> createProductCategory(@RequestBody @Valid ProductCategory productCategory, BindingResult bindingResult){
         if(productCategoryService.existsProductCategoryByCategory(productCategory.getCategory())){

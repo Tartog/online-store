@@ -29,6 +29,7 @@ public class DeleteController {
     private RoleService roleService;
     private CartService cartService;
 
+    @PreAuthorize("hasAuthority('Admin')")
     @DeleteMapping("productCategory/deleteCategory/{categoryId}")
     public ResponseEntity<Void> deleteCategory(@PathVariable String categoryId){
         productCategoryService.deleteProductCategory(Long.parseLong(categoryId));
