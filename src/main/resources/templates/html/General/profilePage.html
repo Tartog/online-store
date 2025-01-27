@@ -2,27 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/newUser.css">
     <title>Profile page</title>
 </head>
 <body>
-    <p th:text="'Имя: ' + ${user.getFirstName()}">firstName</p>
-    <hr/>
-    <p th:text="'Фамилия: ' + ${user.getLastName()}">lastName</p>
-    <hr/>
-    <p th:text="'Логин: ' + ${user.getLogin()}">login</p>
-    <hr/>
-    <p th:text="'Почта: ' + ${user.getEmail()}">email</p>
-    <hr/>
-    <p th:text="'Номер телефона: ' + ${user.getPhoneNumber()}">phoneNumber</p>
-    <hr/>
-    <p th:text="'Роль: ' + ${user.getRole().getUserRole()}">role</p>
-    <hr/>
-    <p><a th:href="@{/api/v1/store/{login}/edit(login=${user.getLogin()})}">Редактировать профиль</a></p>
-    <p><a th:href="@{/api/v1/store}">Вернуться на главную страницу</a></p>
-    <form th:method="DELETE"
-          th:action="@{/api/v1/store/deleteUser/{login}(login=${user.getLogin()})}">
-        <input type="submit" value="Удалить аккаунт">
-    </form>
-<p>
+
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <nav class="nav">
+                    <a class="nav__link" th:href="@{/api/v1/store/{login}/edit(login=${user.getLogin()})}">Редактировать профиль</a>
+                    <a class="nav__link" th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <div class="form-container">
+        <div class="form-group">
+            <p class="text" th:text="'Имя: ' + ${user.getFirstName()}">firstName</p>
+            <br/>
+            <br/>
+            <p class="text" th:text="'Фамилия: ' + ${user.getLastName()}">lastName</p>
+            <br/>
+            <br/>
+            <p class="text" th:text="'Логин: ' + ${user.getLogin()}">login</p>
+            <br/>
+            <br/>
+            <p class="text" th:text="'Почта: ' + ${user.getEmail()}">email</p>
+            <br/>
+            <br/>
+            <p class="text" th:text="'Номер телефона: ' + ${user.getPhoneNumber()}">phoneNumber</p>
+            <br/>
+            <br/>
+            <p class="text" th:text="'Роль: ' + ${user.getRole().getUserRole()}">role</p>
+            <br/>
+            <br/>
+            <div class="button-container">
+                <form th:method="DELETE"
+                      th:action="@{/api/v1/store/deleteUser/{login}(login=${user.getLogin()})}">
+                    <input class="btn" type="submit" value="Удалить аккаунт">
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

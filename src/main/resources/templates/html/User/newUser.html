@@ -6,9 +6,15 @@
     <title>New User</title>
 </head>
 <body>
-  <nav class="nav">
-    <a class="nav__link" th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
-  </nav>
+  <header class="header">
+    <div class="container">
+      <div class="header__inner">
+        <nav class="nav">
+          <a class="nav__link" th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
+        </nav>
+      </div>
+    </div>
+  </header>
 
   <div class="form-container">
     <form th:method="POST" th:action="@{/api/v1/store}" th:object="${user}">

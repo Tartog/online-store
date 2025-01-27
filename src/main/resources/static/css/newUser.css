@@ -38,18 +38,48 @@ body {
     margin-bottom: 15px; /* Отступ между группами полей */
 }
 
+.header {
+    width: 100%;
+    padding-top: 30px;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.header__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
 .nav {
     font-size: 14px;
     text-transform: uppercase;
-    position: absolute; /* Позиционируем навигацию */
-    top: 50px; /* Отступ сверху */
-    right: 200px; /* Отступ справа */
+    display: flex; /* Используем flexbox для навигации */
+    align-items: center; /* Выравниваем элементы по центру */
+    margin-left: auto; /* Сдвигаем навигацию вправо */
+    margin-top: 20px; /* Отступ сверху для навигации */
 }
+
 
 .nav__link {
     display: inline-block;
+    vertical-align: top;
+    margin: 0 15px;
+    position: relative;
+
     color: #fff;
     text-decoration: none;
+
     transition: color .1s linear;
 }
 
