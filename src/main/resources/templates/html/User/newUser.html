@@ -2,37 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/newUser.css">
     <title>New User</title>
 </head>
 <body>
-<a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
+  <nav class="nav">
+    <a class="nav__link" th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
+  </nav>
 
-  <form th:method="POST" th:action="@{/api/v1/store}" th:object="${user}">
-    <label for="firstName">Введите имя: </label>
-    <input type="text" th:field="*{firstName}" id="firstName"/>
-    <br/>
-    <label for="lastName">Введите фамилию: </label>
-    <input type="text" th:field="*{lastName}" id="lastName"/>
-    <br/>
-    <label for="email">Введите почту: </label>
-    <input type="text" th:field="*{email}" id="email"/>
-    <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
-    <br/>
-    <label for="passwordHash">Введите пароль: </label>
-    <input type="text" th:field="*{passwordHash}" id="passwordHash"/>
-    <div style="color:red" th:if="${#fields.hasErrors('passwordHash')}" th:errors="*{passwordHash}">Password error</div>
-    <br/>
-    <label for="login">Введите логин: </label>
-    <input type="text" th:field="*{login}" id="login"/>
-    <div style="color:red" th:if="${#fields.hasErrors('login')}" th:errors="*{login}">Login error</div>
-    <br/>
-    <label for="phoneNumber">Введите номер телефона: </label>
-    <input type="text" th:field="*{phoneNumber}" id="phoneNumber"/>
-    <br/>
-
-    <input type="hidden" th:field="*{role}" id="role" />
-
-    <input type="submit" value="Создать !"/>
-  </form>
+  <div class="form-container">
+    <form th:method="POST" th:action="@{/api/v1/store}" th:object="${user}">
+      <div class="form-group">
+        <label class="text" for="firstName">Введите имя:</label>
+        <input class="search-input" type="text" th:field="*{firstName}" id="firstName" placeholder="Имя (необязательно)"/>
+        <br/>
+        <br/>
+        <label class="text" for="lastName">Введите фамилию:</label>
+        <input class="search-input" type="text" th:field="*{lastName}" id="lastName" placeholder="Фамилия (необязательно)"/>
+        <br/>
+        <br/>
+        <label class="text" for="email">Введите почту:</label>
+        <input class="search-input" type="text" th:field="*{email}" id="email" placeholder="Email (обязательно)"/>
+        <div class="text" style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
+        <br/>
+        <br/>
+        <label class="text" for="passwordHash">Введите пароль:</label>
+        <input class="search-input" type="text" th:field="*{passwordHash}" id="passwordHash" placeholder="Пароль (обязательно)"/>
+        <div class="text" style="color:red" th:if="${#fields.hasErrors('passwordHash')}" th:errors="*{passwordHash}">Password error</div>
+        <br/>
+        <br/>
+        <label class="text" for="login">Введите логин:</label>
+        <input class="search-input" type="text" th:field="*{login}" id="login" placeholder="Логин (обязательно)"/>
+        <div class="text" style="color:red" th:if="${#fields.hasErrors('login')}" th:errors="*{login}">Login error</div>
+        <br/>
+        <br/>
+        <label class="text" for="phoneNumber">Введите номер телефона:</label>
+        <input class="search-input" type="text" th:field="*{phoneNumber}" id="phoneNumber" placeholder="Номер телефона (необязательно)"/>
+        <br/>
+        <input type="hidden" th:field="*{role}" id="role" />
+        <div class="button-container">
+          <input class="btn" type="submit" value="Создать аккаунт !"/>
+        </div>
+      </div>
+    </form>
+  </div>
 </body>
 </html>
