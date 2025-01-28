@@ -2,56 +2,64 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/addressAndCategoryCSS.css">
     <title>Product category</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script th:src="@{/js/ProductCategory/productCategoryScript.js}" defer></script> <!-- Подключаем JS файл -->
 </head>
 <body>
-<a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
-<p><button id="add-productCategory-button">Добавить новую категорию</button></p>
-<div>
-    <h3>Поиск категории</h3>
-    <input type="text" id="search-category" placeholder="Введите название категории для поиска"/>
-    <button id="search-button">Поиск</button>
-</div>
-<br/>
-<hr/>
-<br/>
 
-<div id="new-category-div" style="display:none">
-    <h3>Добавить новую категорию</h3>
-    <form id="new-category-form">
-        <label for="new-category">Введите название категории: </label>
-        <input type="text" id="new-category" required/>
+<header class="header">
+    <div class="container">
+        <div class="header__inner">
+            <nav class="nav">
+                <div class="nav__right">
+                    <a class="nav__link" th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
+                    <button class="btn" id="add-productCategory-button">Добавить новую категорию</button>
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<div class="form-container">
+    <div>
+        <h4 class="text">Поиск категории</h4>
+        <input type="text" id="search-category" placeholder="Введите название категории для поиска"/>
         <br/>
-        <input type="submit" value="Создать"/>
-    </form>
-    <br/>
-    <hr/>
-    <br/>
+        <button class="btn btn-search pagination-buttons" id="search-button">Поиск</button>
+    </div>
+
+    <div id="new-category-div" style="display:none">
+        <h4 class="text">Добавить новую категорию</h4>
+        <form id="new-category-form">
+            <label class="text" for="new-category">Введите название категории: </label>
+            <input type="text" id="new-category" required/>
+            <br/>
+            <input  class="btn btn-create pagination-buttons" type="submit" value="Создать"/>
+        </form>
+    </div>
+
+    <div id="update-category-div" style="display:none">
+        <h4 class="text">Редактировать категорию</h4>
+        <form id="update-category-form">
+            <input type="hidden" id="update-id" />
+            <label class="text" for="update-category">Введите название категории: </label>
+            <input type="text" id="update-category" required/>
+            <br/>
+            <input class="btn btn-update pagination-buttons" type="submit" value="Сохранить"/>
+        </form>
+    </div>
 </div>
 
-<div id="update-category-div" style="display:none">
-    <h3>Редактировать категорию</h3>
-    <form id="update-category-form">
-        <input type="hidden" id="update-id" />
-        <label for="update-category">Введите название категории: </label>
-        <input type="text" id="update-category" required/>
-        <br/>
-        <input type="submit" value="Сохранить изменения"/>
-    </form>
-    <br/>
-    <hr/>
-    <br/>
-</div>
+<div class="text address-container">
+    <div id="category-list">
 
-<div id="category-list">
-
-</div>
-
-<div>
-    <button id="prev-page" style="display:none;">Назад</button>
-    <button id="next-page">Далее</button>
+    </div>
+    <div class="pagination-buttons">
+        <button class="btn" id="prev-page" style="display:none;">Назад</button>
+        <button class="btn" id="next-page">Далее</button>
+    </div>
 </div>
 
 </body>

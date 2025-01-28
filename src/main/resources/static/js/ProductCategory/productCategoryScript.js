@@ -9,11 +9,10 @@ function loadCategories(page, query = '') {
             $('#category-list').empty();
             data.content.forEach(function(productCategory) {
                 $('#category-list').append(`
-                <div>
-                    <span>${productCategory.category}</span>
+                <div class="address-item">
+                    <span class="address-text">${productCategory.category}</span>
                     <button class="update-button" data-id="${productCategory.id}">Редактировать</button>
                     <button class="delete-button" data-id="${productCategory.id}">Удалить</button>
-                    <hr>
                 </div>
             `);
             });
