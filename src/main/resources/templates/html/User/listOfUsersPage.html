@@ -2,24 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/listOfUsersCSS.css">
     <title>List of users</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script th:src="@{/js/User/userScript.js}" defer></script> <!-- Подключаем JS файл -->
 </head>
 <body>
-<a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
-<br/>
-<hr/>
-<br/>
 
-<div id="user-list">
-    <!-- Список адресов будет загружен здесь -->
-</div>
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <nav class="nav">
+                    <div class="nav__right">
+                        <a class="nav__link" th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
 
-<div>
-    <button id="prev-page" style="display:none;">Назад</button>
-    <button id="next-page">Далее</button>
-</div>
+
+    <div class="text user-container">
+        <div id="user-list">
+            <!-- Список адресов будет загружен здесь -->
+        </div>
+        <div class="pagination-buttons">
+            <button class="btn" id="prev-page" style="display:none;">Назад</button>
+            <button class="btn" id="next-page">Далее</button>
+        </div>
+    </div>
 
 </body>
 </html>

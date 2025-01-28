@@ -9,11 +9,9 @@ function loadUsers(page) {
             $('#user-list').empty(); // Очистить текущий список адресов
             data.content.forEach(function(user) {
                 $('#user-list').append(`
-                <div>
-                    <span>${user.role + ' ' + user.login}</span>
+                <div class="user-item">
+                    <span class="user-text">${user.role + ' ' + user.login}</span>
                     <button class="delete-button" data-id="${user.login}">Удалить</button>
-                    <hr/>
-                    <br/>
                 </div>
             `);
             });
