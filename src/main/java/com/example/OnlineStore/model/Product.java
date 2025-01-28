@@ -1,6 +1,5 @@
 package com.example.OnlineStore.model;
 
-import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -18,7 +17,6 @@ import java.util.stream.Collectors;
 @Data
 @Setter
 @Getter
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +24,6 @@ public class Product {
 
     @Size(min = 2, max = 30, message = "Название товара должно состоять из 2-30 символов !")
     @NotEmpty(message = "Поле 'название товара' обязательно для заполнения !")
-    //@Column(unique = true, name = "name")
     @Column(name = "name")
     private String name;
 
@@ -41,8 +38,6 @@ public class Product {
     private double price;
 
     @NotNull(message = "Товар должен иметь хотя бы 1 категорию !")
-    //@ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    //@JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "product_in_category",
@@ -51,9 +46,7 @@ public class Product {
     )
     private Set<ProductCategory> productCategories;
 
-    //@ManyToOne(cascade = CascadeType.ALL)
-    //@JsonBackReference
-    @ManyToOne//(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "seller_id")
     private User user;
 
@@ -62,7 +55,7 @@ public class Product {
 
     public String getProductCategoriesAsString() {
         return productCategories.stream()
-                .map(ProductCategory::getCategory) // или используйте другое поле/метод для получения строки
+                .map(ProductCategory::getCategory)
                 .collect(Collectors.joining(", "));
     }
 

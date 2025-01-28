@@ -15,8 +15,4 @@ public class OrderStatus {
     @NotEmpty(message = "Поле 'статус' обязательно для заполнения !")
     @Column(name = "status")
     private String status;
-
-    /*@OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_status_id")
-    private Set<Order> orders = new HashSet<Order>();*/
 }

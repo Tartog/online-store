@@ -26,8 +26,4 @@ public class DeliveryAddress {
     @Min(value = 1, message = "Номер дома не может быть меньше 1 !")
     @Column(name = "house_number")
     private int houseNumber;
-
-    //@OneToMany(cascade = CascadeType.ALL)
-    //@JoinColumn(name = "delivery_address_id")
-    //private Set<Order> orders = new HashSet<Order>();
 }

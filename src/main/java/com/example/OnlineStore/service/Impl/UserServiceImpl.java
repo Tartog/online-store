@@ -1,9 +1,7 @@
 package com.example.OnlineStore.service.Impl;
 
 import com.example.OnlineStore.model.Product;
-import com.example.OnlineStore.model.ProductCategory;
 import com.example.OnlineStore.model.User;
-import com.example.OnlineStore.repository.ProductRepository;
 import com.example.OnlineStore.repository.RoleRepository;
 import com.example.OnlineStore.repository.UserRepository;
 import com.example.OnlineStore.service.ProductService;
@@ -20,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,10 +29,8 @@ public class UserServiceImpl implements UserService, CommandLineRunner {
 
     private UserRepository repository;
     private RoleRepository repositoryRole;
-    //private ProductRepository productRepository;
     private ProductService productService;
     private PasswordEncoder passwordEncoder;
-    //private ProductRepository repositoryProduct;
 
     @Override
     public List<User> findAllUser() {
@@ -44,7 +39,6 @@ public class UserServiceImpl implements UserService, CommandLineRunner {
 
     @Override
     public User saveUser(User user) {
-        //user.setPasswordHash("hello");
         user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
         return repository.save(user);
     }
@@ -69,8 +63,6 @@ public class UserServiceImpl implements UserService, CommandLineRunner {
     @Override
     @Transactional
     public void updateUser(User user) {
-        /*repository.setUserInfoById(user.getFirstName(), user.getLastName(),
-                user.getEmail(), user.getDateOfBirth(), user.getId());*/
         user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
         repository.setUserInfoById(
                 user.getFirstName(),
@@ -80,25 +72,19 @@ public class UserServiceImpl implements UserService, CommandLineRunner {
                 user.getPasswordHash(),
                 user.getPhoneNumber(),
                 user.getId());
-        //user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
-        //repository.save(user);
     }
 
     @Override
     public void deleteUser(Long id) {
         try {
             User user = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("User  not found"));
-            //List<Product> products = new ArrayList<>(user.getProducts());
             for (Product product : user.getProducts()) {
-                //product.setUser(null);
                 productService.deleteProduct(product.getId());
             }
-            //productRepository.deleteAll(products);
             repository.deleteById(id);
         } catch (TransientObjectException e) {
             throw new RuntimeException("Не удалось удалить пользователя из-за связанных объектов", e);
         }
-        //repository.deleteById(id);
     }
 
     @Override
@@ -106,7 +92,7 @@ public class UserServiceImpl implements UserService, CommandLineRunner {
         if(repository.findByEmail(email).isEmpty() || repository.findById(id).get().getEmail().equals(email)){
             return true;
         }
-        return false; // Метод поиска пользователя по email
+        return false;
     }
 
     @Override
@@ -130,17 +116,13 @@ public class UserServiceImpl implements UserService, CommandLineRunner {
     public void deleteUserByLogin(String login) {
         try {
             User user = repository.findByLogin(login).orElseThrow(() -> new EntityNotFoundException("User  not found"));
-            //List<Product> products = new ArrayList<>(user.getProducts());
-            //productRepository.deleteAll(products);
             for (Product product : user.getProducts()) {
-                //product.setUser(null);
                 productService.deleteProduct(product.getId());
             }
             repository.deleteUserByLogin(login);
         } catch (TransientObjectException e) {
             throw new RuntimeException("Не удалось удалить пользователя из-за связанных объектов", e);
         }
-        //repository.deleteUserByLogin(login);
     }
 
     @Override

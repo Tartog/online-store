@@ -1,8 +1,5 @@
 package com.example.OnlineStore.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -20,23 +17,19 @@ import java.util.Set;
 @Data
 @Setter
 @Getter
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Size(min = 0, max = 30, message = "Имя должно состоять не более чем из 30 символов !")
-    //@NotEmpty(message = "Firstname should not be empty !")
     @Column(name = "first_name")
     private String firstName;
 
     @Size(min = 0, max = 30, message = "Фамилия должна состоять не более чем из 30 символов !")
-    //@NotEmpty(message = "Lastname should not be empty !")
     @Column(name = "last_name")
     private String lastName;
 
-    //@Size(min = 4, max = 30, message = "Password should be between 4 and 30 characters !")
     @NotEmpty(message = "Поле 'пароль' обязательно для заполнения !")
     @Column(name = "password_hash")
     private String passwordHash;
@@ -51,7 +44,6 @@ public class User {
     @Email(message = "Почта введена некорректно !")
     private String email;
 
-    //@NotEmpty(message = "Phone number should not be empty !")
     @Column(name = "phone_number")
     private String phoneNumber;
 
@@ -59,18 +51,9 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    //@JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "seller_id")
     private Set<Product> products = new HashSet<Product>();
-
-    /*@OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "client_id")
-    private Set<Review> reviews = new HashSet<Review>();*/
-
-    /*@OneToMany//(cascade = CascadeType.ALL)
-    @JoinColumn(name = "client_id")
-    private Set<Order> orders = new HashSet<Order>();*/
 
     @Override
     public boolean equals(Object o) {

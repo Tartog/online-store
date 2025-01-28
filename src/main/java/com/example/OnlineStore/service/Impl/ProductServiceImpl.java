@@ -3,7 +3,6 @@ package com.example.OnlineStore.service.Impl;
 import com.example.OnlineStore.model.Product;
 import com.example.OnlineStore.model.ProductCategory;
 import com.example.OnlineStore.model.User;
-import com.example.OnlineStore.repository.ProductCategoryRepository;
 import com.example.OnlineStore.repository.ProductRepository;
 import com.example.OnlineStore.service.ProductService;
 import jakarta.persistence.EntityNotFoundException;
@@ -23,7 +22,6 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     private ProductRepository repository;
-    private ProductCategoryRepository repositoryCategory;
 
     @Override
     public List<Product> findAllProduct(User seller) {

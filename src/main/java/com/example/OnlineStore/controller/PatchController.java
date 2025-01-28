@@ -18,9 +18,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.sql.SQLOutput;
 
 @RestController
 @RequestMapping("/api/v1/store")
@@ -41,10 +38,12 @@ public class PatchController {
     public ModelAndView updateUser(@Valid User user, BindingResult bindingResult){
 
         if (userService.emailExists(user.getEmail(), user.getId())) {
-            bindingResult.rejectValue("email", "error.user", "Такая почта уже зарегистрирована !");
+            bindingResult.rejectValue("email", "error.user",
+                    "Такая почта уже зарегистрирована !");
         }
         if (userService.loginExists(user.getLogin(), user.getId())) {
-            bindingResult.rejectValue("login", "error.user", "Такой логин уже зарегистрирован !");
+            bindingResult.rejectValue("login", "error.user",
+                    "Такой логин уже зарегистрирован !");
         }
         if(bindingResult.hasErrors()){
             ModelAndView modelAndView = new ModelAndView("html/User/editUser");
@@ -56,7 +55,8 @@ public class PatchController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = myUserDetailService.loadUserByUsername(user.getLogin());
-        Authentication newAuth = new UsernamePasswordAuthenticationToken(userDetails, auth.getCredentials(), userDetails.getAuthorities());
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(userDetails, auth.getCredentials(),
+                userDetails.getAuthorities());
 
         // Устанавливаем новую аутентификацию в SecurityContext
         SecurityContextHolder.getContext().setAuthentication(newAuth);
@@ -64,22 +64,6 @@ public class PatchController {
 
         return new ModelAndView("redirect:/api/v1/store");
     }
-
-    /*@PreAuthorize("hasAuthority('User') and authentication.name == #login")
-    @PatchMapping("deleteProductInCart/{login}/{productId}")
-    public ModelAndView updateProductInCart(@PathVariable String login, @PathVariable String productId){
-        User user = userService.findByLogin(login);
-        Product product = productService.findById(Long.parseLong(productId));
-        Cart cart = cartService.findByUserAndProduct(product, user);
-        if(cart.getNumberOfProduct() - 1 == 0){
-            cartService.deleteCart(cart.getId());
-        }
-        else {
-            cart.setNumberOfProduct(cart.getNumberOfProduct() - 1);
-            cartService.updateCart(cart);
-        }
-        return new ModelAndView("redirect:/api/v1/store/cart/" + login);
-    }*/
 
     @PreAuthorize("hasAuthority('User') and authentication.name == #login")
     @PatchMapping("addProductToCart/{login}/{productId}")
@@ -102,39 +86,18 @@ public class PatchController {
         return ResponseEntity.ok("Товар добавлен в корзину");
     }
 
-
-    /*@PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
-    @PatchMapping("/updateOrderStatus")
-    public ModelAndView updateOrderStatus(@RequestParam Long orderId, @RequestParam Long statusId, @RequestParam String addressId){
-        //redirectAttributes.addAttribute("addressId", orderService.findById(orderId).getDeliveryAddress().getId());
-        ModelAndView modelAndView = new ModelAndView("redirect:/api/v1/store/orders");
-        if(addressId.equals("all")){
-            modelAndView.addObject("addressId", addressId);
-        }
-        else{
-            modelAndView.addObject("addressId", Long.parseLong(addressId));
-        }
-        Order order  = orderService.findById(orderId);
-        order.setOrderStatus(orderStatusService.findById(statusId));
-        orderService.updateOrder(order);
-        //ModelAndView modelAndView = new ModelAndView("redirect:/api/v1/store/orders");
-        //modelAndView.addObject("addressId", orderService.findById(orderId).getDeliveryAddress().getId());
-        return modelAndView;//new ModelAndView("redirect:/api/v1/store/orders");
-    }*/
-
     @PreAuthorize("hasAuthority('Admin')")
     @PatchMapping("deliveryAddress/updateAddress")
     public ResponseEntity<String> updateAddress(@RequestBody @Valid DeliveryAddress address, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             StringBuilder errorMessage = new StringBuilder("Ошибка валидации: ");
             for (ObjectError error : bindingResult.getAllErrors()) {
-                errorMessage.append(error.getDefaultMessage()).append("; "); // Добавляем текст ошибки
+                errorMessage.append(error.getDefaultMessage()).append("; ");
             }
-            return ResponseEntity.badRequest().body(errorMessage.toString()); // Возвращаем сообщения об ошибках
+            return ResponseEntity.badRequest().body(errorMessage.toString());
         }
-
         deliveryAddressService.updateDeliveryAddress(address);
-        return ResponseEntity.ok("Адрес успешно обновлен!"); // Возвращаем 200 OK
+        return ResponseEntity.ok("Адрес успешно обновлен!");
     }
 
     @PreAuthorize("hasAuthority('Admin') or hasAuthority('Seller')")

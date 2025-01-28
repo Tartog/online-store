@@ -49,13 +49,9 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         ProductCategory category = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
 
-        // Удаляем связь с товарами
         for (Product product : category.getProducts()) {
             product.getProductCategories().remove(category);
         }
-
-        // Удаляем категорию
-        //repository.delete(category);
         repository.deleteById(id);
     }
 

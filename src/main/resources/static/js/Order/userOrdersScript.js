@@ -1,5 +1,4 @@
 let currentPage = 0;
-const size = 10;
 
 function loadOrders(page, user) {
     let url = `/api/v1/store/userOrders?login=${user}&page=${page}`;
@@ -15,7 +14,7 @@ function loadOrders(page, user) {
                 const productsList = order.productsInOrders.map(product => {
                     console.log(product);
                     return `<li>${product.product?.name || 'Неизвестно'} x ${product.numberOfProduct} - ${product.product?.price || 0}</li>`;
-                }).join(''); // Создаем список товаров
+                }).join('');
 
                 const row =
                     `<tr>
@@ -30,7 +29,7 @@ function loadOrders(page, user) {
                         </td>
                         <td>
                             <ul>
-                                ${productsList} <!-- Вставляем список товаров -->
+                                ${productsList}
                             </ul>
                         </td>
                     </tr>`;

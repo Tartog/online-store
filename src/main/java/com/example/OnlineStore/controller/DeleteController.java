@@ -1,7 +1,6 @@
 package com.example.OnlineStore.controller;
 
 import com.example.OnlineStore.model.Product;
-import com.example.OnlineStore.model.Role;
 import com.example.OnlineStore.model.User;
 import com.example.OnlineStore.service.*;
 import lombok.AllArgsConstructor;
@@ -26,7 +25,6 @@ public class DeleteController {
     private DeliveryAddressService deliveryAddressService;
     private ProductService productService;
     private UserService userService;
-    private RoleService roleService;
     private CartService cartService;
 
     @PreAuthorize("hasAuthority('Admin')")
@@ -50,19 +48,6 @@ public class DeleteController {
         return ResponseEntity.noContent().build();
     }
 
-    /*@PreAuthorize("hasAuthority('Admin') or authentication.name == #login")
-    @DeleteMapping("deleteUser/{login}")
-    public ModelAndView deleteUser(@PathVariable String login){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userService.findByLogin(auth.getName());
-        userService.deleteUserByLogin(login);
-        if(currentUser.getRole().getUserRole().equals("Admin")){
-            return new ModelAndView("redirect:/api/v1/store/listOfUsers");
-        }
-
-        return new ModelAndView("redirect:/logout");
-    }*/
-
     @PreAuthorize("hasAuthority('Admin') or authentication.name == #login")
     @DeleteMapping("deleteUser/{login}")
     public ResponseEntity<Void> deleteUser(@PathVariable String login){
@@ -71,32 +56,14 @@ public class DeleteController {
 
         userService.deleteUserByLogin(login);
         if(currentUser.getRole().getUserRole().equals("Admin")){
-            return ResponseEntity.noContent().build();//new ModelAndView("redirect:/api/v1/store/listOfUsers");
+            return ResponseEntity.noContent().build();
         }
 
         URI location = URI.create("/logout");
         return ResponseEntity.status(HttpStatus.FOUND)
                 .location(location)
                 .build();
-
-        //return ResponseEntity.noContent().build();//new ModelAndView("redirect:/logout");
     }
-
-    /*@PreAuthorize("authentication.name == #login")
-    @DeleteMapping("deleteUser/{login}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String login){
-        URI location = URI.create("/logout");
-        return ResponseEntity.status(HttpStatus.FOUND)
-                .location(location)
-                .build();
-    }
-
-    @PreAuthorize("hasAuthority('Admin')")
-    @DeleteMapping("deleteUser/{id}")
-    public ResponseEntity<Void> deleteUserById(@PathVariable String id){
-        userService.deleteUser(Long.parseLong(id));
-        return ResponseEntity.noContent().build();
-    }*/
 
     @PreAuthorize("hasAuthority('User') and authentication.name == #login")
     @DeleteMapping("deleteProductInCart/{login}/{productId}")

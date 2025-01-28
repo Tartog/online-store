@@ -7,9 +7,7 @@ import org.springframework.stereotype.Component;
 public class UserSecurity {
 
     public boolean hasAccess(Authentication authentication, String login) {
-        // Получаем имя пользователя из аутентификации
         String currentUserLogin = authentication.getName();
-        // Проверяем, совпадает ли текущий пользователь с указанным логином
         return currentUserLogin.equals(login);
     }
 }

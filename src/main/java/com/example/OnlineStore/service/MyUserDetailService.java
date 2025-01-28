@@ -23,10 +23,7 @@ public class MyUserDetailService implements UserDetailsService {
 
         Optional<User> user = repository.findByLogin(username);
 
-        //return repository.findByLogin(username);
-        //return null;
         return user.map(MyUserDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException(username + " not found"));
-        //        .orElseThrow(() -> new UsernameNotFoundException(username + " not found"));
     }
 }

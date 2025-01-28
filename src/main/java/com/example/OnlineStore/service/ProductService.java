@@ -1,6 +1,5 @@
 package com.example.OnlineStore.service;
 
-import com.example.OnlineStore.model.DeliveryAddress;
 import com.example.OnlineStore.model.Product;
 import com.example.OnlineStore.model.User;
 import org.springframework.data.domain.Page;

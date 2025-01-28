@@ -6,7 +6,7 @@ function loadUsers(page) {
         url: url,
         method: 'GET',
         success: function(data) {
-            $('#user-list').empty(); // Очистить текущий список адресов
+            $('#user-list').empty();
             data.content.forEach(function(user) {
                 $('#user-list').append(`
                 <div class="user-item">
@@ -16,7 +16,6 @@ function loadUsers(page) {
             `);
             });
 
-            // Управление кнопками пагинации
             $('#prev-page').toggle(page > 0);
             $('#next-page').toggle(data.totalPages > page + 1);
         },
@@ -29,7 +28,6 @@ function loadUsers(page) {
 $(document).ready(function() {
     loadUsers(currentPage);
 
-    // Обработчик события для кнопок удаления
     $(document).on('click', '.delete-button', function() {
         const login = $(this).data('id');
         if (confirm("Вы уверены, что хотите удалить этого пользователя?")) {

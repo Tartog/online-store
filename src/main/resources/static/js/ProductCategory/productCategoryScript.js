@@ -17,7 +17,6 @@ function loadCategories(page, query = '') {
             `);
             });
 
-            // Управление кнопками пагинации
             $('#prev-page').toggle(page > 0);
             $('#next-page').toggle(data.totalPages > page + 1);
         },
@@ -26,8 +25,6 @@ function loadCategories(page, query = '') {
         }
     });
 }
-
-
 
 $(document).ready(function() {
     loadCategories(currentPage);
@@ -39,7 +36,6 @@ $(document).ready(function() {
                 url: `/api/v1/store/productCategory/deleteCategory/${categoryId}`,
                 method: 'DELETE',
                 success: function() {
-                    // После удаления, перезагрузим адреса
                     loadCategories(currentPage);
                 },
                 error: function(xhr, status, error) {
@@ -51,12 +47,10 @@ $(document).ready(function() {
 
     $(document).on('click', '.update-button', function() {
         const productCategoryId = $(this).data('id');
-        // Получите данные адреса, используя его ID
         $.ajax({
             url: `/api/v1/store/productCategory/${productCategoryId}`,
             method: 'GET',
             success: function(productCategory) {
-                // Заполните форму редактирования
                 $('#update-id').val(productCategory.id);
                 $('#update-category').val(productCategory.category);
                 $('#update-category-div').show();
@@ -71,7 +65,7 @@ $(document).ready(function() {
 
     $('#search-button').click(function() {
         searchQuery = $('#search-category').val().trim();
-        loadCategories(0, searchQuery); // Сбросить страницу и выполнить поиск
+        loadCategories(0, searchQuery);
     });
 
     $('#prev-page').click(function() {
@@ -87,7 +81,7 @@ $(document).ready(function() {
     });
 
     $('#add-productCategory-button').click(function() {
-        $('#new-category-div').toggle(); // Показать или скрыть форму
+        $('#new-category-div').toggle();
     });
 
     $('#update-category-form').submit(function(event) {

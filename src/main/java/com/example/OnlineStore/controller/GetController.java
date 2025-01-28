@@ -19,16 +19,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/store")
@@ -38,46 +34,36 @@ public class GetController {
 
     private UserService userService;
     private RoleService roleService;
-    private MyUserDetailService myUserDetailService;
     private DeliveryAddressService deliveryAddressService;
     private ProductCategoryService productCategoryService;
     private ProductService productService;
     private CartService cartService;
     private OrderService orderService;
     private OrderStatusService orderStatusService;
-    private ProductsInOrderService productsInOrderService;
-
-    //private final UserServiceImpl userServiceImpl;
 
     @PreAuthorize("hasAuthority('User')")
     @GetMapping("/welcome")
     public ModelAndView findAllStudent(){
-        //public List<Student> findAllStudent(){
-        //modelAndView.addObject("students", studentService.findAllStudent());
         return new ModelAndView("hello");
-        //return studentService.findAllStudent();
     }
 
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping("/test")
     public ModelAndView findAllStudent2(){
-        //public List<Student> findAllStudent(){
-        //modelAndView.addObject("students", studentService.findAllStudent());
         return new ModelAndView("hello");
-        //return studentService.findAllStudent();
     }
 
     @GetMapping
     public ModelAndView showMainPage(@RequestParam(value = "query", defaultValue = "") String query){
         ModelAndView modelAndView = new ModelAndView("html/General/mainPage");
         Role user = roleService.findByUserRole("User").
-                orElseThrow(() -> new RuntimeException("Отсутствует стандартная роль User"));//.get();
+                orElseThrow(() -> new RuntimeException("Отсутствует стандартная роль User"));
         Role seller = roleService.findByUserRole("Seller").
-                orElseThrow(() -> new RuntimeException("Отсутствует стандартная роль Seller"));//.get();
+                orElseThrow(() -> new RuntimeException("Отсутствует стандартная роль Seller"));
         Role admin = roleService.findByUserRole("Admin").
-                orElseThrow(() -> new RuntimeException("Отсутствует стандартная роль Admin"));//.get();
+                orElseThrow(() -> new RuntimeException("Отсутствует стандартная роль Admin"));
         Role worker = roleService.findByUserRole("Worker").
-                orElseThrow(() -> new RuntimeException("Отсутствует стандартная роль Worker"));//.get();
+                orElseThrow(() -> new RuntimeException("Отсутствует стандартная роль Worker"));
 
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -89,7 +75,6 @@ public class GetController {
             modelAndView.addObject("isAuthenticated", false);
         }
 
-        //modelAndView.addObject("listOfProduct", productService.findAll());
         modelAndView.addObject("listOfProduct", productService.findByNameContaining(query));
         modelAndView.addObject("user", user);
         modelAndView.addObject("seller", seller);
@@ -129,26 +114,16 @@ public class GetController {
         ModelAndView modelAndView = new ModelAndView("html/General/profilePage");
         User user = userService.findByLogin(login);
         modelAndView.addObject("user", user);
-        //modelAndView.addObject("role", user.getRole());
         return modelAndView;
     }
-
-    /*@PreAuthorize("hasAuthority('Admin')")
-    @GetMapping("/deliveryAddress")
-    public ModelAndView showAddressPage(){
-        ModelAndView modelAndView = new ModelAndView("html/Address/addressPage");
-        modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
-        return modelAndView;
-    }*/
 
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/deliveryAddressPage")
     public ModelAndView showDeliveryAddressesPage(@RequestParam(defaultValue = "0") int page) {
-        int pageSize = 10; // количество адресов на странице
-        Page<DeliveryAddress> addressesPage = deliveryAddressService.findAllDeliveryAddress(PageRequest.of(page, pageSize));
-
-        ModelAndView modelAndView = new ModelAndView("html/Address/addressPage"); // Имя вашего шаблона
-
+        int pageSize = 10; //количество адресов на странице
+        Page<DeliveryAddress> addressesPage = deliveryAddressService
+                .findAllDeliveryAddress(PageRequest.of(page, pageSize));
+        ModelAndView modelAndView = new ModelAndView("html/Address/addressPage");
         if (addressesPage.isEmpty()) {
             modelAndView.addObject("message", "No addresses found.");
         } else {
@@ -169,7 +144,6 @@ public class GetController {
             @RequestParam(required = false) Integer houseNumber) {
         Pageable pageable = PageRequest.of(page, 10);
         Page<DeliveryAddress> addresses;
-
         if (city == null && street == null && houseNumber == null) {
             addresses = deliveryAddressService.findAllDeliveryAddress(pageable);
 
@@ -181,7 +155,6 @@ public class GetController {
                     pageable
             );
         }
-
         return ResponseEntity.ok(addresses);
     }
 
@@ -205,21 +178,13 @@ public class GetController {
         return ResponseEntity.ok(address);
     }
 
-    /*@PreAuthorize("hasAuthority('Admin') or hasAuthority('Seller')")
-    @GetMapping("/productCategory")
-    public ModelAndView showProductCategoryPage(){
-        ModelAndView modelAndView = new ModelAndView("html/Category/categoryPage");
-        modelAndView.addObject("listProductCategory", productCategoryService.findAllProductCategory());
-        return modelAndView;
-    }*/
-
     @PreAuthorize("hasAuthority('Admin') or hasAuthority('Seller')")
     @GetMapping("/productCategoryPage")
     public ModelAndView showProductCategoryPage(@RequestParam(defaultValue = "0") int page){
         int pageSize = 10;
-        Page<ProductCategory> productCategoryPage = productCategoryService.findAllProductCategory(PageRequest.of(page, pageSize));
+        Page<ProductCategory> productCategoryPage = productCategoryService
+                .findAllProductCategory(PageRequest.of(page, pageSize));
         ModelAndView modelAndView = new ModelAndView("html/Category/categoryPage");
-
         if (productCategoryPage.isEmpty()) {
             modelAndView.addObject("message", "No addresses found.");
         } else {
@@ -232,30 +197,22 @@ public class GetController {
 
     @PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
     @GetMapping("/ordersPage")
-    //public ModelAndView showOrders(@RequestParam("addressId") String addressId, @RequestParam(defaultValue = "0") int page){
     public ModelAndView showOrders(@RequestParam(required = false) Long id, @RequestParam(defaultValue = "0") int page){
         int pageSize = 10;
         Page<Order> orderPage;
-        // = productCategoryService.findAllProductCategory(PageRequest.of(page, pageSize));
         ModelAndView modelAndView = new ModelAndView("html/Order/workerOrders");
         if(id == null) {
             orderPage = orderService.findAllOrders(PageRequest.of(page, pageSize));
         }
         else{
-            //DeliveryAddress address = deliveryAddressService.findById(Long.parseLong(addressId));
-            //orderPage = orderService.findAllOrdersByAddress(address, PageRequest.of(page, pageSize));
             orderPage = orderService.findAllOrdersById(id, PageRequest.of(page, pageSize));
         }
         if (orderPage.isEmpty()) {
             modelAndView.addObject("message", "No orders found.");
         } else {
             modelAndView.addObject("orders", orderPage.getContent());
-            //modelAndView.addObject("totalPages", orderPage.getTotalPages());
             modelAndView.addObject("currentPage", page);
         }
-        //modelAndView.addObject("listStatus", orderStatusService.findAllOrderStatus());
-        //modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
-        //modelAndView.addObject("addressId", addressId);
         return modelAndView;
     }
 
@@ -266,25 +223,13 @@ public class GetController {
             @RequestParam(required = false) Long id) {
         Pageable pageable = PageRequest.of(page, 10);
         Page<Order> orders;
-        //List<Order> orders;
-        //List<DeliveryAddress> deliveryAddresses = deliveryAddressService.findByFilters(city, street, houseNumber);
         if (id == null) {
             orders = orderService.findAllOrders(pageable);
         } else {
             orders = orderService.findAllOrdersById(id, pageable);
-            //DeliveryAddress address = deliveryAddressService.findById(Long.parseLong(addressId));
-            //orders = orderService.findAllOrdersByAddress(address, pageable);
-            //orders = orderService.findByFilters(city, street, houseNumber, status, id, pageable);
         }
 
         Page<OrderDTO> orderDTOs = orders.map(OrderMapper::toDTO);
-
-        //Map<String, Object> response = new HashMap<>();
-        //orders.getTotalPages();
-        //int totalPages = (int) Math.ceil((double) orderService.getTotalCount(addressId) / size);
-        //int totalPages = orders.getSize() / size;
-        //response.put("listOrder", orders.getContent());
-        //.put("totalPages", orders.getTotalPages());
 
         return ResponseEntity.ok(orderDTOs);
     }
@@ -328,16 +273,6 @@ public class GetController {
         return modelAndView;
     }
 
-    /*@PreAuthorize("hasAuthority('Admin')")
-    @GetMapping("/deliveryAddress/newAddress")
-    public ModelAndView newAddress(){
-        ModelAndView modelAndView = new ModelAndView("html/Address/newAddress");
-        DeliveryAddress deliveryAddress = new DeliveryAddress();
-        modelAndView.addObject("deliveryAddress", deliveryAddress);
-
-        return modelAndView;
-    }*/
-
     @PreAuthorize("hasAuthority('Admin') or hasAuthority('Seller')")
     @GetMapping("/productCategory/newCategory")
     public ModelAndView newCategory(){
@@ -347,30 +282,6 @@ public class GetController {
 
         return modelAndView;
     }
-
-    /*@PreAuthorize("hasAuthority('Seller') and @userSecurity.hasAccess(authentication, #login)")
-    @GetMapping("/products/{login}")
-    public ModelAndView showProductsPage(@PathVariable String login){
-        ModelAndView modelAndView = new ModelAndView("html/Product/productsPage");
-        User seller = userService.findByLogin(login);
-        modelAndView.addObject("seller", seller);
-        modelAndView.addObject("listProduct", productService.findAllProduct(seller));
-
-        return modelAndView;
-    }*/
-
-    /*@PreAuthorize("hasAuthority('Seller') and @userSecurity.hasAccess(authentication, #login)")
-    @GetMapping("/products/{login}")
-    public ModelAndView showProductsPage(@PathVariable String login,
-                                         @RequestParam(defaultValue = "0") int page,
-                                         @RequestParam(defaultValue = "10") int size) {
-        ModelAndView modelAndView = new ModelAndView("html/Product/productsPage");
-        User seller = userService.findByLogin(login);
-        modelAndView.addObject("seller", seller);
-        modelAndView.addObject("page", productService.findAllProductsBySeller(seller, PageRequest.of(page, size)));
-
-        return modelAndView;
-    }*/
 
     @PreAuthorize("hasAuthority('Seller') and @userSecurity.hasAccess(authentication, #login)")
     @GetMapping("/products")
@@ -385,8 +296,6 @@ public class GetController {
         Page<ProductDTO> productDTOs = products.map(ProductMapper::toDTO_FULL);
 
         return ResponseEntity.ok(productDTOs);
-
-        //return ResponseEntity.ok(products);
     }
 
     @PreAuthorize("hasAuthority('Seller')")
@@ -396,16 +305,8 @@ public class GetController {
         User seller = userService.findByLogin(login);
         Product product = new Product();
         product.setUser(seller);
-        //modelAndView.addObject("seller", seller);
-        //modelAndView.addObject("listProductCategory", productCategoryService.findAllProductCategory());
-        Page<ProductCategory> categoryPage = productCategoryService.findAllProductCategory(PageRequest.of(0, 10));
-
-
-        //System.out.println("*****************");
-        //System.out.println(categoryPage.getContent().toString());
-        //System.out.println("*****************");
-
-
+        Page<ProductCategory> categoryPage = productCategoryService
+                .findAllProductCategory(PageRequest.of(0, 10));
         modelAndView.addObject("categoryPage", categoryPage);
         modelAndView.addObject("product", product);
 
@@ -438,28 +339,6 @@ public class GetController {
         return modelAndView;
     }
 
-    /*@PreAuthorize("hasAuthority('User') and authentication.name == #login")
-    @GetMapping("/cart/{login}")
-    public ModelAndView showCart(@PathVariable String login){
-        ModelAndView modelAndView = new ModelAndView("html/Cart/cartPage");
-        User user = userService.findByLogin(login);
-        List<Cart> cart = cartService.findAllByUser(user);
-        double totalPrice = 0;
-        for(Cart productInCart: cart){
-            totalPrice += productInCart.getNumberOfProduct() * productInCart.getProduct().getPrice();
-        }
-        if(cartService.findAllByUser(user).size() == 0){
-            modelAndView.addObject("cartNotEmpty", false);
-        }
-        else{
-            modelAndView.addObject("cartNotEmpty", true);
-        }
-        modelAndView.addObject("listCart", cart);
-        modelAndView.addObject("totalPrice", totalPrice);
-        modelAndView.addObject("user", user);
-        return modelAndView;
-    }*/
-
     @PreAuthorize("hasAuthority('User') and authentication.name == #login")
     @GetMapping("/cart/{login}")
     public ModelAndView showCartAndOrder(@PathVariable String login) {
@@ -486,16 +365,13 @@ public class GetController {
 
         LocalDate localDate = LocalDate.now();
         Date sqlDate = Date.valueOf(localDate);
-
         order.setOrderDate(sqlDate);
         order.setExpectedReceiveDate(Date.valueOf(localDate.plusDays(7)));
-
         modelAndView.addObject("order", order);
         modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
 
         return modelAndView;
     }
-
 
     @PreAuthorize("hasAuthority('User') and authentication.name == #login")
     @GetMapping("/order/{login}/newOrder")
@@ -510,10 +386,9 @@ public class GetController {
         order.setOrderStatus(orderStatusService
                 .findByStatus("Доставляется")
                 .orElseThrow(()-> new RuntimeException("Отсутствует стандартный статус 'Доставляется' !")));
-        //modelAndView.addObject("listProductCategory", productCategoryService.findAllProductCategory());
 
-        LocalDate localDate = LocalDate.now(); // текущая дата
-        Date sqlDate = Date.valueOf(localDate); // преобразование в java.sql.Dat
+        LocalDate localDate = LocalDate.now();
+        Date sqlDate = Date.valueOf(localDate);
 
         order.setOrderDate(sqlDate);
         order.setExpectedReceiveDate(Date.valueOf(localDate.plusDays(7)));
@@ -524,15 +399,6 @@ public class GetController {
 
         return modelAndView;
     }
-
-    /*@PreAuthorize("hasAuthority('User') and authentication.name == #login")
-    @GetMapping("/order/{login}/orders")
-    public ModelAndView showUserOrders(@PathVariable String login){
-        ModelAndView modelAndView = new ModelAndView("html/Order/userOrders");
-        User user = userService.findByLogin(login);
-        modelAndView.addObject("listOrder", orderService.findAllByUser(user));
-        return modelAndView;
-    }*/
 
     @PreAuthorize("hasAuthority('User') and authentication.name == #login")
     @GetMapping("/order/{login}/orders")
@@ -566,29 +432,6 @@ public class GetController {
 
         return ResponseEntity.ok(orderDTOs);
     }
-
-    /*@PreAuthorize("hasAuthority('Worker') or hasAuthority('Admin')")
-    @GetMapping("/orders/{addressId}")
-    public ModelAndView showOrders(@PathVariable String addressId){
-        ModelAndView modelAndView = new ModelAndView("Order/ordersToAddress");
-
-        if(addressId.equals("all")){
-            modelAndView.addObject("listOrder", orderService.findAllOrder());
-        }
-        else {
-            DeliveryAddress address = deliveryAddressService.findById(Long.parseLong(addressId));
-            modelAndView.addObject("listOrder", orderService.findAllByAddress(address));
-        }
-
-
-        //System.out.println("*****************************************************************");
-        //System.out.println(orderService.findAllByAddress(address).size());
-        //System.out.println("*****************************************************************");
-
-        modelAndView.addObject("listStatus", orderStatusService.findAllOrderStatus());
-        modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
-        return modelAndView;
-    }*/
 
     @GetMapping("/test-image")
     public String testImage() {

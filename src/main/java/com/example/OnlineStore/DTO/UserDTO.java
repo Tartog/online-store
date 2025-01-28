@@ -1,6 +1,5 @@
 package com.example.OnlineStore.DTO;
 
-import com.example.OnlineStore.model.Role;
 import lombok.Data;
 
 import java.util.Set;

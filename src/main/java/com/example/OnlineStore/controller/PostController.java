@@ -4,7 +4,6 @@ import com.example.OnlineStore.model.*;
 import com.example.OnlineStore.service.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,10 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/store")
@@ -35,9 +32,6 @@ public class PostController {
     private CartService cartService;
     private OrderService orderService;
     private ProductsInOrderService productsInOrderService;
-
-    //@Value("${spring.web.resources.static-locations}")
-    //private String staticLocations;
 
     @PostMapping
     public ModelAndView createUser(@Valid User user, BindingResult bindingResult){
@@ -56,41 +50,23 @@ public class PostController {
         return new ModelAndView("redirect:/api/v1/store");
     }
 
-    /*@PreAuthorize("hasAuthority('Admin')")
-    @PostMapping("/deliveryAddress/newAddress")
-    public ModelAndView createAddress(@Valid DeliveryAddress deliveryAddress, BindingResult bindingResult){
-
-        if(deliveryAddressService.existsAddress(deliveryAddress)){
-            bindingResult.reject("error.address", "Такой адрес уже есть !");
-        }
-
-        if (bindingResult.hasErrors()){
-            ModelAndView modelAndView = new ModelAndView("Address/newAddress");
-            modelAndView.addObject("deliveryAddress", deliveryAddress);
-            return modelAndView;
-        }
-        deliveryAddressService.saveDeliveryAddress(deliveryAddress);
-        //return new ModelAndView("redirect:/api/v1/store/deliveryAddress");
-        return new ModelAndView("redirect:/api/v1/store/deliveryAddressPage");
-    }*/
-
     @PreAuthorize("hasAuthority('Admin')")
     @PostMapping("/deliveryAddress/newAddress")
     public ResponseEntity<String> createAddress(@RequestBody @Valid DeliveryAddress deliveryAddress, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMessage = new StringBuilder("Ошибка валидации: ");
             for (ObjectError error : bindingResult.getAllErrors()) {
-                errorMessage.append(error.getDefaultMessage()).append("; "); // Добавляем текст ошибки
+                errorMessage.append(error.getDefaultMessage()).append("; ");
             }
-            return ResponseEntity.badRequest().body(errorMessage.toString()); // Возвращаем сообщения об ошибках
+            return ResponseEntity.badRequest().body(errorMessage.toString());
         }
 
         if (deliveryAddressService.existsAddress(deliveryAddress)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Такой адрес уже существует!"); // Возвращаем 409 при конфликте
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Такой адрес уже существует!");
         }
 
         deliveryAddressService.saveDeliveryAddress(deliveryAddress);
-        return ResponseEntity.ok("Адрес успешно добавлен!"); // Возвращаем 200 OK
+        return ResponseEntity.ok("Адрес успешно добавлен!");
     }
 
     @PreAuthorize("hasAuthority('Admin')")
@@ -116,14 +92,12 @@ public class PostController {
             @RequestParam("image") MultipartFile image,
             @RequestParam("selectedCategories") String selectedCategories,
             @Valid Product product, BindingResult bindingResult) {
-
-
         if (productService.existsProduct(product)) {
             bindingResult.rejectValue("name", "error.product", "Такое название товара уже есть !");
         }
-
         if (selectedCategories == null || selectedCategories.isEmpty()) {
-            bindingResult.rejectValue("productCategories", "error.product", "Товар должен иметь хотя бы 1 категорию !");
+            bindingResult.rejectValue("productCategories", "error.product",
+                    "Товар должен иметь хотя бы 1 категорию !");
         }
         else{
             Set<ProductCategory> categories = new HashSet<>();
@@ -136,15 +110,12 @@ public class PostController {
             }
             product.setProductCategories(categories);
         }
-
-        // Обработка загрузки изображения
         if (!image.isEmpty()) {
             String directoryPath = "C:/Users/Tartog/OnlineStore/Images/";
             File directory = new File(directoryPath);
             if (!directory.exists()) {
                 directory.mkdirs();
             }
-
             String imagePath = directoryPath + image.getOriginalFilename();
             File file = new File(imagePath);
             try {
@@ -152,7 +123,8 @@ public class PostController {
                 product.setImagePath("/Images/" + image.getOriginalFilename());
             } catch (IOException e) {
                 e.printStackTrace();
-                bindingResult.rejectValue("imagePath", "error.imagePath", "Ошибка при добавлении изображения !");
+                bindingResult.rejectValue("imagePath", "error.imagePath",
+                        "Ошибка при добавлении изображения !");
             }
         }
 
@@ -172,66 +144,6 @@ public class PostController {
         productService.saveProduct(product);
         return new ModelAndView("redirect:/api/v1/store/products/" + product.getUser().getLogin());
     }
-
-    /*@PreAuthorize("hasAuthority('Seller')")
-    @PostMapping("/product/newProduct")
-    public ModelAndView createProduct(@RequestParam("image") MultipartFile image, @Valid Product product, BindingResult bindingResult){
-        if(productService.existsProduct(product)){
-            bindingResult.rejectValue("name", "error.product", "Такое название товара уже есть !");
-
-        }
-        if(product.getProductCategories().size() == 0){
-            bindingResult.rejectValue("productCategories", "error.product",
-                    "Товар должен иметь хотя бы 1 категорию !");
-        }
-
-        if (!image.isEmpty()) {
-            //String directoryPath = System.getProperty("user.dir") + "\\images\\";
-            //System.out.println(directoryPath);
-            //File directory = new File(directoryPath);
-            String directoryPath = "C:/Users/Tartog/OnlineStore/Images/";
-            File directory = new File(directoryPath);
-
-            // Создаем директорию, если она не существует
-            if (!directory.exists()) {
-                directory.mkdirs();
-            }
-
-            String imagePath = directoryPath + image.getOriginalFilename();
-            //System.out.println(imagePath);
-            //String imagePath = "src/main/resources/static/images/" + image.getOriginalFilename();
-            //String imagePath = "/images/" + image.getOriginalFilename();
-            //String imagePath = image.getOriginalFilename();
-            File file = new File(imagePath);
-            try {
-                image.transferTo(file);
-                //imagePath = "/images/" + image.getOriginalFilename();
-                //imagePath = "/images/" + image.getOriginalFilename() + "?t=" + System.currentTimeMillis();
-                //product.setImagePath(imagePath);
-                //product.setImagePath("/images/" + image.getOriginalFilename());
-                //product.setImagePath(imagePath);
-
-
-
-                product.setImagePath("/Images/" + image.getOriginalFilename());
-                //product.setImagePath("/" + image.getOriginalFilename());
-            } catch (IOException e) {
-                e.printStackTrace();
-                bindingResult.rejectValue("imagePath", "error.imagePath",
-                        "Ошибка при добавлении изображения !");
-            }
-        }
-
-        if (bindingResult.hasErrors()){
-            product.setProductCategories(new HashSet<>());
-            ModelAndView modelAndView = new ModelAndView("html/Product/newProduct");
-            modelAndView.addObject("listProductCategory", productCategoryService.findAllProductCategory());
-            modelAndView.addObject("product", product);
-            return modelAndView;
-        }
-        productService.saveProduct(product);
-        return new ModelAndView("redirect:/api/v1/store/products/" + product.getUser().getLogin());
-    }*/
 
     @PreAuthorize("hasAuthority('User')")
     @PostMapping("/cart/{login}/{productId}")
@@ -263,7 +175,6 @@ public class PostController {
         }
 
         User user = userService.findByLogin(login);
-
         for(Cart cart : cartService.findAllByUser(user)){
             Product product = productService.findById(cart.getProduct().getId());
             if((product.getNumberOfProducts() - cart.getNumberOfProduct()) < 0){
@@ -271,28 +182,13 @@ public class PostController {
                         product.getName() + " !");
             }
         }
-
         if (bindingResult.hasErrors()){
-            /*System.out.println("*********************************");
-            System.out.println(order.getOrderDate());
-            System.out.println(order.getOrderStatus());
-            System.out.println(order.getId());
-            System.out.println(order.getDeliveryAddress().getCity());
-            System.out.println(order.getDeliveryAddress().getStreet());
-            System.out.println(order.getDeliveryAddress().getHouseNumber());
-            System.out.println(order.getDeliveryAddress().getId());
-            System.out.println(order.getUser().getId());
-            System.out.println(order.getUser().getLogin());
-            System.out.println("*********************************");*/
-
             ModelAndView modelAndView = new ModelAndView("html/Order/newOrder");
             modelAndView.addObject("order", order);
             modelAndView.addObject("user", user);
             modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
             return modelAndView;
         }
-
-
         orderService.saveOrder(order);
         for(Cart cart : cartService.findAllByUser(user)){
             ProductsInOrder products = new ProductsInOrder();
@@ -307,9 +203,7 @@ public class PostController {
             productsInOrderService.saveProductsInOrder(products);
         }
         cartService.deleteAllByUser(user);
-
         return new ModelAndView("redirect:/api/v1/store");
     }
-
 }
 

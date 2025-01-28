@@ -1,11 +1,9 @@
 let currentPage = 0;
-const size = 10; // Количество товаров на странице
-
 
 function loadProducts(page, seller) {
     $.get(`/api/v1/store/products?login=${seller}&page=${page}`)
         .done(function(data) {
-            $('#product-list').empty(); // Очистить текущий список
+            $('#product-list').empty();
             if (data.content) {
                 data.content.forEach(function(product) {
                     $('#product-list').append(`
@@ -20,7 +18,6 @@ function loadProducts(page, seller) {
                 console.error("Полученные данные не содержат 'content':", data);
             }
 
-            // Управление кнопками пагинации
             $('#prev-page').toggle(page > 0);
             $('#next-page').toggle(page < data.totalPages - 1);
         })
@@ -31,7 +28,7 @@ function loadProducts(page, seller) {
 
 
 $(document).ready(function() {
-    loadProducts(currentPage, seller); // Используйте seller здесь
+    loadProducts(currentPage, seller);
 
     $(document).on('click', '.delete-button', function() {
         const productId = $(this).data('id');
@@ -51,11 +48,11 @@ $(document).ready(function() {
 
     $('#prev-page').click(function() {
         currentPage--;
-        loadProducts(currentPage, seller); // Передайте seller
+        loadProducts(currentPage, seller);
     });
 
     $('#next-page').click(function() {
         currentPage++;
-        loadProducts(currentPage, seller); // Передайте seller
+        loadProducts(currentPage, seller);
     });
 });

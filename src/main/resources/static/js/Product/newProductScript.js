@@ -1,11 +1,11 @@
 let currentCategoryPage = 0;
-let selectedCategories = []; // Массив для хранения выбранных категорий
+let selectedCategories = [];
 
 function loadCategories(page) {
     $.get(`/api/v1/store/productCategory?page=${page}`, function(data) {
-        $('#category-list').empty(); // Очистить текущий список категорий
+        $('#category-list').empty();
         data.content.forEach(category => {
-            const isChecked = selectedCategories.includes(category.id); // Проверяем, выбран ли чекбокс
+            const isChecked = selectedCategories.includes(category.id);
             $('#category-list').append(`
                 <div>
                     <input type="checkbox" id="category_${category.id}" value="${category.id}" name="productCategories" ${isChecked ? 'checked' : ''} />
@@ -14,35 +14,32 @@ function loadCategories(page) {
             `);
         });
 
-        // Управление кнопками пагинации категорий
         $('#prev-category').toggle(page > 0);
         $('#next-category').toggle(page < data.totalPages - 1);
     });
 }
 
 function updateSelectedCategories() {
-    // Обновляем массив выбранных категорий
     $('input[name="productCategories"]').each(function() {
         const categoryId = parseInt($(this).val());
         if ($(this).is(':checked')) {
             if (!selectedCategories.includes(categoryId)) {
-                selectedCategories.push(categoryId); // Добавляем новую выбранную категорию
+                selectedCategories.push(categoryId);
             }
         } else {
-            selectedCategories = selectedCategories.filter(id => id !== categoryId); // Удаляем невыбранные категории
+            selectedCategories = selectedCategories.filter(id => id !== categoryId);
         }
     });
 
     // Обновляем скрытое поле
-    $('#selectedCategories').val(selectedCategories.join(',')); // Преобразуем массив в строку
+    $('#selectedCategories').val(selectedCategories.join(','));
 }
 
 $(document).ready(function() {
     loadCategories(currentCategoryPage);
 
-    // Обработчик изменения состояния чекбоксов
     $(document).on('change', 'input[name="productCategories"]', function() {
-        updateSelectedCategories(); // Обновляем массив при изменении
+        updateSelectedCategories();
     });
 
     $('#prev-category').click(function() {
@@ -57,12 +54,11 @@ $(document).ready(function() {
         loadCategories(currentCategoryPage);
     });
 
-    // Обработчик отправки формы
     $('form').submit(function(event) {
-        updateSelectedCategories(); // Обновляем массив перед отправкой формы
+        updateSelectedCategories();
         if (selectedCategories.length === 0) {
-            event.preventDefault(); // Отменяем отправку формы, если нет выбранных категорий
-            alert("Товар должен иметь хотя бы 1 категорию!"); // Предупреждение пользователю
+            event.preventDefault();
+            alert("Товар должен иметь хотя бы 1 категорию!");
         }
     });
 });
