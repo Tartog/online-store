@@ -2,80 +2,92 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="/css/addressCSS.css">
   <title>Address page</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script th:src="@{/js/Address/addressScript.js}" defer></script> <!-- Подключаем JS файл -->
+  <script th:src="@{/js/Address/addressScript.js}" defer></script>
 </head>
 <body>
-<a href="/api/v1/store">Вернуться на главную страницу</a>
-<p><button id="add-address-button">Добавить новый адрес</button></p>
 
-<div>
-  <h3>Поиск адреса</h3>
-  <label for="search-city">Город:</label>
-  <input type="text" id="search-city" placeholder="Введите город"/>
-  <br/>
-  <label for="search-street">Улица:</label>
-  <input type="text" id="search-street" placeholder="Введите улицу"/>
-  <br/>
-  <label for="search-houseNumber">Номер дома:</label>
-  <input type="number" id="search-houseNumber" placeholder="Введите номер дома" />
-  <br/>
-  <button id="search-button">Поиск</button>
+  <header class="header">
+    <div class="container">
+      <div class="header__inner">
+        <nav class="nav">
+          <div class="nav__right">
+            <a class="nav__link" href="/api/v1/store">Вернуться на главную страницу</a>
+            <button class="btn" id="add-address-button">Добавить новый адрес</button>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+<div class="form-container">
+  <div>
+    <h4 class="text">Поиск адреса</h4>
+    <label class="text" for="search-city">Город:</label>
+    <input type="text" id="search-city" placeholder="Введите город"/>
+    <br/>
+    <label class="text" for="search-street">Улица:</label>
+    <input type="text" id="search-street" placeholder="Введите улицу"/>
+    <br/>
+    <label class="text" for="search-houseNumber">Номер дома:</label>
+    <input type="number" id="search-houseNumber" placeholder="Введите номер дома" />
+    <br/>
+    <button class="btn btn-search pagination-buttons" id="search-button">Поиск</button>
+  </div>
+  <!-- Форма для добавления нового адреса -->
+  <div id="new-address-form" style="display:none;">
+    <h4 class="text">Добавить новый адрес</h4>
+    <form id="address-form">
+      <label class="text" for="city">Введите город: </label>
+      <input type="text" id="city" required/>
+      <br/>
+      <label class="text" for="street">Введите улицу: </label>
+      <input type="text" id="street" required/>
+      <br/>
+      <label class="text" for="houseNumber">Введите номер дома: </label>
+      <input type="text" id="houseNumber" required/>
+      <br/>
+      <input class="btn btn-create pagination-buttons" type="submit" value="Создать"/>
+    </form>
+  </div>
+
+  <div id="update-address-form" style="display:none;">
+    <h4 class="text" >Редактировать адрес</h4>
+    <form id="update-form">
+      <input type="hidden" id="update-id" />
+      <label class="text" for="update-city">Введите город: </label>
+      <input type="text" id="update-city" required/>
+      <br/>
+      <label class="text" for="update-street">Введите улицу: </label>
+      <input type="text" id="update-street" required/>
+      <br/>
+      <label class="text" for="update-houseNumber">Введите номер дома: </label>
+      <input type="text" id="update-houseNumber" required/>
+      <br/>
+      <input class="btn btn-update pagination-buttons" type="submit" value="Сохранить"/>
+    </form>
+  </div>
 </div>
+  <div class="text address-container">
+    <div id="address-list">
+      <!-- Список адресов будет загружен здесь -->
+    </div>
+    <div class="pagination-buttons">
+      <button class="btn" id="prev-page" style="display:none;">Назад</button>
+      <button class="btn" id="next-page">Далее</button>
+    </div>
+  </div>
+<!--  <div class="pagination-buttons">-->
+<!--    <button class="btn" id="prev-page" style="display:none;">Назад</button>-->
+<!--    <button class="btn" id="next-page">Далее</button>-->
+<!--  </div>-->
 
-<br/>
-<hr/>
-<br/>
-
-<!-- Форма для добавления нового адреса -->
-<div id="new-address-form" style="display:none;">
-  <h3>Добавить новый адрес</h3>
-  <form id="address-form">
-    <label for="city">Введите город: </label>
-    <input type="text" id="city" required/>
-    <br/>
-    <label for="street">Введите улицу: </label>
-    <input type="text" id="street" required/>
-    <br/>
-    <label for="houseNumber">Введите номер дома: </label>
-    <input type="text" id="houseNumber" required/>
-    <br/>
-    <input type="submit" value="Создать"/>
-  </form>
-  <br/>
-  <hr/>
-  <br/>
-</div>
-
-<div id="update-address-form" style="display:none;">
-  <h3>Редактировать адрес</h3>
-  <form id="update-form">
-    <input type="hidden" id="update-id" />
-    <label for="update-city">Введите город: </label>
-    <input type="text" id="update-city" required/>
-    <br/>
-    <label for="update-street">Введите улицу: </label>
-    <input type="text" id="update-street" required/>
-    <br/>
-    <label for="update-houseNumber">Введите номер дома: </label>
-    <input type="text" id="update-houseNumber" required/>
-    <br/>
-    <input type="submit" value="Сохранить изменения"/>
-  </form>
-  <br/>
-  <hr/>
-  <br/>
-</div>
-
-<div id="address-list">
-  <!-- Список адресов будет загружен здесь -->
-</div>
-
-<div>
-  <button id="prev-page" style="display:none;">Назад</button>
-  <button id="next-page">Далее</button>
-</div>
+<!--<div>-->
+<!--  <button id="prev-page" style="display:none;">Назад</button>-->
+<!--  <button id="next-page">Далее</button>-->
+<!--</div>-->
 
 </body>
 </html>

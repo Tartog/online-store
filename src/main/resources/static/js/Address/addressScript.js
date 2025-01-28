@@ -24,11 +24,10 @@ function loadAddresses(page, params = {}) {
             $('#address-list').empty(); // Очистить текущий список адресов
             data.content.forEach(function(deliveryAddress) {
                 $('#address-list').append(`
-                <div>
-                    <span>${'г. ' + deliveryAddress.city + ', ул. ' + deliveryAddress.street + '  д. №' + deliveryAddress.houseNumber}</span>
+                <div class="address-item">
+                    <span class="address-text">${'г. ' + deliveryAddress.city + ', ул. ' + deliveryAddress.street + '  д. №' + deliveryAddress.houseNumber}</span>
                     <button class="update-button" data-id="${deliveryAddress.id}">Редактировать</button>
                     <button class="delete-button" data-id="${deliveryAddress.id}">Удалить</button>
-                    <hr>
                 </div>
             `);
             });
