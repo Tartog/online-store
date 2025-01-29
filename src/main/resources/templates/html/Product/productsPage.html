@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/addressCategoryProductCSS.css">
     <title>Products page</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script th:inline="javascript">
@@ -9,23 +10,31 @@
         let seller = /*[[${seller.getLogin()}]]*/ {};
         /*]]>*/
     </script>
-<!--    <script> let seller = [[${seller.login}]]; // Убедитесь, что это правильно</script>-->
     <script src="/js/Product/productScript.js" defer></script>
 </head>
 <body>
-<a href="/api/v1/store">Вернуться на главную страницу</a>
-<p><a th:href="@{/api/v1/store/products/{login}/newProduct(login=${seller.getLogin()})}">Добавить новый товар</a></p>
-<br/>
-<hr/>
-<br/>
-<div id="product-list">
-    <!-- Список товаров будет загружен здесь -->
-</div>
 
-<div>
-    <button id="prev-page" style="display:none;">Предыдущие</button>
-    <button id="next-page">Следующие</button>
-</div>
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <nav class="nav">
+                    <div class="nav__right">
+                        <a class="nav__link" href="/api/v1/store">Вернуться на главную страницу</a>
+                        <a class="nav__link" th:href="@{/api/v1/store/products/{login}/newProduct(login=${seller.getLogin()})}">Добавить новый товар</a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <div class="text address-container">
+        <div id="product-list">
+            <!-- Список товаров будет загружен здесь -->
+        </div>
+        <div class="pagination-buttons">
+            <button class="btn" id="prev-page" style="display:none;">Назад</button>
+            <button class="btn" id="next-page">Далее</button>
+        </div>
+    </div>
 
 </body>
 </html>

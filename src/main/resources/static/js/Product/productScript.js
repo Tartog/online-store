@@ -7,10 +7,9 @@ function loadProducts(page, seller) {
             if (data.content) {
                 data.content.forEach(function(product) {
                     $('#product-list').append(`
-                    <div>
-                        <span>${product.name}</span>
+                    <div class="address-item">
+                        <span class="address-text">${product.name}</span>
                         <button class="delete-button" data-id="${product.id}">Удалить</button>
-                        </hr>
                     </div>
                 `);
                 });
