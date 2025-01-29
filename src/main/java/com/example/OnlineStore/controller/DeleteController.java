@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/api/v1/store")
@@ -71,6 +73,8 @@ public class DeleteController {
         User user = userService.findByLogin(login);
         Product product = productService.findById(Long.parseLong(productId));
         cartService.deleteCart(cartService.findByUserAndProduct(product, user).getId());
-        return new ModelAndView("redirect:/api/v1/store/cart/" + login);
+
+        String encodedLogin = URLEncoder.encode(login, StandardCharsets.UTF_8);
+        return new ModelAndView("redirect:/api/v1/store/cart/" + encodedLogin);
     }
 }

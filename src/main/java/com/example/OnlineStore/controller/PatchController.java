@@ -19,6 +19,10 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 @RestController
 @RequestMapping("/api/v1/store")
 @AllArgsConstructor
@@ -132,5 +136,22 @@ public class PatchController {
         orderService.updateOrder(order);
 
         return ResponseEntity.ok(OrderMapper.toDTO(order));
+    }
+
+    @PreAuthorize("hasAuthority('User') and authentication.name == #login")
+    @PatchMapping("deleteProductInCart/{login}/{productId}")
+    public ModelAndView deleteProductInCart(@PathVariable String login, @PathVariable String productId){
+        User user = userService.findByLogin(login);
+        Product product = productService.findById(Long.parseLong(productId));
+        Cart cart = cartService.findByUserAndProduct(product, user);
+        cart.setNumberOfProduct(cart.getNumberOfProduct() - 1);
+        if(cart.getNumberOfProduct() == 0) {
+            cartService.deleteCart(cartService.findByUserAndProduct(product, user).getId());
+        }
+        else{
+            cartService.updateCart(cart);
+        }
+        String encodedLogin = URLEncoder.encode(login, StandardCharsets.UTF_8);
+        return new ModelAndView("redirect:/api/v1/store/cart/" + encodedLogin);
     }
 }
