@@ -7,9 +7,9 @@ function loadCategories(page) {
         data.content.forEach(category => {
             const isChecked = selectedCategories.includes(category.id);
             $('#category-list').append(`
-                <div>
+                <div class="category-item">
                     <input type="checkbox" id="category_${category.id}" value="${category.id}" name="productCategories" ${isChecked ? 'checked' : ''} />
-                    <label for="category_${category.id}">${category.category}</label>
+                    <label class="text" for="category_${category.id}">${category.category}</label>
                 </div>
             `);
         });

@@ -2,55 +2,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/addressCategoryProductCSS.css">
     <title>New product</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/js/Product/newProductScript.js" defer></script>
 </head>
 <body>
 
-<form th:method="POST" th:action="@{/api/v1/store/product/newProduct}" th:object="${product}" enctype="multipart/form-data">
-    <label for="name">Введите название товара: </label>
-    <input type="text" th:field="*{name}" id="name"/>
-    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
-    <br/>
-
-    <label for="numberOfProducts">Введите количество товара на складе: </label>
-    <input type="text" th:field="*{numberOfProducts}" id="numberOfProducts"/>
-    <div style="color:red" th:if="${#fields.hasErrors('numberOfProducts')}" th:errors="*{numberOfProducts}">Number of products error</div>
-    <br/>
-
-    <label for="price">Введите цену: </label>
-    <input type="text" th:field="*{price}" id="price"/>
-    <div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price error</div>
-    <br/>
-
-    <label for="imagePath">Загрузите изображение товара: </label>
-    <input type="file" name="image" id="imagePath" accept="image/*" required/>
-    <div style="color:red" th:if="${#fields.hasErrors('imagePath')}" th:errors="*{imagePath}">Image path error</div>
-    <br/>
-
-    <label>Категории:</label>
-    <div id="category-list">
-        <!-- Список категорий будет загружен здесь с помощью JavaScript -->
+<header class="header">
+    <div class="container">
+        <div class="header__inner">
+            <nav class="nav">
+                <div class="nav__right">
+                    <a class="nav__link" th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
+                </div>
+            </nav>
+        </div>
     </div>
+</header>
 
-    <div style="color:red" th:if="${#fields.hasErrors('productCategories')}" th:errors="*{productCategories}">Category error</div>
+<div class="form-containerProduct">
+    <form th:method="POST" th:action="@{/api/v1/store/product/newProduct}" th:object="${product}" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="text" for="name">Введите название товара: </label>
+            <input type="text" th:field="*{name}" id="name"/>
+            <div class="text" style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
+        </div>
+        <hr/>
+        <div class="form-group">
+            <label class="text" for="numberOfProducts">Введите количество товара на складе: </label>
+            <input type="text" th:field="*{numberOfProducts}" id="numberOfProducts"/>
+            <div class="text" style="color:red" th:if="${#fields.hasErrors('numberOfProducts')}" th:errors="*{numberOfProducts}">Number of products error</div>
+        </div>
+        <hr/>
+        <div class="form-group">
+            <label class="text" for="price">Введите цену: </label>
+            <input type="text" th:field="*{price}" id="price"/>
+            <div class="text" style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price error</div>
+        </div>
+        <hr/>
+        <div class="form-group">
+            <label class="text" for="imagePath">Загрузите изображение товара: </label>
+            <input type="file" name="image" id="imagePath" accept="image/*" required/>
+            <div class="text" style="color:red" th:if="${#fields.hasErrors('imagePath')}" th:errors="*{imagePath}">Image path error</div>
+        </div>
+        <div class="category-container">
+            <div id="category-list">
+                <!-- Список категорий будет загружен здесь с помощью JavaScript -->
+            </div>
+            <div class="pagination-buttons">
+                <button class="btn" id="prev-category" style="display:none;">Назад</button>
+                <button class="btn" id="next-category">Далее</button>
+            </div>
+        </div>
 
-    <input type="hidden" th:field="*{id}" id="id" />
-    <input type="hidden" th:field="*{user}" id="user" />
-    <input type="hidden" id="selectedCategories" name="selectedCategories" />
+        <div class="text" style="color:red" th:if="${#fields.hasErrors('productCategories')}" th:errors="*{productCategories}">Category error</div>
 
-    <br/>
+        <input type="hidden" th:field="*{id}" id="id" />
+        <input type="hidden" th:field="*{user}" id="user" />
+        <input type="hidden" id="selectedCategories" name="selectedCategories" />
 
-    <div>
-        <button id="prev-category" style="display:none;">Предыдущие</button>
-        <button id="next-category">Следующие</button>
-    </div>
-
-    <br/>
-
-    <input type="submit" value="Создать !"/>
-</form>
+        <div class="button-container">
+            <input class="btn" type="submit" value="Создать !"/>
+        </div>
+    </form>
+</div>
 
 </body>
 </html>

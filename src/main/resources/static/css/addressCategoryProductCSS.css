@@ -188,6 +188,83 @@ body {
     margin-right: 100px;
 }
 
+.form-containerProduct {
+    display: flex; /* Используем flexbox для выравнивания */
+    flex-direction: column; /* Располагаем элементы по вертикали */
+    align-items: stretch; /* Элементы занимают всю ширину контейнера */
+    justify-content: flex-start; /* Выравнивание элементов по верхней части */
+    padding: 10px; /* Отступы внутри контейнера */
+    background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон для контейнера */
+    border-radius: 10px; /* Закругление углов */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для контейнера */
+    width: 100%; /* Ширина контейнера (можно настроить) */
+    max-width: 520px; /* Максимальная ширина контейнера */
+    margin-top: 5px; /* Отступ сверху */
+    margin-right: 10px;
+}
+
+#category-list {
+    display: grid; /* Используем сетку для отображения элементов */
+    grid-template-columns: repeat(2, 1fr); /* Два столбца одинаковой ширины */
+    gap: 10px; /* Отступы между элементами */
+}
+
+.category-container {
+    display: flex; /* Используем flexbox для выравнивания */
+    flex-direction: column; /* Располагаем элементы по вертикали */
+    align-items: center; /* Центрируем элементы по горизонтали */
+    justify-content: flex-start; /* Выравнивание элементов по верхней части */
+    /*margin: 20px auto; !* Отступы сверху и снизу, авто для центрирования *!*/
+    padding: 10px; /* Отступы внутри контейнера */
+    background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон для контейнера */
+    border-radius: 10px; /* Закругление углов */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для контейнера */
+    width: 100%; /* Ширина контейнера (можно настроить) */
+    max-width: 500px; /* Максимальная ширина контейнера */
+    margin-top: 10px;
+}
+
+.category-item {
+    display: flex; /* Используем flexbox для выравнивания текста и кнопок */
+    justify-content: space-between; /* Разделяем текст и кнопки по краям */
+    align-items: center; /* Вертикальное выравнивание */
+    width: 100%; /* Занимаем всю ширину контейнера */
+    padding: 3px; /* Отступы внутри элемента */
+    border: 1px solid #ccc; /* Граница для визуального разделения */
+    border-radius: 5px; /* Закругление углов */
+    margin-bottom: 3px; /* Отступ между адресами */
+    background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон для элемента */
+}
+
+.form-group {
+    display: flex; /* Используем flexbox для выравнивания элементов */
+    justify-content: space-between; /* Разделяем метку и поле ввода по краям */
+    align-items: center; /* Вертикальное выравнивание */
+    width: 100%; /* Занимаем всю ширину контейнера */
+    margin-bottom: 10px; /* Отступ между группами полей */
+}
+
+.form-group label {
+    width: 200px; /* Фиксированная ширина для меток */
+}
+
+.form-group input {
+    flex: 1; /* Поле ввода занимает оставшееся пространство */
+}
+
+.button-container {
+    display: flex; /* Используем flexbox для выравнивания */
+    justify-content: center; /* Центрируем кнопку по горизонтали */
+    margin-top: 20px; /* Отступ сверху для отделения от остальных элементов */
+}
+
+@font-face {
+    font-family: "Bluecurve-Light";
+    src: url("../fonts/Bluecurve-Light.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
 /*form {*/
 /*    width: 100%; !* Заставляем формы занимать всю ширину контейнера *!*/
 /*    margin-bottom: 20px; !* Отступ между формами *!*/

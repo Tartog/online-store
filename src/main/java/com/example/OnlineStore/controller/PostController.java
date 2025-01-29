@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -132,7 +134,9 @@ public class PostController {
             if (bindingResult.getErrorCount() == 1 && bindingResult.hasFieldErrors("productCategories")
                     && !(selectedCategories == null || selectedCategories.isEmpty())) {
                 productService.saveProduct(product);
-                return new ModelAndView("redirect:/api/v1/store/products/" + product.getUser().getLogin());
+                String encodedLogin = URLEncoder.encode(product.getUser().getLogin(), StandardCharsets.UTF_8);
+                String newStr = encodedLogin.replace(" ", "%20").replace("+", "%20");
+                return new ModelAndView("redirect:/api/v1/store/products/" + newStr);
             }
             product.setProductCategories(new HashSet<>());
             ModelAndView modelAndView = new ModelAndView("html/Product/newProduct");
@@ -142,7 +146,9 @@ public class PostController {
         }
 
         productService.saveProduct(product);
-        return new ModelAndView("redirect:/api/v1/store/products/" + product.getUser().getLogin());
+        String encodedLogin = URLEncoder.encode(product.getUser().getLogin(), StandardCharsets.UTF_8);
+        String newStr = encodedLogin.replace(" ", "%20").replace("+", "%20");
+        return new ModelAndView("redirect:/api/v1/store/products/" + newStr);
     }
 
     @PreAuthorize("hasAuthority('User')")
