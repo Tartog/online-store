@@ -1,0 +1,109 @@
+body {
+    background-image: url('http://localhost:8080/images/Фон.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex; /* Используем flexbox для центрирования */
+    justify-content: center; /* Центрируем по горизонтали */
+    align-items: center; /* Центрируем по вертикали */
+    height: 100vh; /* Высота 100% экрана */
+    margin: 0; /* Убираем отступы по умолчанию */
+}
+
+.text {
+    font-family: "Bluecurve-Light", sans-serif;
+    color: #fff;
+    width: 200px; /* Фиксированная ширина для меток */
+    display: inline-block; /* Позволяет меткам занимать фиксированную ширину */
+    font-size: 16px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header {
+    width: 100%;
+    padding-top: 47px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.nav {
+    font-size: 14px;
+    text-transform: uppercase;
+    display: flex; /* Используем flexbox для навигации */
+    justify-content: flex-end; /* Выравниваем элементы вправо */
+    width: 100%; /* Убедимся, что nav занимает всю ширину */
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+.nav__right {
+    display: flex; /* Используем flexbox для выравнивания ссылок и кнопок */
+    align-items: center; /* Вертикальное выравнивание */
+}
+
+.nav__link {
+    display: inline-block;
+    margin: 0 15px; /* Отступы между ссылкой и кнопкой */
+    position: relative;
+    vertical-align: top;
+    color: #fff;
+    text-decoration: none;
+    transition: color .1s linear;
+}
+
+.nav__link:hover {
+    color: #3091ff;
+}
+
+.nav__link:hover:after {
+    opacity: 1;
+}
+
+.nav__link:after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 3px;
+
+    background-color: #3091ff;
+    opacity: 0;
+
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1;
+    font-family: "Bluecurve-Light", sans-serif;
+    transition: opacity .1s linear;
+}
+
+.header__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.product-container {
+    display: flex; /* Используем flexbox для выравнивания */
+    flex-direction: column; /* Располагаем элементы по вертикали */
+    align-items: center; /* Центрируем элементы по горизонтали */
+    text-align: center; /* Центрируем текст внутри контейнера */
+    padding: 20px; /* Отступы внутри контейнера */
+    background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон для контейнера */
+    border-radius: 10px; /* Закругление углов */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для контейнера */
+}
+
+@font-face {
+    font-family: "Bluecurve-Light";
+    src: url("../fonts/Bluecurve-Light.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}

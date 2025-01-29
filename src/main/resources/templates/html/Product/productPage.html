@@ -2,20 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/productCSS.css">
     <title>Product page</title>
 </head>
 <body>
-<a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
-</br>
-</hr>
+
+<header class="header">
+    <div class="container">
+        <div class="header__inner">
+            <nav class="nav">
+                <div class="nav__right">
+                    <a class="nav__link" th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+
 <!--<img th:src="@{${product.imagePath}}" alt="Изображение товара" style="max-width: 200px; max-height: 200px;"/>-->
 <!--<img th:src="@{${product.imagePath}}" alt="Изображение товара"/>-->
-<p><img th:src="@{${product.imagePath}}" alt="Изображение товара" style="max-width: 200px; max-height: 200px;"/></p>
-<hr/>
-<p th:text="${'Товар: ' + product.getName()}">name</p>
-<p th:text="${'Количество на складе: ' + product.getNumberOfProducts()}">numberOfProducts</p>
-<p th:text="${'Цена: ' + product.getPrice()}">price</p>
-<p th:text="${'Категории продукта: ' + product.getProductCategoriesAsString()}">productCategories</p>
-<p th:text="${'Продавец: ' + product.getUser().getLogin()}">seller</p>
+<div class="product-container">
+    <p><img th:src="@{${product.imagePath}}" alt="Изображение товара" style="max-width: 200px; max-height: 200px;"/></p>
+    <p class="text" th:text="${'Товар: ' + product.getName()}">name</p>
+    <p class="text" th:text="${'Количество на складе: ' + product.getNumberOfProducts()}">numberOfProducts</p>
+    <p class="text" th:text="${'Цена: ' + product.getPrice()}">price</p>
+    <p class="text" th:text="${'Категории продукта: ' + product.getProductCategoriesAsString()}">productCategories</p>
+    <p class="text" th:text="${'Продавец: ' + product.getUser().getLogin()}">seller</p>
+</div>
 </body>
 </html>
