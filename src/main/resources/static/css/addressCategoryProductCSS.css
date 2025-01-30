@@ -18,6 +18,22 @@ body {
     display: inline-block; /* Позволяет меткам занимать фиксированную ширину */
 }
 
+.textCart {
+    font-family: "Bluecurve-Light", sans-serif;
+    color: #fff;
+    width: 300px; /* Фиксированная ширина для меток */
+    display: inline-block; /* Позволяет меткам занимать фиксированную ширину */
+    font-size: 20px;
+}
+
+.textCenter{
+    font-family: "Bluecurve-Light", sans-serif;
+    color: #fff;
+    display: flex; /* Используем flexbox для выравнивания */
+    justify-content: center; /* Центрируем кнопку по горизонтали */
+    font-size: 20px;
+}
+
 .address-text {
     flex: 1; /* Занимает всё доступное пространство */
     text-align: left; /* Выравнивание текста по левому краю */
@@ -132,6 +148,21 @@ body {
     cursor: pointer; /* Указатель при наведении */
 }
 
+.btnCart {
+    font-family: "Bluecurve-Light", sans-serif;
+    margin-left: 15px; /* Отступ между ссылкой и кнопкой */
+    height: 40px;
+    padding: 10px 15px;
+    border-radius: 5px; /* Закругление углов */
+    border: 3px solid #fff;
+    background: none;
+    color: #fff;
+    text-transform: uppercase;
+    cursor: pointer; /* Указатель при наведении */
+    font-size: 10px;
+    margin-top: 5px;
+}
+
 .btn-search {
     margin-left: 50px;
 }
@@ -184,6 +215,21 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для контейнера */
     width: 100%; /* Ширина контейнера (можно настроить) */
     max-width: 180px; /* Максимальная ширина контейнера */
+    margin-top: 5px; /* Отступ сверху */
+    margin-right: 100px;
+}
+
+.form-containerCart {
+    display: flex; /* Используем flexbox для выравнивания */
+    flex-direction: column; /* Располагаем элементы по вертикали */
+    align-items: stretch; /* Элементы занимают всю ширину контейнера */
+    justify-content: flex-start; /* Выравнивание элементов по верхней части */
+    padding: 10px; /* Отступы внутри контейнера */
+    background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон для контейнера */
+    border-radius: 10px; /* Закругление углов */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для контейнера */
+    width: 100%; /* Ширина контейнера (можно настроить) */
+    max-width: 430px; /* Максимальная ширина контейнера */
     margin-top: 5px; /* Отступ сверху */
     margin-right: 100px;
 }
@@ -256,6 +302,12 @@ body {
     display: flex; /* Используем flexbox для выравнивания */
     justify-content: center; /* Центрируем кнопку по горизонтали */
     margin-top: 20px; /* Отступ сверху для отделения от остальных элементов */
+}
+
+.button-containerCart {
+    display: flex; /* Используем flexbox для выравнивания */
+    justify-content: center; /* Центрируем кнопку по горизонтали */
+    margin-top: 10px; /* Отступ сверху для отделения от остальных элементов */
 }
 
 @font-face {

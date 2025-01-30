@@ -2,54 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/addressCategoryProductCSS.css">
     <title>Cart page</title>
 </head>
 <body>
-<a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
 
-<div th:if="${cartNotEmpty}">
-    <h2>Ваша корзина</h2>
-    <div th:each="productInCart : ${listCart}">
-        <a th:text="${productInCart.getProduct().getName() + ', ' + productInCart.getNumberOfProduct()}">product</a>
-        <form th:method="DELETE"
-              th:action="@{/api/v1/store/deleteProductInCart/{login}/{productId}(login=${user.getLogin()}, productId=${productInCart.getProduct().getId()})}">
-            <input type="submit" value="Удалить полностью товар из корзины">
-        </form>
-        <form th:method="PATCH"
-              th:action="@{/api/v1/store/deleteProductInCart/{login}/{productId}(login=${user.getLogin()}, productId=${productInCart.getProduct().getId()})}">
-            <input type="submit" value="Удалить 1 товар">
+<header class="header">
+    <div class="container">
+        <div class="header__inner">
+            <nav class="nav">
+                <div class="nav__right">
+                    <a class="nav__link" th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<div class="form-containerCart">
+    <div th:if="${cartNotEmpty}">
+        <h2 class="textCenter">Ваша корзина</h2>
+        <div th:each="productInCart : ${listCart}">
+            <hr/>
+            <a class="textCart" th:text="${productInCart.getProduct().getName() + ', ' + productInCart.getNumberOfProduct()}">product</a>
+            <div class="button-containerCart">
+                <form th:method="DELETE"
+                      th:action="@{/api/v1/store/deleteProductInCart/{login}/{productId}(login=${user.getLogin()}, productId=${productInCart.getProduct().getId()})}">
+                    <input class="btn btnCart" type="submit" value="Удалить полностью товар из корзины">
+                </form>
+                <form th:method="PATCH"
+                      th:action="@{/api/v1/store/deleteProductInCart/{login}/{productId}(login=${user.getLogin()}, productId=${productInCart.getProduct().getId()})}">
+                    <input class="btn btnCart" type="submit" value="Удалить 1 товар">
+                </form>
+            </div>
+        </div>
+        <hr/>
+        <a class="textCart" th:text="${'Общая стоимость = ' + totalPrice}">price</a>
+        <hr/>
+        <h2 class="textCenter">Создание нового заказа</h2>
+        <form th:method="POST" th:action="@{/api/v1/store/order/{login}/newOrder(login=${user.getLogin()})}" th:object="${order}">
+            <label class="textCart" for="listAddress">Выберите адрес:</label>
+            <select th:field="*{deliveryAddress}" id="listAddress">
+                <option th:each="deliveryAddress : ${listAddress}"
+                        th:value="${deliveryAddress.id}"
+                        th:text="${deliveryAddress.city} + ', ' + ${deliveryAddress.street} + ' ' + ${deliveryAddress.houseNumber}">
+                </option>
+            </select>
+            <div class="text" style="color:red" th:if="${#fields.hasErrors('deliveryAddress')}" th:errors="*{deliveryAddress}">Delivery address error</div>
+
+            <div class="button-containerCart">
+                <button class="btn btnCart" type="submit">Сделать заказ по данному адресу</button>
+            </div>
+
+            <div th:if="${#fields.hasGlobalErrors()}" style="color:red;">
+                <p class="text" th:each="error : ${#fields.globalErrors()}" th:text="${error}"></p>
+            </div>
+
+            <input type="hidden" th:field="*{id}" id="id" />
+            <input type="hidden" th:field="*{user}" id="${order.getUser ()}" />
+            <input type="hidden" th:field="*{orderDate}" id="${order.getOrderDate()}" />
+            <input type="hidden" th:field="*{orderStatus}" id="${order.getOrderStatus()}" />
+            <input type="hidden" th:field="*{expectedReceiveDate}" id="${order.getExpectedReceiveDate()}" />
         </form>
     </div>
-    <hr/>
-    <a th:text="${'Общая стоимость = ' + totalPrice}">price</a>
 
-    <h2>Создание нового заказа</h2>
-    <form th:method="POST" th:action="@{/api/v1/store/order/{login}/newOrder(login=${user.getLogin()})}" th:object="${order}">
-        <label for="listAddress">Выберите адрес:</label>
-        <select th:field="*{deliveryAddress}" id="listAddress">
-            <option th:each="deliveryAddress : ${listAddress}"
-                    th:value="${deliveryAddress.id}"
-                    th:text="${deliveryAddress.city} + ', ' + ${deliveryAddress.street} + ' ' + ${deliveryAddress.houseNumber}">
-            </option>
-        </select>
-        <div style="color:red" th:if="${#fields.hasErrors('deliveryAddress')}" th:errors="*{deliveryAddress}">Delivery address error</div>
+    <div th:if="${!cartNotEmpty}">
+        <h2 class="textCenter">Корзина пуста</h2>
+    </div>
 
-        <button type="submit">Сделать заказ по данному адресу</button>
-
-        <div th:if="${#fields.hasGlobalErrors()}" style="color:red;">
-            <p th:each="error : ${#fields.globalErrors()}" th:text="${error}"></p>
-        </div>
-
-        <input type="hidden" th:field="*{id}" id="id" />
-        <input type="hidden" th:field="*{user}" id="${order.getUser ()}" />
-        <input type="hidden" th:field="*{orderDate}" id="${order.getOrderDate()}" />
-        <input type="hidden" th:field="*{orderStatus}" id="${order.getOrderStatus()}" />
-        <input type="hidden" th:field="*{expectedReceiveDate}" id="${order.getExpectedReceiveDate()}" />
-    </form>
 </div>
 
-<div th:if="${!cartNotEmpty}">
-    <h2>Корзина пуста</h2>
-</div>
 </body>
 </html>
