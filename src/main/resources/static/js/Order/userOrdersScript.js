@@ -17,17 +17,16 @@ function loadOrders(page, user) {
                 }).join('');
 
                 const row =
-                    `<tr>
-                        <td>${order.id}</td>
-                        <td>${order.orderDate}</td>
-                        <td>${order.expectedReceiveDate}</td>
-                        <td>${order.user?.login || 'Неизвестно'}</td>
-                        <td>${order.orderStatus.status}</td>
-                        <td>${'г. ' + order.deliveryAddress.city +
+                    `<tr class="address-item">
+                        <td class="address-text">${order.id}</td>
+                        <td class="address-text">${order.orderDate}</td>
+                        <td class="address-text">${order.expectedReceiveDate}</td>
+                        <td class="address-text">${order.orderStatus.status}</td>
+                        <td class="address-text">${'г. ' + order.deliveryAddress.city +
                                 ', ул. ' + order.deliveryAddress.street +
                                 ', д. №' + order.deliveryAddress.houseNumber}
                         </td>
-                        <td>
+                        <td class="address-text">
                             <ul>
                                 ${productsList}
                             </ul>

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/addressCategoryProductCSS.css">
     <title>User orders</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script th:inline="javascript">
@@ -12,30 +13,41 @@
     <script th:src="@{/js/Order/userOrdersScript.js}" defer></script> <!-- Подключаем JS файл -->
 </head>
 <body>
-<a th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
 
+<header class="header">
+    <div class="container">
+        <div class="header__inner">
+            <nav class="nav">
+                <div class="nav__right">
+                    <a class="nav__link" th:href="@{/api/v1/store}">Вернуться на главную страницу</a>
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
 
-<table>
-    <thead>
-    <tr>
-        <th>ID заказа</th>
-        <th>Дата заказа</th>
-        <th>Ожидаемая дата получения</th>
-        <th>Статус заказа</th>
-        <th>Адрес доставки</th>
-        <th>Товары</th>
-    </tr>
-    </thead>
-    <tbody id="order-table-body">
-    <!-- Заказы будут загружены сюда с помощью AJAX -->
-    </tbody>
-</table>
+<div class="order-container">
+    <table>
+        <thead>
+        <tr class="address-item">
+            <th class="address-text">ID заказа</th>
+            <th class="address-text">Дата заказа</th>
+            <th class="address-text">Дата получения</th>
+            <th class="address-text">Статус заказа</th>
+            <th class="address-text">Адрес доставки</th>
+            <th class="address-text">Товары</th>
+        </tr>
+        </thead>
+        <tbody id="order-table-body">
+        <!-- Заказы будут загружены сюда с помощью AJAX -->
+        </tbody>
+    </table>
 
-<div id="pagination">
-    <button id="prev" data-page="0" style="display:none;">Назад</button>
-    <button id="next" data-page="1">Далее</button>
+    <div class="pagination-buttons" id="pagination">
+        <button class="btn" id="prev" data-page="0" style="display:none;">Назад</button>
+        <button class="btn" id="next" data-page="1">Далее</button>
+    </div>
 </div>
-
 
 </body>
 </html>
