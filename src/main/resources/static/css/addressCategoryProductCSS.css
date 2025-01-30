@@ -321,7 +321,7 @@ ul {
     margin-right: 10px;
 }
 
-#category-list {
+.category-list-new-product {
     display: grid; /* Используем сетку для отображения элементов */
     grid-template-columns: repeat(2, 1fr); /* Два столбца одинаковой ширины */
     gap: 10px; /* Отступы между элементами */
