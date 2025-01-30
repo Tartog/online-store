@@ -27,19 +27,19 @@ function loadOrders(page, searchID) {
                     ${statusOptions.map(status => `<option value="${status}" 
                         ${status === order.orderStatus?.status ? 'selected' : ''}>${status}</option>`).join('')}
                     </select>
-                    <button class="update-status" data-order-id="${order.id}">Обновить статус</button>`;
+                    <button class="btnStatus btn update-status btnStatusOrder" data-order-id="${order.id}">Обновить статус</button>`;
 
                 const row =
-                    `<tr>
-                        <td>${order.id}</td>
-                        <td>${order.orderDate}</td>
-                        <td>${order.expectedReceiveDate}</td>
-                        <td>${order.user?.login || 'Неизвестно'}</td>
-                        <td>
+                    `<tr class="address-item">
+                        <td class="address-text">${order.id}</td>
+                        <td class="address-text">${order.orderDate}</td>
+                        <td class="address-text">${order.expectedReceiveDate}</td>
+                        <td class="address-text">${order.user?.login || 'Неизвестно'}</td>
+                        <td class="address-text">
                             ${order.orderStatus?.status || 'Неизвестно'}
                             ${statusDropdown}
                         </td>
-                        <td>
+                        <td class="address-text">
                             <ul>
                                 ${productsList}
                             </ul>

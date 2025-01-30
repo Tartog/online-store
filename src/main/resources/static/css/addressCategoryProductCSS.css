@@ -36,6 +36,15 @@ ul {
     color: #fff;
 }
 
+.search-btnOrder {
+    margin-right: 10px;
+}
+
+.update-status {
+    font-size: 11px;
+    width:auto;
+}
+
 .order-container {
     display: flex; /* Используем flexbox для выравнивания */
     flex-direction: column; /* Располагаем элементы по вертикали */
@@ -189,6 +198,26 @@ ul {
     color: #fff;
     text-transform: uppercase;
     cursor: pointer; /* Указатель при наведении */
+}
+
+.btnStatus {
+    margin-right: 15px;
+    width: 80px;
+    padding: 10px 15px;
+    border-radius: 5px; /* Закругление углов */
+    border: 3px solid #fff;
+    background: none;
+    color: #fff;
+    text-transform: uppercase;
+    cursor: pointer; /* Указатель при наведении */
+}
+
+.btnStatusOrder {
+    display: inline-flex; /* Используем flexbox для центрирования текста */
+    align-items: center; /* Вертикальное центрирование */
+    justify-content: center; /* Горизонтальное центрирование */
+    font-size: 11px; /* Размер шрифта */
+    margin-top: 5px;
 }
 
 .btnCart {
