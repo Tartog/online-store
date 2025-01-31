@@ -19,8 +19,6 @@
     </div>
 </header>
 
-<!--<img th:src="@{${product.imagePath}}" alt="Изображение товара" style="max-width: 200px; max-height: 200px;"/>-->
-<!--<img th:src="@{${product.imagePath}}" alt="Изображение товара"/>-->
 <div class="product-container">
     <p><img th:src="@{${product.imagePath}}" alt="Изображение товара" style="max-width: 200px; max-height: 200px;"/></p>
     <p class="text" th:text="${'Товар: ' + product.getName()}">name</p>

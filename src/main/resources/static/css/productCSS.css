@@ -3,18 +3,18 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    display: flex; /* Используем flexbox для центрирования */
-    justify-content: center; /* Центрируем по горизонтали */
-    align-items: center; /* Центрируем по вертикали */
-    height: 100vh; /* Высота 100% экрана */
-    margin: 0; /* Убираем отступы по умолчанию */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
 
 .text {
     font-family: "Bluecurve-Light", sans-serif;
     color: #fff;
-    width: 200px; /* Фиксированная ширина для меток */
-    display: inline-block; /* Позволяет меткам занимать фиксированную ширину */
+    width: 200px;
+    display: inline-block;
     font-size: 16px;
 }
 
@@ -37,21 +37,21 @@ body {
 .nav {
     font-size: 14px;
     text-transform: uppercase;
-    display: flex; /* Используем flexbox для навигации */
-    justify-content: flex-end; /* Выравниваем элементы вправо */
-    width: 100%; /* Убедимся, что nav занимает всю ширину */
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
     margin-top: 5px;
     margin-right: 5px;
 }
 
 .nav__right {
-    display: flex; /* Используем flexbox для выравнивания ссылок и кнопок */
-    align-items: center; /* Вертикальное выравнивание */
+    display: flex;
+    align-items: center;
 }
 
 .nav__link {
     display: inline-block;
-    margin: 0 15px; /* Отступы между ссылкой и кнопкой */
+    margin: 0 15px;
     position: relative;
     vertical-align: top;
     color: #fff;
@@ -91,14 +91,14 @@ body {
 }
 
 .product-container {
-    display: flex; /* Используем flexbox для выравнивания */
-    flex-direction: column; /* Располагаем элементы по вертикали */
-    align-items: center; /* Центрируем элементы по горизонтали */
-    text-align: center; /* Центрируем текст внутри контейнера */
-    padding: 20px; /* Отступы внутри контейнера */
-    background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон для контейнера */
-    border-radius: 10px; /* Закругление углов */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для контейнера */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 @font-face {

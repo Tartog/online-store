@@ -5,7 +5,6 @@ function displayItems() {
     const items = document.querySelectorAll('.product-item');
     const totalPages = Math.ceil(items.length / itemsPerPage);
 
-    // Скрыть все товары
     items.forEach((item, index) => {
         item.style.display = 'none';
     });

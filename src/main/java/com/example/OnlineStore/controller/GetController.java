@@ -41,18 +41,6 @@ public class GetController {
     private OrderService orderService;
     private OrderStatusService orderStatusService;
 
-    @PreAuthorize("hasAuthority('User')")
-    @GetMapping("/welcome")
-    public ModelAndView findAllStudent(){
-        return new ModelAndView("hello");
-    }
-
-    @PreAuthorize("hasAuthority('ROLE_USER')")
-    @GetMapping("/test")
-    public ModelAndView findAllStudent2(){
-        return new ModelAndView("hello");
-    }
-
     @GetMapping
     public ModelAndView showMainPage(@RequestParam(value = "query", defaultValue = "") String query){
         ModelAndView modelAndView = new ModelAndView("html/General/mainPage");
@@ -273,16 +261,6 @@ public class GetController {
         return modelAndView;
     }
 
-    @PreAuthorize("hasAuthority('Admin') or hasAuthority('Seller')")
-    @GetMapping("/productCategory/newCategory")
-    public ModelAndView newCategory(){
-        ModelAndView modelAndView = new ModelAndView("html/Category/newCategory");
-        ProductCategory productCategory = new ProductCategory();
-        modelAndView.addObject("productCategory", productCategory);
-
-        return modelAndView;
-    }
-
     @PreAuthorize("hasAuthority('Seller') and @userSecurity.hasAccess(authentication, #login)")
     @GetMapping("/products")
     public ResponseEntity<Page<ProductDTO>> getProducts(
@@ -374,33 +352,6 @@ public class GetController {
     }
 
     @PreAuthorize("hasAuthority('User') and authentication.name == #login")
-    @GetMapping("/order/{login}/newOrder")
-    public ModelAndView newOrder(@PathVariable String login){
-        User user = userService.findByLogin(login);
-
-        ModelAndView modelAndView = new ModelAndView("html/Order/newOrder");
-
-        Order order = new Order();
-        order.setUser(user);
-
-        order.setOrderStatus(orderStatusService
-                .findByStatus("Доставляется")
-                .orElseThrow(()-> new RuntimeException("Отсутствует стандартный статус 'Доставляется' !")));
-
-        LocalDate localDate = LocalDate.now();
-        Date sqlDate = Date.valueOf(localDate);
-
-        order.setOrderDate(sqlDate);
-        order.setExpectedReceiveDate(Date.valueOf(localDate.plusDays(7)));
-
-        modelAndView.addObject("order", order);
-        modelAndView.addObject("user", user);
-        modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
-
-        return modelAndView;
-    }
-
-    @PreAuthorize("hasAuthority('User') and authentication.name == #login")
     @GetMapping("/order/{login}/orders")
     public ModelAndView showUserOrders(@PathVariable String login,
                                        @RequestParam(defaultValue = "0") int page,
@@ -431,10 +382,5 @@ public class GetController {
         Page<OrderDTO> orderDTOs = orders.map(OrderMapper::toDTO);
 
         return ResponseEntity.ok(orderDTOs);
-    }
-
-    @GetMapping("/test-image")
-    public String testImage() {
-        return "<img src='/images/Kinder.jpg' />";
     }
 }

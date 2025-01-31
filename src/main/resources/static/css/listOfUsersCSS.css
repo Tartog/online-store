@@ -3,18 +3,18 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    display: flex; /* Используем flexbox для центрирования */
-    justify-content: center; /* Центрируем по горизонтали */
-    align-items: center; /* Центрируем по вертикали */
-    height: 100vh; /* Высота 100% экрана */
-    margin: 0; /* Убираем отступы по умолчанию */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
 
 .text {
     font-family: "Bluecurve-Light", sans-serif;
     color: #fff;
-    width: 200px; /* Фиксированная ширина для меток */
-    display: inline-block; /* Позволяет меткам занимать фиксированную ширину */
+    width: 200px;
+    display: inline-block;
 }
 
 .header {
@@ -42,19 +42,19 @@ body {
 .nav {
     font-size: 14px;
     text-transform: uppercase;
-    display: flex; /* Используем flexbox для навигации */
-    justify-content: flex-end; /* Выравниваем элементы вправо */
-    width: 100%; /* Убедимся, что nav занимает всю ширину */
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
 }
 
 .nav__right {
-    display: flex; /* Используем flexbox для выравнивания ссылок и кнопок */
-    align-items: center; /* Вертикальное выравнивание */
+    display: flex;
+    align-items: center;
 }
 
 .nav__link {
     display: inline-block;
-    margin: 0 15px; /* Отступы между ссылкой и кнопкой */
+    margin: 0 15px;
     position: relative;
     vertical-align: top;
     color: #fff;
@@ -88,21 +88,21 @@ body {
 }
 
 .pagination-buttons {
-    display: flex; /* Используем flexbox для выравнивания кнопок */
-    justify-content: center; /* Центрируем кнопки по горизонтали */
-    margin-top: 5px; /* Отступ сверху для отделения от адресов */
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
 }
 
 .btn {
-    margin-left: 15px; /* Отступ между ссылкой и кнопкой */
+    margin-left: 15px;
     height: 40px;
     padding: 10px 15px;
-    border-radius: 5px; /* Закругление углов */
+    border-radius: 5px;
     border: 3px solid #fff;
     background: none;
     color: #fff;
     text-transform: uppercase;
-    cursor: pointer; /* Указатель при наведении */
+    cursor: pointer;
 }
 
 .btn:hover {
@@ -112,46 +112,45 @@ body {
 }
 
 .user-container {
-    display: flex; /* Используем flexbox для выравнивания */
-    flex-direction: column; /* Располагаем элементы по вертикали */
-    align-items: center; /* Центрируем элементы по горизонтали */
-    justify-content: flex-start; /* Выравнивание элементов по верхней части */
-    /*margin: 20px auto; !* Отступы сверху и снизу, авто для центрирования *!*/
-    padding: 10px; /* Отступы внутри контейнера */
-    background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон для контейнера */
-    border-radius: 10px; /* Закругление углов */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для контейнера */
-    width: 100%; /* Ширина контейнера (можно настроить) */
-    max-width: 700px; /* Максимальная ширина контейнера */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 700px;
     margin-top: 105px;
     margin-right: 40px;
 }
 
 .user-item {
-    display: flex; /* Используем flexbox для выравнивания текста и кнопок */
-    justify-content: space-between; /* Разделяем текст и кнопки по краям */
-    align-items: center; /* Вертикальное выравнивание */
-    width: 100%; /* Занимаем всю ширину контейнера */
-    padding: 10px; /* Отступы внутри элемента */
-    border: 1px solid #ccc; /* Граница для визуального разделения */
-    border-radius: 5px; /* Закругление углов */
-    margin-bottom: 3px; /* Отступ между адресами */
-    background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон для элемента */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 3px;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .user-text {
-    flex: 1; /* Занимает всё доступное пространство */
-    text-align: left; /* Выравнивание текста по левому краю */
+    flex: 1;
+    text-align: left;
 }
 
 .delete-button {
-    margin-left: 10px; /* Отступ между кнопками */
+    margin-left: 10px;
     background: none;
-    color: white; /* Цвет текста кнопок */
+    color: white;
     border: 3px solid #fff;
-    border-radius: 5px; /* Закругление углов */
-    padding: 5px 10px; /* Отступы внутри кнопок */
-    cursor: pointer; /* Указатель при наведении */
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
     text-transform: uppercase;
 }
 

@@ -171,45 +171,5 @@ public class PostController {
         }
         return new ModelAndView("redirect:/api/v1/store");
     }
-
-    @PreAuthorize("hasAuthority('User') and @userSecurity.hasAccess(authentication, #login)")
-    @PostMapping("/order/{login}/newOrder")
-    public ModelAndView createOrder(@PathVariable String login, @Valid Order order, BindingResult bindingResult){
-        if(order.getDeliveryAddress() == null){
-            bindingResult.rejectValue("deliveryAddress", "error.deliveryAddress",
-                    "Необходимо выбрать адрес доставки !");
-        }
-
-        User user = userService.findByLogin(login);
-        for(Cart cart : cartService.findAllByUser(user)){
-            Product product = productService.findById(cart.getProduct().getId());
-            if((product.getNumberOfProducts() - cart.getNumberOfProduct()) < 0){
-                bindingResult.reject("error.NumberOfProduct", "На складе недостаточно товара " +
-                        product.getName() + " !");
-            }
-        }
-        if (bindingResult.hasErrors()){
-            ModelAndView modelAndView = new ModelAndView("html/Order/newOrder");
-            modelAndView.addObject("order", order);
-            modelAndView.addObject("user", user);
-            modelAndView.addObject("listAddress", deliveryAddressService.findAllDeliveryAddress());
-            return modelAndView;
-        }
-        orderService.saveOrder(order);
-        for(Cart cart : cartService.findAllByUser(user)){
-            ProductsInOrder products = new ProductsInOrder();
-            products.setProduct(cart.getProduct());
-            products.setOrder(order);
-            products.setNumberOfProduct(cart.getNumberOfProduct());
-
-            Product product = productService.findById(cart.getProduct().getId());
-            product.setNumberOfProducts(product.getNumberOfProducts() - cart.getNumberOfProduct());
-            productService.updateProduct(product);
-
-            productsInOrderService.saveProductsInOrder(products);
-        }
-        cartService.deleteAllByUser(user);
-        return new ModelAndView("redirect:/api/v1/store");
-    }
 }
 

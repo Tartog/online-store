@@ -3,39 +3,39 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    display: flex; /* Используем flexbox для центрирования */
-    justify-content: center; /* Центрируем по горизонтали */
-    align-items: center; /* Центрируем по вертикали */
-    height: 100vh; /* Высота 100% экрана */
-    margin: 0; /* Убираем отступы по умолчанию */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
 
 .text {
     font-family: "Bluecurve-Light", sans-serif;
     color: #fff;
-    width: 200px; /* Фиксированная ширина для меток */
-    display: inline-block; /* Позволяет меткам занимать фиксированную ширину */
+    width: 200px;
+    display: inline-block;
 }
 
 .button-container {
-    display: flex; /* Используем flexbox для центрирования */
-    justify-content: center; /* Центрируем кнопку по горизонтали */
-    width: 100%; /* Занимаем всю ширину родительского контейнера */
-    margin-top: 20px; /* Отступ сверху для кнопки */
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
 }
 
 .form-container {
     display: flex;
-    flex-direction: column; /* Располагаем элементы по вертикали */
-    align-items: flex-start; /* Выравниваем элементы по левому краю */
-    background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон для формы */
-    padding: 20px; /* Отступы вокруг формы */
-    border-radius: 10px; /* Закругление углов */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для формы */
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .form-group {
-    margin-bottom: 15px; /* Отступ между группами полей */
+    margin-bottom: 15px;
 }
 
 .header {
@@ -64,12 +64,11 @@ body {
 .nav {
     font-size: 14px;
     text-transform: uppercase;
-    display: flex; /* Используем flexbox для навигации */
-    align-items: center; /* Выравниваем элементы по центру */
-    margin-left: auto; /* Сдвигаем навигацию вправо */
-    margin-top: 20px; /* Отступ сверху для навигации */
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-top: 20px;
 }
-
 
 .nav__link {
     display: inline-block;
@@ -113,7 +112,7 @@ body {
     height: 40px;
     display: inline-block;
     padding: 10px 15px;
-    border-radius: 5px; /* Закругление углов */
+    border-radius: 5px;
     border: 3px solid #fff;
     font-size: 14px;
     font-weight: 700;
@@ -121,7 +120,7 @@ body {
     transition: color .1s linear;
     color: #fff;
     text-transform: uppercase;
-    margin-top: 10px; /* Отступ сверху для кнопки */
+    margin-top: 10px;
 }
 
 .btn:hover {
@@ -130,21 +129,21 @@ body {
 }
 
 .search-container {
-    margin-top: 100px; /* Отступ сверху */
+    margin-top: 100px;
     margin-left: 150px;
-    text-align: left; /* Выравнивание по центру */
+    text-align: left;
 }
 
 .search-input {
-    height: 40px; /* Установите желаемую высоту для поля ввода */
-    padding: 0 10px; /* Отступы внутри поля ввода */
-    font-size: 16px; /* Размер шрифта */
-    width: 300px; /* Установите нужную ширину для поля ввода */
-    border: 2px solid #fff; /* Цвет рамки */
-    border-radius: 5px; /* Закругление углов */
-    box-sizing: border-box; /* Учитываем padding и border в ширине */
-    margin-bottom: 15px; /* Отступ снизу между полями ввода */
-    margin-left: 15px; /* Отступ снизу между полями ввода */
+    height: 40px;
+    padding: 0 10px;
+    font-size: 16px;
+    width: 300px;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    margin-left: 15px;
 }
 
 @font-face {

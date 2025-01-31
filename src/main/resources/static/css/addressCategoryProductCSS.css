@@ -3,36 +3,36 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    display: flex; /* Используем flexbox для центрирования */
-    justify-content: center; /* Центрируем по горизонтали */
-    align-items: center; /* Центрируем по вертикали */
-    height: 100vh; /* Высота 100% экрана */
-    margin: 0; /* Убираем отступы по умолчанию */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
 
 table {
-    width: 100%; /* Занимает всю ширину родительского контейнера */
-    border-collapse: collapse; /* Убираем пробелы между ячейками */
+    width: 100%;
+    border-collapse: collapse;
 }
 
 th, td {
-    padding: 10px; /* Увеличиваем отступы внутри ячеек */
-    text-align: left; /* Выравнивание текста по левому краю */
-    line-height: 1.2; /* Высота строки */
+    padding: 10px;
+    text-align: left;
+    line-height: 1.2;
     color: #fff;
-    width: 7%; /* Устанавливаем фиксированную ширину для каждого столбца (6 столбцов) */
+    width: 7%;
 }
 
 th {
-    background-color: rgba(255, 255, 255, 0.2); /* Полупрозрачный фон для заголовка */
-    color: #fff; /* Цвет текста заголовка */
-    white-space: nowrap; /* Запрещает перенос текста на новую строку */
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    white-space: nowrap;
 }
 
 ul {
-    line-height: 1.2; /* Уменьшаем высоту строки */
-    padding: 2px; /* Уменьшаем отступы внутри ячеек для уменьшения высоты */
-    text-align: left; /* Выравнивание текста по левому краю */
+    line-height: 1.2;
+    padding: 2px;
+    text-align: left;
     color: #fff;
 }
 
@@ -46,49 +46,47 @@ ul {
 }
 
 .order-container {
-    display: flex; /* Используем flexbox для выравнивания */
-    flex-direction: column; /* Располагаем элементы по вертикали */
-    align-items: center; /* Центрируем элементы по горизонтали */
-    justify-content: flex-start; /* Выравнивание элементов по верхней части */
-    /*margin: 20px auto; !* Отступы сверху и снизу, авто для центрирования *!*/
-    /*padding: 10px; !* Отступы внутри контейнера *!*/
-    background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон для контейнера */
-    border-radius: 10px; /* Закругление углов */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для контейнера */
-    width: 100%; /* Ширина контейнера (можно настроить) */
-    max-width: 1100px; /* Максимальная ширина контейнера */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 1100px;
     margin-top: 105px;
-    height: 600px; /* Установите фиксированную высоту для контейнера */
-    overflow-y: auto; /* Позволяет прокручивать содержимое по вертикали */
-    overflow-x: hidden; /* Отключаем горизонтальную прокрутку */
+    height: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .text {
     font-family: "Bluecurve-Light", sans-serif;
     color: #fff;
-    width: 200px; /* Фиксированная ширина для меток */
-    display: inline-block; /* Позволяет меткам занимать фиксированную ширину */
+    width: 200px;
+    display: inline-block;
 }
 
 .textCart {
     font-family: "Bluecurve-Light", sans-serif;
     color: #fff;
-    width: 300px; /* Фиксированная ширина для меток */
-    display: inline-block; /* Позволяет меткам занимать фиксированную ширину */
+    width: 300px;
+    display: inline-block;
     font-size: 20px;
 }
 
 .textCenter{
     font-family: "Bluecurve-Light", sans-serif;
     color: #fff;
-    display: flex; /* Используем flexbox для выравнивания */
-    justify-content: center; /* Центрируем кнопку по горизонтали */
+    display: flex;
+    justify-content: center;
     font-size: 20px;
 }
 
 .address-text {
-    flex: 1; /* Занимает всё доступное пространство */
-    text-align: left; /* Выравнивание текста по левому краю */
+    flex: 1;
+    text-align: left;
 }
 
 .container {
@@ -98,30 +96,29 @@ ul {
 }
 
 .address-container {
-    display: flex; /* Используем flexbox для выравнивания */
-    flex-direction: column; /* Располагаем элементы по вертикали */
-    align-items: center; /* Центрируем элементы по горизонтали */
-    justify-content: flex-start; /* Выравнивание элементов по верхней части */
-    /*margin: 20px auto; !* Отступы сверху и снизу, авто для центрирования *!*/
-    padding: 10px; /* Отступы внутри контейнера */
-    background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон для контейнера */
-    border-radius: 10px; /* Закругление углов */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для контейнера */
-    width: 100%; /* Ширина контейнера (можно настроить) */
-    max-width: 700px; /* Максимальная ширина контейнера */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 700px;
     margin-top: 105px;
 }
 
 .address-item {
-    display: flex; /* Используем flexbox для выравнивания текста и кнопок */
-    justify-content: space-between; /* Разделяем текст и кнопки по краям */
-    align-items: center; /* Вертикальное выравнивание */
-    width: 100%; /* Занимаем всю ширину контейнера */
-    padding: 10px; /* Отступы внутри элемента */
-    border: 1px solid #ccc; /* Граница для визуального разделения */
-    border-radius: 5px; /* Закругление углов */
-    margin-bottom: 3px; /* Отступ между адресами */
-    background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон для элемента */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 3px;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .header {
@@ -137,19 +134,19 @@ ul {
 .nav {
     font-size: 14px;
     text-transform: uppercase;
-    display: flex; /* Используем flexbox для навигации */
-    justify-content: flex-end; /* Выравниваем элементы вправо */
-    width: 100%; /* Убедимся, что nav занимает всю ширину */
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
 }
 
 .nav__right {
-    display: flex; /* Используем flexbox для выравнивания ссылок и кнопок */
-    align-items: center; /* Вертикальное выравнивание */
+    display: flex;
+    align-items: center;
 }
 
 .nav__link {
     display: inline-block;
-    margin: 0 15px; /* Отступы между ссылкой и кнопкой */
+    margin: 0 15px;
     position: relative;
     vertical-align: top;
     color: #fff;
@@ -189,48 +186,48 @@ ul {
 }
 
 .btn {
-    margin-left: 15px; /* Отступ между ссылкой и кнопкой */
+    margin-left: 15px;
     height: 40px;
     padding: 10px 15px;
-    border-radius: 5px; /* Закругление углов */
+    border-radius: 5px;
     border: 3px solid #fff;
     background: none;
     color: #fff;
     text-transform: uppercase;
-    cursor: pointer; /* Указатель при наведении */
+    cursor: pointer;
 }
 
 .btnStatus {
     margin-right: 15px;
     width: 80px;
     padding: 10px 15px;
-    border-radius: 5px; /* Закругление углов */
+    border-radius: 5px;
     border: 3px solid #fff;
     background: none;
     color: #fff;
     text-transform: uppercase;
-    cursor: pointer; /* Указатель при наведении */
+    cursor: pointer;
 }
 
 .btnStatusOrder {
-    display: inline-flex; /* Используем flexbox для центрирования текста */
-    align-items: center; /* Вертикальное центрирование */
-    justify-content: center; /* Горизонтальное центрирование */
-    font-size: 11px; /* Размер шрифта */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
     margin-top: 5px;
 }
 
 .btnCart {
     font-family: "Bluecurve-Light", sans-serif;
-    margin-left: 15px; /* Отступ между ссылкой и кнопкой */
+    margin-left: 15px;
     height: 40px;
     padding: 10px 15px;
-    border-radius: 5px; /* Закругление углов */
+    border-radius: 5px;
     border: 3px solid #fff;
     background: none;
     color: #fff;
     text-transform: uppercase;
-    cursor: pointer; /* Указатель при наведении */
+    cursor: pointer;
     font-size: 10px;
     margin-top: 5px;
 }
@@ -254,13 +251,13 @@ ul {
 }
 
 .update-button, .delete-button {
-    margin-left: 10px; /* Отступ между кнопками */
+    margin-left: 10px;
     background: none;
-    color: white; /* Цвет текста кнопок */
+    color: white;
     border: 3px solid #fff;
-    border-radius: 5px; /* Закругление углов */
-    padding: 5px 10px; /* Отступы внутри кнопок */
-    cursor: pointer; /* Указатель при наведении */
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
     text-transform: uppercase;
 }
 
@@ -271,115 +268,114 @@ ul {
 }
 
 .pagination-buttons {
-    display: flex; /* Используем flexbox для выравнивания кнопок */
-    justify-content: center; /* Центрируем кнопки по горизонтали */
-    margin-top: 5px; /* Отступ сверху для отделения от адресов */
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
 }
 
 .form-container {
-    display: flex; /* Используем flexbox для выравнивания */
-    flex-direction: column; /* Располагаем элементы по вертикали */
-    align-items: stretch; /* Элементы занимают всю ширину контейнера */
-    justify-content: flex-start; /* Выравнивание элементов по верхней части */
-    padding: 10px; /* Отступы внутри контейнера */
-    background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон для контейнера */
-    border-radius: 10px; /* Закругление углов */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для контейнера */
-    width: 100%; /* Ширина контейнера (можно настроить) */
-    max-width: 180px; /* Максимальная ширина контейнера */
-    margin-top: 5px; /* Отступ сверху */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 180px;
+    margin-top: 5px;
     margin-right: 100px;
 }
 
 .form-containerCart {
-    display: flex; /* Используем flexbox для выравнивания */
-    flex-direction: column; /* Располагаем элементы по вертикали */
-    align-items: stretch; /* Элементы занимают всю ширину контейнера */
-    justify-content: flex-start; /* Выравнивание элементов по верхней части */
-    padding: 10px; /* Отступы внутри контейнера */
-    background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон для контейнера */
-    border-radius: 10px; /* Закругление углов */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для контейнера */
-    width: 100%; /* Ширина контейнера (можно настроить) */
-    max-width: 430px; /* Максимальная ширина контейнера */
-    margin-top: 5px; /* Отступ сверху */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 430px;
+    margin-top: 5px;
     margin-right: 100px;
 }
 
 .form-containerProduct {
-    display: flex; /* Используем flexbox для выравнивания */
-    flex-direction: column; /* Располагаем элементы по вертикали */
-    align-items: stretch; /* Элементы занимают всю ширину контейнера */
-    justify-content: flex-start; /* Выравнивание элементов по верхней части */
-    padding: 10px; /* Отступы внутри контейнера */
-    background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон для контейнера */
-    border-radius: 10px; /* Закругление углов */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для контейнера */
-    width: 100%; /* Ширина контейнера (можно настроить) */
-    max-width: 520px; /* Максимальная ширина контейнера */
-    margin-top: 5px; /* Отступ сверху */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 520px;
+    margin-top: 5px;
     margin-right: 10px;
 }
 
 .category-list-new-product {
-    display: grid; /* Используем сетку для отображения элементов */
-    grid-template-columns: repeat(2, 1fr); /* Два столбца одинаковой ширины */
-    gap: 10px; /* Отступы между элементами */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
 }
 
 .category-container {
-    display: flex; /* Используем flexbox для выравнивания */
-    flex-direction: column; /* Располагаем элементы по вертикали */
-    align-items: center; /* Центрируем элементы по горизонтали */
-    justify-content: flex-start; /* Выравнивание элементов по верхней части */
-    /*margin: 20px auto; !* Отступы сверху и снизу, авто для центрирования *!*/
-    padding: 10px; /* Отступы внутри контейнера */
-    background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон для контейнера */
-    border-radius: 10px; /* Закругление углов */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для контейнера */
-    width: 100%; /* Ширина контейнера (можно настроить) */
-    max-width: 500px; /* Максимальная ширина контейнера */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 500px;
     margin-top: 10px;
 }
 
 .category-item {
-    display: flex; /* Используем flexbox для выравнивания текста и кнопок */
-    justify-content: space-between; /* Разделяем текст и кнопки по краям */
-    align-items: center; /* Вертикальное выравнивание */
-    width: 100%; /* Занимаем всю ширину контейнера */
-    padding: 3px; /* Отступы внутри элемента */
-    border: 1px solid #ccc; /* Граница для визуального разделения */
-    border-radius: 5px; /* Закругление углов */
-    margin-bottom: 3px; /* Отступ между адресами */
-    background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон для элемента */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 3px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 3px;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .form-group {
-    display: flex; /* Используем flexbox для выравнивания элементов */
-    justify-content: space-between; /* Разделяем метку и поле ввода по краям */
-    align-items: center; /* Вертикальное выравнивание */
-    width: 100%; /* Занимаем всю ширину контейнера */
-    margin-bottom: 10px; /* Отступ между группами полей */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
 }
 
 .form-group label {
-    width: 200px; /* Фиксированная ширина для меток */
+    width: 200px;
 }
 
 .form-group input {
-    flex: 1; /* Поле ввода занимает оставшееся пространство */
+    flex: 1;
 }
 
 .button-container {
-    display: flex; /* Используем flexbox для выравнивания */
-    justify-content: center; /* Центрируем кнопку по горизонтали */
-    margin-top: 20px; /* Отступ сверху для отделения от остальных элементов */
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
 
 .button-containerCart {
-    display: flex; /* Используем flexbox для выравнивания */
-    justify-content: center; /* Центрируем кнопку по горизонтали */
-    margin-top: 10px; /* Отступ сверху для отделения от остальных элементов */
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
 }
 
 @font-face {
@@ -388,11 +384,3 @@ ul {
     font-style: normal;
     font-weight: normal;
 }
-
-/*form {*/
-/*    width: 100%; !* Заставляем формы занимать всю ширину контейнера *!*/
-/*    margin-bottom: 20px; !* Отступ между формами *!*/
-/*    padding: 10px; !* Отступы внутри формы *!*/
-/*    background-color: rgba(255, 255, 255, 0.1); !* Полупрозрачный фон для формы *!*/
-/*    border-radius: 5px; !* Закругление углов формы *!*/
-/*}*/

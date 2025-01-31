@@ -22,9 +22,6 @@
 
             <div th:if="${isAuthenticated}">
                 <nav class="nav">
-<!--                    <a href="/logout">Выйти из аккаунта</a>-->
-<!--                    <a th:href="@{/api/v1/store/{login}/profile(login=${currentUser .getLogin()})}">Профиль</a>-->
-
                     <div th:if="${currentUser.getRole().getUserRole() == 'Admin'}">
                         <a class="nav__link" href="/logout">Выйти из аккаунта</a>
                         <a class="nav__link" th:href="@{/api/v1/store/{login}/profile(login=${currentUser .getLogin()})}">Профиль</a>
@@ -65,54 +62,14 @@
     </div>
 </header>
 
-<!--<div th:if="${isAuthenticated}">-->
-<!--    <h1 th:text="'Добро пожаловать, ' + ${currentUser .getLogin()}  + '!'">user</h1>-->
-<!--    <br/>-->
-<!--    <p><a href="/logout">Выйти из аккаунта</a></p>-->
-<!--    <p><a th:href="@{/api/v1/store/{login}/profile(login=${currentUser .getLogin()})}">Профиль</a></p>-->
-
-    <!-- Дополнительный контент для зарегистрированных пользователей -->
-
-<!--    <div th:if="${currentUser.getRole().getUserRole() == 'Admin'}">-->
-<!--        &lt;!&ndash;    <h1>Welcome, authenticated ${currentUser}!</h1>&ndash;&gt;-->
-<!--        <p><a th:href="@{/api/v1/store/newUser/{role}(role=${admin.getUserRole()})}">Зарегистрировать нового администратора</a></p>-->
-<!--        <p><a th:href="@{/api/v1/store/newUser/{role}(role=${worker.getUserRole()})}">Зарегистрировать нового работника</a></p>-->
-<!--        <p><a th:href="@{/api/v1/store/deliveryAddressPage}">Адреса пунктов выдачи</a></p>-->
-<!--        <p><a th:href="@{/api/v1/store/listOfUsers}">Список пользователей</a></p>-->
-<!--        &lt;!&ndash; Дополнительный контент для зарегистрированных пользователей &ndash;&gt;-->
-<!--    </div>-->
-<!--    <div th:if="${currentUser.getRole().getUserRole() == 'Admin'}">-->
-<!--        <p><a th:href="@{/api/v1/store/productCategoryPage}">Категории товаров</a></p>-->
-<!--    </div>-->
-<!--    <div th:if="${currentUser.getRole().getUserRole() == 'Seller'}">-->
-<!--        <p><a th:href="@{/api/v1/store/products/{login}(login=${currentUser.getLogin()})}">Товары</a></p>-->
-<!--    </div>-->
-<!--    <div th:if="${currentUser.getRole().getUserRole() == 'User'}">-->
-<!--        <p><a th:href="@{/api/v1/store/cart/{login}(login=${currentUser.getLogin()})}">Корзина</a></p>-->
-<!--        <p><a th:href="@{/api/v1/store/order/{login}/orders(login=${currentUser.getLogin()})}">Мои заказы</a></p>-->
-<!--    </div>-->
-<!--    <div th:if="${currentUser.getRole().getUserRole() == 'Worker' or currentUser.getRole().getUserRole() == 'Admin'}">-->
-<!--        <p><a th:href="@{/api/v1/store/ordersPage}">Заказы</a></p>-->
-<!--    </div>-->
-
-<!--</div>-->
-
-<!--<div th:unless="${isAuthenticated}">-->
-<!--    <h1>Добро пожаловать, гость!</h1>-->
-<!--    <br/>-->
-<!--    <p><a href="/login">Войти</a></p>-->
-<!--    <p><a th:href="@{/api/v1/store/newUser/{role}(role=${user.getUserRole()})}">Зарегистрироваться как пользователь</a></p>-->
-<!--    <p><a th:href="@{/api/v1/store/newUser/{role}(role=${seller.getUserRole()})}">Зарегистрироваться как продавец</a></p>-->
-<!--</div>-->
-
-<div class="search-container"> <!-- Обертка для поля поиска -->
+<div class="search-container">
     <form th:method="GET" th:action="@{/api/v1/store}">
         <input class="search-input" type="text" name="query" placeholder="Поиск товара">
         <button class="btn" type="submit">Поиск</button>
     </form>
 </div>
 
-<div class="container"> <!-- Добавлен контейнер для товаров -->
+<div class="container">
     <div class="products-container">
         <div th:each="product : ${listOfProduct}" class="product-item">
             <p><img th:src="@{${product.imagePath}}" alt="Изображение товара" style="max-width: 200px; max-height: 200px;"/></p>
